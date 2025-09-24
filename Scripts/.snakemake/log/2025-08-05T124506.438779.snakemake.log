@@ -1,0 +1,7 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+WildcardError in rule co_reg_pre_palisades in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 27:
+Wildcards in input files cannot be determined from output files: (rule co_reg_pre_palisades, line 52, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile)
+'pan'

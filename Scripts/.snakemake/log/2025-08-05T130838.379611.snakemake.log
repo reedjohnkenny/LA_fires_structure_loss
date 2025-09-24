@@ -1,0 +1,79 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                               count
+------------------------------  -------
+all                                   1
+co_reg_post_eaton_burned              1
+co_reg_post_eaton_unburned            1
+co_reg_post_palisades_burned          1
+co_reg_post_palisades_unburned        1
+post_CHMs                             1
+total                                 6
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Aug  5 13:08:38 2025]
+localrule post_CHMs:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/dtm_eaton_epsg32611_geoid12b_1m_POSTFIRE.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_burned.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif
+    jobid: 8
+    reason: Forced execution
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        Rscript Post_CHM_reg.R
+        
+Waiting for more resources.
+Select jobs to execute...
+[Tue Aug  5 13:09:46 2025]
+Finished jobid: 8 (Rule: post_CHMs)
+1 of 6 steps (17%) done
+Execute 1 jobs...
+[Tue Aug  5 13:09:46 2025]
+localrule co_reg_post_palisades_unburned:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+    jobid: 9
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif; Input files updated by another job: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 94:
+Command 'set -euo pipefail;  
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif"' returned non-zero exit status 1.
+[Tue Aug  5 13:10:12 2025]
+Error in rule co_reg_post_palisades_unburned:
+    message: None
+    jobid: 9
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+    shell:
+        
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif"
+        
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Tue Aug  5 13:10:12 2025]
+Error in rule co_reg_post_palisades_unburned:
+    message: None
+    jobid: 9
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+    shell:
+        
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif"
+        
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-05T130838.379611.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

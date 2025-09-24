@@ -1,0 +1,11 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+MissingInputException in rule all in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 1:
+Missing input files for rule all:
+    affected files:
+        /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif
+        /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+        /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif
+        /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif

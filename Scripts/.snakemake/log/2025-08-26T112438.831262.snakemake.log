@@ -1,0 +1,129 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+difference_lidar        2
+extract_diffs           2
+gen_model_inputs        3
+total                   8
+
+Select jobs to execute...
+Execute 2 jobs...
+[Tue Aug 26 11:24:38 2025]
+localrule difference_lidar:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif
+    jobid: 20
+    reason: Updated input files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+
+[Tue Aug 26 11:24:38 2025]
+localrule difference_lidar:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif
+    jobid: 10
+    reason: Updated input files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    wildcards: fire=eaton, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+
+Waiting for more resources.
+[Tue Aug 26 11:25:26 2025]
+Finished jobid: 20 (Rule: difference_lidar)
+1 of 8 steps (12%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Aug 26 11:25:26 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_chm_diff.shp
+    jobid: 19
+    reason: Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif
+    wildcards: fire=eaton, status=unburned, type=chm
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+
+Waiting for more resources.
+[Tue Aug 26 11:25:36 2025]
+Finished jobid: 10 (Rule: difference_lidar)
+2 of 8 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Aug 26 11:25:36 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp
+    jobid: 9
+    reason: Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif
+    wildcards: fire=eaton, status=burned, type=chm
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+
+Waiting for more resources.
+[Tue Aug 26 11:27:42 2025]
+Finished jobid: 19 (Rule: extract_diffs)
+3 of 8 steps (38%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Aug 26 11:27:42 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_vols.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_ndvi_diff.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv
+    jobid: 13
+    reason: Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_chm_diff.shp
+    wildcards: fire=eaton, status=unburned, comp=trees
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+
+Waiting for more resources.
+[Tue Aug 26 11:27:44 2025]
+Finished jobid: 13 (Rule: gen_model_inputs)
+4 of 8 steps (50%) done
+[Tue Aug 26 11:28:08 2025]
+Finished jobid: 9 (Rule: extract_diffs)
+5 of 8 steps (62%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Tue Aug 26 11:28:08 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_vols.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_ndvi_diff.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_trees_model_inputs.csv
+    jobid: 1
+    reason: Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp
+    wildcards: fire=eaton, status=burned, comp=trees
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+
+[Tue Aug 26 11:28:08 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_vols.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_ndvi_diff.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_struc_model_inputs.csv
+    jobid: 22
+    reason: Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp
+    wildcards: fire=eaton, status=burned, comp=struc
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+
+Waiting for more resources.
+[Tue Aug 26 11:28:09 2025]
+Finished jobid: 22 (Rule: gen_model_inputs)
+6 of 8 steps (75%) done
+[Tue Aug 26 11:28:09 2025]
+Finished jobid: 1 (Rule: gen_model_inputs)
+7 of 8 steps (88%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Aug 26 11:28:09 2025]
+localrule all:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_struc_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_unburned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+    jobid: 0
+    reason: Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_struc_model_inputs.csv
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+
+Waiting for more resources.
+[Tue Aug 26 11:28:09 2025]
+Finished jobid: 0 (Rule: all)
+8 of 8 steps (100%) done
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-26T112438.831262.snakemake.log

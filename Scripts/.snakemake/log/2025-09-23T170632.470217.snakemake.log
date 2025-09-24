@@ -1,0 +1,52 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Reeds-MacBook-Pro.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+gen_model_inputs        6
+total                   7
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 23 17:06:32 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_prox.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv
+    jobid: 7
+    reason: Set of input files has changed since last execution; Code has changed since last execution
+    wildcards: fire=eaton, status=unburned, comp=trees
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/generate_model_inputs.R --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_prox.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv
+Waiting for more resources.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/Scripts/pipeline_Snakefile", line 94:
+Command 'set -euo pipefail;  ./pipeline_scripts/generate_model_inputs.R --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_prox.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv' returned non-zero exit status 1.
+[Tue Sep 23 17:06:33 2025]
+Error in rule gen_model_inputs:
+    message: None
+    jobid: 7
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_prox.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv
+    shell:
+        ./pipeline_scripts/generate_model_inputs.R --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_prox.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Tue Sep 23 17:06:33 2025]
+Error in rule gen_model_inputs:
+    message: None
+    jobid: 7
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_prox.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv
+    shell:
+        ./pipeline_scripts/generate_model_inputs.R --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_prox.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/Scripts/.snakemake/log/2025-09-23T170632.470217.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

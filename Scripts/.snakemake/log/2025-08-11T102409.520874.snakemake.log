@@ -1,0 +1,50 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                               count
+------------------------------  -------
+all                                   1
+co_reg_post_eaton_burned              1
+co_reg_post_eaton_unburned            1
+co_reg_post_palisades_burned          1
+co_reg_post_palisades_unburned        1
+stich_lidar                           1
+total                                 6
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Aug 11 10:24:09 2025]
+localrule stich_lidar:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561020_01_P001_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_2_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_3_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif
+    jobid: 1
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        Rscript Stich_lidar.R
+        
+Waiting for more resources.
+Terminating processes on user request, this might take some time.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 54:
+Command 'set -euo pipefail;  
+        Rscript Stich_lidar.R' returned non-zero exit status 1.
+[Mon Aug 11 10:24:45 2025]
+Error in rule stich_lidar:
+    message: None
+    jobid: 1
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561020_01_P001_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_2_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_3_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif
+    shell:
+        
+        Rscript Stich_lidar.R
+        
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-11T102409.520874.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

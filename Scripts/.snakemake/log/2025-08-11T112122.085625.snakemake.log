@@ -1,0 +1,115 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                               count
+------------------------------  -------
+all                                   1
+co_reg_post_eaton_burned              1
+co_reg_post_eaton_unburned            1
+co_reg_post_palisades_burned          1
+co_reg_post_palisades_unburned        1
+co_reg_pre_eaton                      4
+stich_lidar                           1
+total                                10
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Aug 11 11:21:22 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_1.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_1_phase.tif
+    jobid: 2
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_1_phase.tif; Updated input files: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_1.tif
+    wildcards: all_pan_tile_num=all_pan_tile_1
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_1.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_1_phase.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Mon Aug 11 11:21:41 2025]
+Finished jobid: 2 (Rule: co_reg_pre_eaton)
+1 of 10 steps (10%) done
+Execute 1 jobs...
+[Mon Aug 11 11:21:41 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_3.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_3_phase.tif
+    jobid: 4
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_3_phase.tif; Updated input files: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_3.tif
+    wildcards: all_pan_tile_num=all_pan_tile_3
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_3.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_3_phase.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Mon Aug 11 11:22:01 2025]
+Finished jobid: 4 (Rule: co_reg_pre_eaton)
+2 of 10 steps (20%) done
+Execute 1 jobs...
+[Mon Aug 11 11:22:01 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_4.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_4_phase.tif
+    jobid: 5
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_4_phase.tif; Updated input files: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_4.tif
+    wildcards: all_pan_tile_num=all_pan_tile_4
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_4.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_4_phase.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Mon Aug 11 11:22:21 2025]
+Finished jobid: 5 (Rule: co_reg_pre_eaton)
+3 of 10 steps (30%) done
+Execute 1 jobs...
+[Mon Aug 11 11:22:21 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_2.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_2_phase.tif
+    jobid: 3
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_2_phase.tif; Updated input files: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_2.tif
+    wildcards: all_pan_tile_num=all_pan_tile_2
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_2.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_2_phase.tif"
+        
+Waiting for more resources.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 20:
+Command 'set -euo pipefail;  
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_2.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_2_phase.tif"' returned non-zero exit status 1.
+[Mon Aug 11 11:22:33 2025]
+Error in rule co_reg_pre_eaton:
+    message: None
+    jobid: 3
+    input: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_2.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_2_phase.tif
+    shell:
+        
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_2.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_2_phase.tif"
+        
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Mon Aug 11 11:22:33 2025]
+Error in rule co_reg_pre_eaton:
+    message: None
+    jobid: 3
+    input: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_2.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_2_phase.tif
+    shell:
+        
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_2.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_2_phase.tif"
+        
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-11T112122.085625.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

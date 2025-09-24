@@ -1,0 +1,100 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+calc_build_prox         4
+calc_tree_prox          4
+gen_model_inputs        6
+total                  15
+
+Select jobs to execute...
+Execute 2 jobs...
+[Thu Sep 11 11:27:12 2025]
+localrule calc_build_prox:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp
+    jobid: 8
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp
+    wildcards: fire=eaton, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/calc_building_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp
+[Thu Sep 11 11:27:12 2025]
+localrule calc_tree_prox:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp
+    jobid: 17
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/calc_tree_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp
+Waiting for more resources.
+Select jobs to execute...
+[Thu Sep 11 11:31:20 2025]
+Finished jobid: 8 (Rule: calc_build_prox)
+1 of 15 steps (7%) done
+Execute 1 jobs...
+[Thu Sep 11 11:31:20 2025]
+localrule calc_tree_prox:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp
+    jobid: 7
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp
+    wildcards: fire=eaton, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/calc_tree_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp
+Waiting for more resources.
+Select jobs to execute...
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/pipeline_Snakefile", line 117:
+Command 'set -euo pipefail;  ./pipeline_scripts/calc_tree_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp' returned non-zero exit status 1.
+[Thu Sep 11 11:40:08 2025]
+Error in rule calc_tree_prox:
+    message: None
+    jobid: 17
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp
+    shell:
+        ./pipeline_scripts/calc_tree_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp
+        (command exited with non-zero exit code)
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/pipeline_Snakefile", line 117:
+Command 'set -euo pipefail;  ./pipeline_scripts/calc_tree_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp' returned non-zero exit status 1.
+[Thu Sep 11 11:42:18 2025]
+Error in rule calc_tree_prox:
+    message: None
+    jobid: 7
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp
+    shell:
+        ./pipeline_scripts/calc_tree_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Thu Sep 11 11:42:18 2025]
+Error in rule calc_tree_prox:
+    message: None
+    jobid: 17
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp
+    shell:
+        ./pipeline_scripts/calc_tree_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_prox.shp
+        (command exited with non-zero exit code)
+[Thu Sep 11 11:42:18 2025]
+Error in rule calc_tree_prox:
+    message: None
+    jobid: 7
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp
+    shell:
+        ./pipeline_scripts/calc_tree_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-09-11T112712.071339.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

@@ -1,0 +1,76 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+difference_lidar         3
+extract_diffs            8
+extract_preheight        4
+gen_model_inputs         6
+total                   22
+
+Select jobs to execute...
+Execute 2 jobs...
+[Fri Sep 12 10:43:11 2025]
+localrule extract_preheight:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_preheight.shp
+    jobid: 23
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_preheight.shp
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/extract_pre_height.R -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp" -r "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_preheight.shp"
+    
+[Fri Sep 12 10:43:11 2025]
+localrule difference_lidar:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif
+    jobid: 42
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif
+    wildcards: fire=palisades, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/difference_lidar.R --pre_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif" --post_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif"
+    
+Waiting for more resources.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/pipeline_Snakefile", line 107:
+Command 'set -euo pipefail;  
+    ./pipeline_scripts/extract_pre_height.R -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp" -r "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_preheight.shp"' returned non-zero exit status 1.
+[Fri Sep 12 10:43:11 2025]
+Error in rule extract_preheight:
+    message: None
+    jobid: 23
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_preheight.shp
+    shell:
+        
+    ./pipeline_scripts/extract_pre_height.R -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp" -r "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_preheight.shp"
+    
+        (command exited with non-zero exit code)
+[Fri Sep 12 10:43:34 2025]
+Finished jobid: 42 (Rule: difference_lidar)
+1 of 22 steps (5%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Fri Sep 12 10:43:34 2025]
+Error in rule extract_preheight:
+    message: None
+    jobid: 23
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_preheight.shp
+    shell:
+        
+    ./pipeline_scripts/extract_pre_height.R -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp" -r "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_preheight.shp"
+    
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-09-12T104310.953323.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

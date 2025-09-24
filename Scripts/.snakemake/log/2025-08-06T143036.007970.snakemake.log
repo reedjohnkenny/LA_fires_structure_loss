@@ -1,0 +1,61 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          4
+calc_build_vols          4
+calc_tree_prox           4
+difference_lidar         1
+difference_ndvi          1
+extract_kds              4
+footprints_final         1
+gen_model_inputs         8
+tree_crowns_final        2
+total                   30
+
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Aug  6 14:30:36 2025]
+localrule tree_crowns_final:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    jobid: 14
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp; Set of input files has changed since last execution
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp -b /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp -f eaton -s /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp -l unburned
+Waiting for more resources.
+Select jobs to execute...
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 41:
+Command 'set -euo pipefail;  ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp -b /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp -f eaton -s /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp -l unburned' returned non-zero exit status 1.
+[Wed Aug  6 14:30:37 2025]
+Error in rule tree_crowns_final:
+    message: None
+    jobid: 14
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    shell:
+        ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp -b /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp -f eaton -s /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp -l unburned
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Wed Aug  6 14:30:37 2025]
+Error in rule tree_crowns_final:
+    message: None
+    jobid: 14
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    shell:
+        ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp -b /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp -f eaton -s /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp -l unburned
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-06T143036.007970.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

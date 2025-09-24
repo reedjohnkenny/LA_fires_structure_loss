@@ -1,0 +1,130 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          2
+calc_build_vols          1
+calc_tree_prox           2
+extract_diffs            8
+extract_kds              2
+gen_model_inputs         8
+tree_crowns_final        2
+total                   26
+
+Select jobs to execute...
+Execute 2 jobs...
+[Thu Aug  7 12:55:55 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp
+    jobid: 38
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp
+    wildcards: fire=palisades, status=unburned, type=chm
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp
+[Thu Aug  7 12:55:55 2025]
+localrule tree_crowns_final:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    jobid: 16
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R       -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp"       -b "/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp"       -f "eaton"       -s "/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp"       -l "unburned"       -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 12:56:00 2025]
+Finished jobid: 38 (Rule: extract_diffs)
+1 of 26 steps (4%) done
+Execute 1 jobs...
+[Thu Aug  7 12:56:00 2025]
+localrule tree_crowns_final:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_burned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    jobid: 3
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    wildcards: fire=eaton, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R       -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp"       -b "/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp"       -f "eaton"       -s "/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_burned_bound.shp"       -l "burned"       -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 13:09:00 2025]
+Finished jobid: 16 (Rule: tree_crowns_final)
+2 of 26 steps (8%) done
+Execute 1 jobs...
+[Thu Aug  7 13:09:00 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_ndvi_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_ndvi_diff.shp
+    jobid: 21
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_ndvi_diff.shp; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    wildcards: fire=eaton, status=unburned, type=ndvi
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_ndvi_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_ndvi_diff.shp
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 13:09:03 2025]
+Finished jobid: 21 (Rule: extract_diffs)
+3 of 26 steps (12%) done
+Execute 1 jobs...
+[Thu Aug  7 13:09:03 2025]
+localrule calc_build_vols:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_vols.shp
+    jobid: 35
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_vols.shp
+    wildcards: fire=palisades, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./"pipeline_scripts"/Calc_build_vols.R -b "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp" -c "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_vols.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 13:57:33 2025]
+Finished jobid: 35 (Rule: calc_build_vols)
+4 of 26 steps (15%) done
+Execute 1 jobs...
+[Thu Aug  7 13:57:33 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_ndvi_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_ndvi_diff.shp
+    jobid: 30
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_ndvi_diff.shp
+    wildcards: fire=palisades, status=burned, type=ndvi
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_ndvi_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_ndvi_diff.shp
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 13:57:49 2025]
+Finished jobid: 30 (Rule: extract_diffs)
+5 of 26 steps (19%) done
+Execute 1 jobs...
+[Thu Aug  7 13:57:49 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_ndvi_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_ndvi_diff.shp
+    jobid: 39
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_ndvi_diff.shp
+    wildcards: fire=palisades, status=unburned, type=ndvi
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_ndvi_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_ndvi_diff.shp
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 13:57:51 2025]
+Finished jobid: 39 (Rule: extract_diffs)
+6 of 26 steps (23%) done
+Execute 1 jobs...
+RuleException in rule gen_model_inputs in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 129:
+AttributeError: 'InputFiles' object has no attribute 'chm_diff', when formatting the following:
+./generate_model_inputs --fire {wildcards.fire} --status {wildcards.status} --comp {wildcards.comp} --build_density {input.build_density} --tree_density {input.tree_density} --build_vols {input.build_vols} --tree_prox {input.tree_prox} --build_prox {input.build_prox} --chm_diff {input.chm_diff} --ndvi_diff {input.ndvi_diff} --output {output}

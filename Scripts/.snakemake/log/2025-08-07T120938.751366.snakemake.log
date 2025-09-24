@@ -1,0 +1,75 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          2
+calc_build_vols          1
+calc_tree_prox           2
+extract_diffs            8
+extract_kds              2
+gen_model_inputs         8
+tree_crowns_final        2
+total                   26
+
+Select jobs to execute...
+Execute 2 jobs...
+[Thu Aug  7 12:09:38 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.tif
+    jobid: 38
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.tif
+    wildcards: data=/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data, fire=palisades, status=unburned, type=chm
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.tif
+[Thu Aug  7 12:09:38 2025]
+localrule tree_crowns_final:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    jobid: 16
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R       -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp"       -b "/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp"       -f "eaton"       -s "/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp"       -l "unburned"       -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 97:
+Command 'set -euo pipefail;  ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.tif' returned non-zero exit status 1.
+[Thu Aug  7 12:09:40 2025]
+Error in rule extract_diffs:
+    message: None
+    jobid: 38
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.tif
+    shell:
+        ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.tif
+        (command exited with non-zero exit code)
+Terminating processes on user request, this might take some time.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 41:
+Command 'set -euo pipefail;  
+    ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R       -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp"       -b "/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp"       -f "eaton"       -s "/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp"       -l "unburned"       -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp"' returned non-zero exit status 1.
+[Thu Aug  7 12:09:41 2025]
+Error in rule tree_crowns_final:
+    message: None
+    jobid: 16
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    shell:
+        
+    ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R       -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp"       -b "/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp"       -f "eaton"       -s "/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_unburned_bound.shp"       -l "unburned"       -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp"
+    
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-07T120938.751366.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

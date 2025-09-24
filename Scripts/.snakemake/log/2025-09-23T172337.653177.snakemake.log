@@ -1,0 +1,47 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Reeds-MacBook-Pro.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          2
+canopy_seg               1
+extract_kds              2
+gen_model_inputs         4
+tree_crowns_final        2
+total                   12
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 23 17:23:37 2025]
+localrule canopy_seg:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_crowns_burned_polys_v2.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp
+    jobid: 4
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_crowns_burned_polys_v2.shp
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: Rscript pipeline_scripts/Canopy_seg.R
+Waiting for more resources.
+[Tue Sep 23 17:29:55 2025]
+Finished jobid: 4 (Rule: canopy_seg)
+1 of 12 steps (8%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 23 17:29:55 2025]
+localrule tree_crowns_final:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_burned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    jobid: 3
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_tree_crowns_final.shp; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp
+    wildcards: fire=eaton, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R       -t "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp"       -b "/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp"       -f "eaton"       -s "/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_burned_bound.shp"       -l "burned"       -o "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_tree_crowns_final.shp"
+    
+Waiting for more resources.
+Select jobs to execute...

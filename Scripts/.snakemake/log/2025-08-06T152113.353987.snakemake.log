@@ -1,0 +1,45 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+footprints_final        1
+total                   1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Aug  6 15:21:13 2025]
+localrule footprints_final:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp
+    jobid: 0
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: Rscript pipeline_scripts/Create_buildings_final_datasets.R
+Waiting for more resources.
+Waiting at most 5 seconds for missing files:
+/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp (missing locally)
+MissingOutputException in rule footprints_final in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 50:
+Job 0 completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp (missing locally, parent dir contents: palisades_unburned_tree_crowns_final.shp, palisades_crowns_burned_polys_v2.dbf, eaton_unburned_fprints.shp, pal_unburned_fprints.shx, palisades_unburned_tree_crowns_final.shx, eaton_crowns_unburned_polys_v2.prj, eaton_unburned_fprints.shx, pal_unburned_fprints.shp, eaton_unburned_tree_crowns_final.shx, eaton_unburned_fprints_dens.dbf, eaton_burned_tree_crowns_final.prj, Eaton_tree_crowns_unburned_dens.dbf, eaton_crowns_burned_polys_v2.shx, Eaton_crown_tile_all_v2.tif, eaton_burned_fprints.shp, palisades_ttops_all_ext.csv, eaton_crowns_burned_polys_v2.shp, palisades_burned_fprints.dbf, eaton_burned_fprints.shx, Eaton_tree_crowns_unburned_final.prj, eaton_crowns_burned_polys_v2.dbf, palisades_burned_fprints.shp, palisades_unburned_pre_ndvi.tif, eaton_unburned_tree_crowns_final.dbf, Eaton_tree_crowns_unburned_dens.shx, palisades_crowns_unburned_polys_v2.prj, eaton_unburned_fprints_dens.shx, palisades_burned_ndvi_diff.tif, palisades_burned_fprints.shx, eaton_burned_fprints.dbf, Eaton_tree_crowns_unburned_dens.shp, eaton_unburned_fprints_dens.shp, pal_unburned_fprints.dbf, palisades_crown_tile_all_v2.tif, palisades_crowns_burned_polys_v2.shx, eaton_unburned_fprints.dbf, eaton_ttops_all.csv, palisades_unburned_tree_crowns_final.dbf, palisades_burned_tree_crowns_final.prj, palisades_crowns_burned_polys_v2.shp, palisades_burned_pre_ndvi.tif, palisades_unburned_tree_crowns_final.prj, eaton_crowns_unburned_polys_v2.shx, palisades_burned_tree_crowns_final.dbf, eaton_unburned_fprints.prj, eaton_crowns_unburned_polys_v2.shp, eaton_unburned_ndvi_diff.tif, pal_unburned_fprints.prj, eaton_burned_fprints.prj, eaton_unburned_tree_crowns_final.prj, palisades_crowns_unburned_polys_v2.dbf, eaton_burned_tree_crowns_final.shx, palisades_crown_tile_all_ext_v2.tif, eaton_crowns_burned_polys_v2.prj, Eaton_tree_crowns_unburned_final.dbf, Eaton_tree_crowns_unburned_final.shp, palisades_burned_fprints.prj, palisades_ttops_all.csv, palisades_crowns_unburned_polys_v2.shp, Eaton_tree_crowns_unburned_final.shx, Eaton_crown_tile_all_ext.tif, eaton_ttops_all_ext.csv, Eaton_tree_crowns_unburned_dens.prj, eaton_burned_tree_crowns_final.dbf, palisades_crowns_unburned_polys_v2.shx, eaton_unburned_fprints_dens.prj, eaton_burned_ndvi_diff.tif, palisades_burned_tree_crowns_final.shx, eaton_crowns_unburned_polys_v2.dbf, palisades_unburned_ndvi_diff.tif, palisades_burned_post_ndvi.tif, palisades_crowns_burned_polys_v2.prj, palisades_burned_tree_crowns_final.shp)
+Removing output files of failed job footprints_final since they might be corrupted:
+/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_fprints.shp
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Wed Aug  6 15:21:33 2025]
+Error in rule footprints_final:
+    message: None
+    jobid: 0
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp
+    shell:
+        Rscript pipeline_scripts/Create_buildings_final_datasets.R
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-06T152113.353987.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

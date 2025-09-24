@@ -1,0 +1,80 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          2
+calc_tree_prox           1
+extract_diffs            4
+extract_kds              2
+gen_model_inputs         4
+tree_crowns_final        1
+total                   15
+
+Select jobs to execute...
+Execute 2 jobs...
+[Thu Aug  7 14:52:25 2025]
+localrule extract_kds:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp
+    jobid: 14
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/Extract_kernel_densities.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp -T /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_density.shp -B /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_density.shp
+[Thu Aug  7 14:52:25 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_chm_diff.shp
+    jobid: 19
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_chm_diff.shp
+    wildcards: fire=eaton, status=unburned, type=chm
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_tree_crowns_final_chm_diff.shp
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 14:52:32 2025]
+Finished jobid: 14 (Rule: extract_kds)
+1 of 15 steps (7%) done
+Execute 1 jobs...
+[Thu Aug  7 14:52:32 2025]
+localrule tree_crowns_final:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_burned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    jobid: 3
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp
+    wildcards: fire=eaton, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R       -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_crowns_burned_polys_v2.shp"       -b "/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp"       -f "eaton"       -s "/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/eaton_burned_bound.shp"       -l "burned"       -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 14:52:51 2025]
+Finished jobid: 19 (Rule: extract_diffs)
+2 of 15 steps (13%) done
+Execute 1 jobs...
+[Thu Aug  7 14:52:51 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_chm_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_chm_diff.shp
+    jobid: 27
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_chm_diff.shp
+    wildcards: fire=palisades, status=burned, type=chm
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/extract_diffs.R -t /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final.shp -r /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_chm_diff.tif -o /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_chm_diff.shp
+Waiting for more resources.
+Select jobs to execute...
+[Thu Aug  7 14:55:33 2025]
+Finished jobid: 27 (Rule: extract_diffs)
+3 of 15 steps (20%) done
+Execute 1 jobs...
+RuleException in rule gen_model_inputs in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 129:
+AttributeError: 'Wildcards' object has no attribute 'comp', when formatting the following:
+./generate_model_inputs --fire {wildcards.fire} --status {wildcards.status} --comp {wildcards.comp} --build_density {input.build_density} --tree_density {input.tree_density} --build_vols {input.build_vols} --tree_prox {input.tree_prox} --build_prox {input.build_prox} --chm_diff {input.tree_chm_diff} --ndvi_diff {input.tree_ndvi_diff} --output_tree {output.tree_out} --output_struc {output.struc_out}

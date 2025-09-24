@@ -1,0 +1,58 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+all                             1
+co_reg_post_eaton_burned        1
+total                           2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Aug 26 11:02:25 2025]
+localrule co_reg_post_eaton_burned:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_burned.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    jobid: 10
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_burned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif"
+        
+Waiting for more resources.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/co_reg/coreg_Snakefile", line 108:
+Command 'set -euo pipefail;  
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_burned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif"' returned non-zero exit status 1.
+[Tue Aug 26 11:02:32 2025]
+Error in rule co_reg_post_eaton_burned:
+    message: None
+    jobid: 10
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_burned.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    shell:
+        
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_burned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif"
+        
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Tue Aug 26 11:02:32 2025]
+Error in rule co_reg_post_eaton_burned:
+    message: None
+    jobid: 10
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_burned.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    shell:
+        
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_burned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif"
+        
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/co_reg/.snakemake/log/2025-08-26T110225.675607.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

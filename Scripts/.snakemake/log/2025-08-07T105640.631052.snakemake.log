@@ -1,0 +1,7 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+WildcardError in rule extract_diffs in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 90:
+Wildcards in input files cannot be determined from output files: (rule extract_diffs, line 183, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test)
+'paths'

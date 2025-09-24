@@ -1,0 +1,77 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+calc_build_vols         1
+difference_lidar        4
+extract_diffs           4
+gen_model_inputs        6
+total                  16
+
+Select jobs to execute...
+Execute 2 jobs...
+[Fri Aug  8 10:25:20 2025]
+localrule difference_lidar:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif
+    jobid: 20
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif; Code has changed since last execution
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/difference_lidar.R --pre_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" --post_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif"
+    
+[Fri Aug  8 10:25:20 2025]
+localrule calc_build_vols:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_vols.shp
+    jobid: 16
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_vols.shp
+    wildcards: fire=eaton, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./"pipeline_scripts"/Calc_build_vols.R -b "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp" -c "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_vols.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/pipeline_Snakefile", line 66:
+Command 'set -euo pipefail;  
+    ./pipeline_scripts/difference_lidar.R --pre_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" --post_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif"' returned non-zero exit status 1.
+[Fri Aug  8 10:25:21 2025]
+Error in rule difference_lidar:
+    message: None
+    jobid: 20
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif
+    shell:
+        
+    ./pipeline_scripts/difference_lidar.R --pre_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" --post_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_chm_diff.tif"
+    
+        (command exited with non-zero exit code)
+Terminating processes on user request, this might take some time.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/pipeline_Snakefile", line 105:
+Command 'set -euo pipefail;  
+    ./"pipeline_scripts"/Calc_build_vols.R -b "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp" -c "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_vols.shp"' returned non-zero exit status 1.
+[Fri Aug  8 10:25:26 2025]
+Error in rule calc_build_vols:
+    message: None
+    jobid: 16
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_vols.shp
+    shell:
+        
+    ./"pipeline_scripts"/Calc_build_vols.R -b "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp" -c "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_build_vols.shp"
+    
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-08T102520.400518.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

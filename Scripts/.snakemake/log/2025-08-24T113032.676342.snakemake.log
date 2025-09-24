@@ -1,0 +1,72 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          4
+calc_build_vols          4
+calc_tree_prox           4
+canopy_seg               1
+difference_lidar         4
+difference_ndvi          1
+extract_diffs            8
+extract_kds              4
+footprints_final         1
+gen_model_inputs         6
+tree_crowns_final        4
+total                   42
+
+Select jobs to execute...
+Execute 1 jobs...
+[Sun Aug 24 11:30:32 2025]
+localrule footprints_final:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp
+    jobid: 5
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_fprints.shp
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: Rscript pipeline_scripts/Create_buildings_final_datasets.R
+Waiting for more resources.
+Select jobs to execute...
+[Sun Aug 24 11:30:48 2025]
+Finished jobid: 5 (Rule: footprints_final)
+1 of 42 steps (2%) done
+Execute 1 jobs...
+[Sun Aug 24 11:30:48 2025]
+localrule difference_lidar:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif
+    jobid: 10
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif
+    wildcards: fire=eaton, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/difference_lidar.R --pre_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif" --post_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif"
+    
+Waiting for more resources.
+Select jobs to execute...
+Terminating processes on user request, this might take some time.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/pipeline_Snakefile", line 66:
+Command 'set -euo pipefail;  
+    ./pipeline_scripts/difference_lidar.R --pre_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif" --post_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif"' returned non-zero exit status 1.
+[Sun Aug 24 11:30:58 2025]
+Error in rule difference_lidar:
+    message: None
+    jobid: 10
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif
+    shell:
+        
+    ./pipeline_scripts/difference_lidar.R --pre_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif" --post_path "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif"
+    
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-24T113032.676342.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

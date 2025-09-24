@@ -1,0 +1,88 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          4
+calc_build_vols          4
+calc_tree_prox           4
+difference_lidar         1
+difference_ndvi          1
+extract_kds              4
+footprints_final         1
+gen_model_inputs         8
+tree_crowns_final        2
+total                   30
+
+Select jobs to execute...
+Execute 2 jobs...
+[Wed Aug  6 14:48:50 2025]
+localrule difference_lidar:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_burned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_unburned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_burned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_unburned_chm_diff.tif
+    jobid: 9
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_burned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_unburned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_burned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_unburned_chm_diff.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: Rscript pipeline_scripts/difference_lidar.R
+[Wed Aug  6 14:48:50 2025]
+localrule difference_ndvi:
+    input: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/POST/Multi-spec/Eaton_ndvi_post_all.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_burned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_unburned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_burned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_unburned_ndvi_diff.tif
+    jobid: 10
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_unburned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_burned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_unburned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_burned_ndvi_diff.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: Rscript pipeline_scripts/difference_NDVI.R
+Waiting for more resources.
+Select jobs to execute...
+Waiting at most 5 seconds for missing files:
+/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_burned_ndvi_diff.tif (missing locally)
+/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_unburned_ndvi_diff.tif (missing locally)
+/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_burned_ndvi_diff.tif (missing locally)
+/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_unburned_ndvi_diff.tif (missing locally)
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 68:
+Command 'set -euo pipefail;  Rscript pipeline_scripts/difference_lidar.R' returned non-zero exit status 1.
+[Wed Aug  6 14:49:43 2025]
+Error in rule difference_lidar:
+    message: None
+    jobid: 9
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_burned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_unburned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_burned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_unburned_chm_diff.tif
+    shell:
+        Rscript pipeline_scripts/difference_lidar.R
+        (command exited with non-zero exit code)
+MissingOutputException in rule difference_ndvi in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 70:
+Job 10  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_burned_ndvi_diff.tif (missing locally, parent dir contents: POST, .DS_Store, eaton_maxar_all_ndvi_diff.tif, PRE)
+/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_unburned_ndvi_diff.tif (missing locally, parent dir contents: POST, .DS_Store, eaton_maxar_all_ndvi_diff.tif, PRE)
+/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_burned_ndvi_diff.tif (missing locally, parent dir contents: Palisades_pre_proj_ortho.tfw, Palisades_pre_proj_ortho.tif, POST, .DS_Store, Palisades_pre_proj_ortho.tif.aux.xml, palisades_unburned_pre_ndvi_ref_points.points, palisades_unburned_pre_ndvi.tif, palisades_unburned_pre_ndvi.tif.aux.xml, Palisades_pre_proj_ortho.tif.ovr, palisades_burned_pre_ndvi.tif.aux.xml, palisades_burned_pre_ndvi.tif, palisades_unburned_pre_ndvi_modified.tif, palisades_unburned_pre_ndvi_modified.tfw, palisades_unburned_pre_ndvi_modified.tif.aux.xml, Palisades_pre, palisades_unburned_pre_ndvi_modified-Voxel.tif, palisades_burned_post_ndvi.tif.aux.xml, control_points.txt, palisades_burned_post_ndvi.tif)
+/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_unburned_ndvi_diff.tif (missing locally, parent dir contents: Palisades_pre_proj_ortho.tfw, Palisades_pre_proj_ortho.tif, POST, .DS_Store, Palisades_pre_proj_ortho.tif.aux.xml, palisades_unburned_pre_ndvi_ref_points.points, palisades_unburned_pre_ndvi.tif, palisades_unburned_pre_ndvi.tif.aux.xml, Palisades_pre_proj_ortho.tif.ovr, palisades_burned_pre_ndvi.tif.aux.xml, palisades_burned_pre_ndvi.tif, palisades_unburned_pre_ndvi_modified.tif, palisades_unburned_pre_ndvi_modified.tfw, palisades_unburned_pre_ndvi_modified.tif.aux.xml, Palisades_pre, palisades_unburned_pre_ndvi_modified-Voxel.tif, palisades_burned_post_ndvi.tif.aux.xml, control_points.txt, palisades_burned_post_ndvi.tif)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Wed Aug  6 14:49:44 2025]
+Error in rule difference_lidar:
+    message: None
+    jobid: 9
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_burned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_unburned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_burned_chm_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_unburned_chm_diff.tif
+    shell:
+        Rscript pipeline_scripts/difference_lidar.R
+        (command exited with non-zero exit code)
+[Wed Aug  6 14:49:44 2025]
+Error in rule difference_ndvi:
+    message: None
+    jobid: 10
+    input: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/POST/Multi-spec/Eaton_ndvi_post_all.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_burned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_unburned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_burned_ndvi_diff.tif, /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/palisades/palisades_unburned_ndvi_diff.tif
+    shell:
+        Rscript pipeline_scripts/difference_NDVI.R
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-06T144850.792309.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

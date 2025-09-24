@@ -1,0 +1,95 @@
+import os
+
+#Configuration
+
+WORKDIR = "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis"
+DATA_LIDAR = "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR"
+DATA_MAXAR = "/Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar"
+PIPE = "pipeline_scripts"
+LA_TMP = os.path.join(WORKDIR, "tmp_data")
+MODEL_IN = os.path.join(WORKDIR, "model_inputs")
+
+fires = ["eaton", "palisades"]
+statuses = ["burned", "unburned"]
+
+rule all:
+  input:
+    expand("{model_in}/{fire}_{status_comp}_model_inputs.csv",
+model_in=MODEL_IN, fire=fires, status_comp = ["burned_trees","burned_struc"])
+
+rule canopy_seg:
+  input:
+    expand("{data}/{fire}/Registered_DEMS/{fire}_prefire_CHM_{status}_reg.tif", data = DATA_LIDAR, fire = fires, status = statuses)
+  output:
+    pal_burned=os.path.join(LA_TMP, "palisades_crowns_burned_polys_v2.shp"),
+    eat_burned=os.path.join(LA_TMP, "eaton_crowns_burned_polys_v2.shp")
+  shell:
+    "Rscript {PIPE}/Canopy_seg.R"
+ 
+rule tree_crowns_final:
+  input:
+    raw=os.path.join(LA_TMP, "{fire}_crowns_{status}_polys_v2.shp"),
+    fprints="/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_{fire}.shp",
+    study_area="/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/{fire}_{status}_bound.shp"
+  output:
+    os.path.join(LA_TMP, "{fire}_{status}_tree_crowns_final.shp")
+  shell:
+    """
+    ./{PIPE}/CLI_create_tree_crowns_final_datasets.R \
+      -t "{input.raw}" \
+      -b "{input.fprints}" \
+      -f "{wildcards.fire}" \
+      -s "{input.study_area}" \
+      -l "{wildcards.status}" \
+      -o "{output}"
+    """
+
+rule footprints_final:
+  input:
+    eat_src="/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp",
+    pal_src="/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp"
+  output:
+    expand("{tmp}/{fire}_{status}_fprints.shp", tmp=LA_TMP, fire=fires, status=statuses)
+  shell:
+    "Rscript {PIPE}/Create_buildings_final_datasets.R"
+
+
+
+rule extract_kds:
+  input:
+    trees=os.path.join(LA_TMP, "{fire}_{status}_tree_crowns_final.shp"),
+    fprints=os.path.join(LA_TMP, "{fire}_{status}_fprints.shp")
+  output:
+    tree_density=os.path.join(LA_TMP, "{fire}_{status}_tree_density.shp"),
+    build_density=os.path.join(LA_TMP, "{fire}_{status}_build_density.shp")
+  shell:
+    "./{PIPE}/Extract_kernel_densities.R -t {input.trees} -b {input.fprints} -T {output.tree_density} -B {output.build_density}"
+    
+
+rule calc_tree_prox:
+  input:
+    fprints=os.path.join(LA_TMP, "{fire}_{status}_fprints.shp"),
+    trees=os.path.join(LA_TMP, "{fire}_{status}_tree_crowns_final.shp")
+  output:
+    os.path.join(LA_TMP, "{fire}_{status}_tree_prox.shp")
+  shell:
+    "./{PIPE}/calc_tree_proximity_metrics.R -t {input.trees} -b {input.fprints} -o {output}"
+
+rule calc_build_prox:
+  input:
+    fprints=os.path.join(LA_TMP, "{fire}_{status}_fprints.shp"),
+    trees=os.path.join(LA_TMP, "{fire}_{status}_tree_crowns_final.shp")
+  output:
+    os.path.join(LA_TMP, "{fire}_{status}_build_prox.shp")
+  shell:
+    "./{PIPE}/calc_building_proximity_metrics.R -t {input.trees} -b {input.fprints} -o {output}"
+
+rule gen_model_inputs:
+  input:
+    build_density=os.path.join(LA_TMP, "{fire}_{status}_build_density.shp"),
+    build_prox=os.path.join(LA_TMP, "{fire}_{status}_build_prox.shp")
+  output:
+    os.path.join(MODEL_IN, "{fire}_{status}_{comp}_model_inputs.csv")
+  shell:
+    "./{PIPE}/generate_model_inputs.R --build_density {input.build_density} --buildings_prox {input.build_prox} --output {output}"
+

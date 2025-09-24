@@ -1,0 +1,11 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+MissingInputException in rule co_reg_pre_eaton in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 11:
+Missing input files(Using '~' in your paths is not allowed as such platform specific syntax is not resolved by Snakemake. In general, try sticking to relative paths for everything inside the working directory.) for rule co_reg_pre_eaton:
+    output: ~/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561020_01_P001_phase.tif
+    wildcards: pan=25JAN01182958-P3DS-016569561020_01_P001
+    affected files:
+        ~/OneDrive - Cal Poly/data/LiDAR/eaton_chm_epsg32611.tif
+        ~/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561020_01_P001.tif

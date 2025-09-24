@@ -1,0 +1,167 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+extract_diffs            1
+extract_preheight        3
+gen_model_inputs         5
+total                   10
+
+Select jobs to execute...
+Execute 2 jobs...
+[Fri Sep 12 11:10:07 2025]
+localrule extract_diffs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp
+    jobid: 41
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp; Code has changed since last execution
+    wildcards: fire=palisades, status=unburned, type=chm
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/extract_diffs.R -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp" -r "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_chm_diff.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp"
+    
+[Fri Sep 12 11:10:07 2025]
+localrule extract_preheight:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp
+    jobid: 13
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp
+    wildcards: fire=eaton, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/extract_pre_height.R -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp" -r "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+[Fri Sep 12 11:10:54 2025]
+Finished jobid: 41 (Rule: extract_diffs)
+1 of 10 steps (10%) done
+Execute 1 jobs...
+[Fri Sep 12 11:10:54 2025]
+localrule extract_preheight:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_preheight.shp
+    jobid: 44
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_preheight.shp
+    wildcards: fire=palisades, status=unburned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/extract_pre_height.R -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final.shp" -r "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_preheight.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+[Fri Sep 12 11:11:39 2025]
+Finished jobid: 44 (Rule: extract_preheight)
+2 of 10 steps (20%) done
+Execute 1 jobs...
+[Fri Sep 12 11:11:39 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_vols.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_ndvi_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_preheight.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_unburned_trees_model_inputs.csv
+    jobid: 35
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_unburned_trees_model_inputs.csv; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_preheight.shp
+    wildcards: fire=palisades, status=unburned, comp=trees
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/generate_model_inputs.R --status unburned --comp trees --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_density.shp --tree_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_density.shp --buildings_vols /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_vols.shp --tree_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_prox.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_build_prox.shp --chm_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_chm_diff.shp --ndvi_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_ndvi_diff.shp --pre_height /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_unburned_tree_crowns_final_preheight.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_unburned_trees_model_inputs.csv
+Waiting for more resources.
+Select jobs to execute...
+[Fri Sep 12 11:11:40 2025]
+Finished jobid: 35 (Rule: gen_model_inputs)
+3 of 10 steps (30%) done
+Execute 1 jobs...
+[Fri Sep 12 11:11:40 2025]
+localrule extract_preheight:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final.shp, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp
+    jobid: 34
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp
+    wildcards: fire=palisades, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/extract_pre_height.R -t "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final.shp" -r "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif" -o "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp"
+    
+Waiting for more resources.
+[Fri Sep 12 11:12:30 2025]
+Finished jobid: 13 (Rule: extract_preheight)
+4 of 10 steps (40%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Sep 12 11:12:30 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_vols.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_ndvi_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_trees_model_inputs.csv
+    jobid: 1
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_trees_model_inputs.csv; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp; Set of input files has changed since last execution; Code has changed since last execution
+    wildcards: fire=eaton, status=burned, comp=trees
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/generate_model_inputs.R --status burned --comp trees --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_density.shp --tree_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_density.shp --buildings_vols /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_vols.shp --tree_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp --chm_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp --ndvi_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_ndvi_diff.shp --pre_height /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_trees_model_inputs.csv
+Waiting for more resources.
+Select jobs to execute...
+[Fri Sep 12 11:12:32 2025]
+Finished jobid: 1 (Rule: gen_model_inputs)
+5 of 10 steps (50%) done
+Execute 1 jobs...
+[Fri Sep 12 11:12:32 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_vols.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_ndvi_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_struc_model_inputs.csv
+    jobid: 24
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_struc_model_inputs.csv; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp; Set of input files has changed since last execution; Code has changed since last execution
+    wildcards: fire=eaton, status=burned, comp=struc
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/generate_model_inputs.R --status burned --comp struc --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_density.shp --tree_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_density.shp --buildings_vols /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_vols.shp --tree_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_prox.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_build_prox.shp --chm_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.shp --ndvi_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_ndvi_diff.shp --pre_height /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_preheight.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_struc_model_inputs.csv
+Waiting for more resources.
+[Fri Sep 12 11:12:34 2025]
+Finished jobid: 24 (Rule: gen_model_inputs)
+6 of 10 steps (60%) done
+[Fri Sep 12 11:14:18 2025]
+Finished jobid: 34 (Rule: extract_preheight)
+7 of 10 steps (70%) done
+Select jobs to execute...
+Execute 2 jobs...
+[Fri Sep 12 11:14:18 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_vols.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_ndvi_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+    jobid: 45
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_struc_model_inputs.csv; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp; Set of input files has changed since last execution; Code has changed since last execution
+    wildcards: fire=palisades, status=burned, comp=struc
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/generate_model_inputs.R --status burned --comp struc --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_density.shp --tree_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_density.shp --buildings_vols /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_vols.shp --tree_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_prox.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_prox.shp --chm_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_chm_diff.shp --ndvi_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_ndvi_diff.shp --pre_height /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+[Fri Sep 12 11:14:18 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_vols.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_chm_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_ndvi_diff.shp, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_trees_model_inputs.csv
+    jobid: 25
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_trees_model_inputs.csv; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp; Set of input files has changed since last execution; Code has changed since last execution
+    wildcards: fire=palisades, status=burned, comp=trees
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/generate_model_inputs.R --status burned --comp trees --build_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_density.shp --tree_density /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_density.shp --buildings_vols /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_vols.shp --tree_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_prox.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_build_prox.shp --chm_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_chm_diff.shp --ndvi_diff /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_ndvi_diff.shp --pre_height /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final_preheight.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_trees_model_inputs.csv
+Waiting for more resources.
+[Fri Sep 12 11:14:20 2025]
+Finished jobid: 45 (Rule: gen_model_inputs)
+8 of 10 steps (80%) done
+[Fri Sep 12 11:14:21 2025]
+Finished jobid: 25 (Rule: gen_model_inputs)
+9 of 10 steps (90%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Sep 12 11:14:21 2025]
+localrule all:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_unburned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_struc_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_unburned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+    jobid: 0
+    reason: Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_struc_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_burned_struc_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/palisades_unburned_trees_model_inputs.csv, /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/model_inputs/eaton_burned_trees_model_inputs.csv
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: None
+Waiting for more resources.
+[Fri Sep 12 11:14:21 2025]
+Finished jobid: 0 (Rule: all)
+10 of 10 steps (100%) done
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-09-12T111007.058926.snakemake.log

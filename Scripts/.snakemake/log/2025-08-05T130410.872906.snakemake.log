@@ -1,0 +1,9 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+MissingInputException in rule co_reg_post_palisades_burned in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 73:
+Missing input files for rule co_reg_post_palisades_burned:
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif
+    affected files:
+        /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Palisades/palisades_postfire_CHM_burned.tif

@@ -1,0 +1,10 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+MissingInputException in rule extract_diffs in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 90:
+Missing input files for rule extract_diffs:
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final_chm_diff.tif
+    wildcards: data=/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data, fire=eaton, status=burned, type=chm
+    affected files:
+        /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_chm_diff.tif

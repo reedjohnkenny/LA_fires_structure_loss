@@ -1,0 +1,79 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                               count
+------------------------------  -------
+all                                   1
+co_reg_post_eaton_burned              1
+co_reg_post_eaton_unburned            1
+co_reg_post_palisades_burned          1
+co_reg_post_palisades_unburned        1
+co_reg_pre_eaton                      4
+co_reg_pre_palisades                  1
+stich_lidar                           1
+total                                11
+
+Select jobs to execute...
+Execute 2 jobs...
+[Fri Aug  8 16:05:02 2025]
+localrule co_reg_pre_palisades:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Palisades/Palisades_pre/016569561010_01_P001_PAN/24OCT20184323-P3DS-016569561010_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/pal_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif
+    jobid: 6
+    reason: Set of input files has changed since last execution
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Palisades/Palisades_pre/016569561010_01_P001_PAN/24OCT20184323-P3DS-016569561010_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/pal_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif"
+        
+[Fri Aug  8 16:05:02 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+    jobid: 3
+    reason: Updated input files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    wildcards: pan=25JAN01182958-P3DS-016569561030_01_P001
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+Terminating processes on user request, this might take some time.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 34:
+Command 'set -euo pipefail;  
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Palisades/Palisades_pre/016569561010_01_P001_PAN/24OCT20184323-P3DS-016569561010_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/pal_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif"' died with <Signals.SIGINT: 2>.
+[Fri Aug  8 16:05:04 2025]
+Error in rule co_reg_pre_palisades:
+    message: None
+    jobid: 6
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Palisades/Palisades_pre/016569561010_01_P001_PAN/24OCT20184323-P3DS-016569561010_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/pal_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif
+    shell:
+        
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Palisades/Palisades_pre/016569561010_01_P001_PAN/24OCT20184323-P3DS-016569561010_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/pal_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif"
+        
+        (command exited with non-zero exit code)
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 20:
+Command 'set -euo pipefail;  
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif"' died with <Signals.SIGINT: 2>.
+[Fri Aug  8 16:05:04 2025]
+Error in rule co_reg_pre_eaton:
+    message: None
+    jobid: 3
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+    shell:
+        
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif"
+        
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-08T160502.534690.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

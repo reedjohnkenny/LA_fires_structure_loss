@@ -1,0 +1,426 @@
+---
+title: "structures_only_figs"
+output: html_document
+---
+
+---
+title: "Simple_figures"
+output: html_document
+---
+
+```{r}
+
+library(dplyr)
+library(gridExtra)
+library(ggplot2)
+library(cowplot)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(terra)
+library(tigris)
+library(grid)
+
+
+source("functions/plot_fire_effects.R")
+source("functions/plot_model_effects.R")
+source("functions/coef_mag.R")
+source("functions/make_fire_effects_panel.R")
+source("functions/welch_t_test.R")
+source("functions/make_model_table.R")
+source("functions/make_model_table_struc.R")
+source("functions/human_labs.R")
+```
+
+## Map
+
+```{r}
+
+eaton_area <- st_read("~/OneDrive - Cal Poly/data/town_polygons/Eaton_clip.shp") %>% st_transform(32611)
+
+pal_ext <- st_read("~/OneDrive - Cal Poly/data/town_polygons/pal_external.shp") %>% st_transform(32611)
+
+pal_in <- st_read("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Palisades/Palisades_pre/GIS_FILES/016569561010_01_ORDER_SHAPE.shp") %>% st_transform(32611)
+
+eaton_perim_minus50m <- st_read("~/OneDrive - Cal Poly/Data/WFIGS_Interagency_Perimeters_YearToDate_-5395415287356828930/") %>% 
+  filter(poly_Incid == "Eaton") %>% 
+  st_transform(crs=32611) %>% 
+  select(poly_Incid, poly_Featu) %>% 
+  st_buffer(-50)
+
+palisades_perim_minus50m <- st_read("~/OneDrive - Cal Poly/Data/WFIGS_Interagency_Perimeters_YearToDate_-5395415287356828930/") %>% 
+  st_transform(crs = 32611) %>% 
+  filter(poly_Incid == "PALISADES") %>%
+  select(poly_Incid, poly_Featu) %>% 
+  st_buffer(-50)
+
+eaton_in <- st_intersection(eaton_area[1,], eaton_perim_minus50m) %>% 
+  mutate(burned = "yes")
+
+eaton_map <- tmap_mode("plot") +
+              tm_basemap("Esri.WorldImagery") +
+              tm_shape(eaton_in) +
+              tm_polygons(fill = NULL, col = "red", lwd = 3) +
+    tm_compass(type = "4star", position = c("bottom", "right"),bg.color = "white", frame = TRUE, size = 3) +
+  tm_scalebar(breaks = c(0, 0.5, 1), text.size = 0.5, position = c("left", "bottom"), bg.color = "white", frame = TRUE) +
+  tm_title("Eaton Study Area", position = tm_pos_in(0.35, 0.99), frame = TRUE, bg.color = "white") +
+  tm_layout(text.fontfamily = "Times",
+            legend.show = F)
+
+eaton_map
+#legend.outside = FALSE, legend.position = "none", legend.bg.color = "white",
+           # frame = T, legend.width = 4, legend.text.size = 1
+
+tmap_save(eaton_map, "../simple_figures/eaton_map.png")
+
+
+```
+
+
+
+```{r}
+
+
+asp_inset <- (400036.6 - 356530.5)/(3786706 - 3766052)
+
+CA <- states() %>% filter(NAME =="California") %>% st_transform(crs = 32611)
+
+study_all <- c(xmax = 400036.6, ymax = 3786706, xmin = 356530.5, ymin = 3766052) %>% st_bbox() %>% st_as_sfc() %>% st_as_sf() 
+
+st_crs(study_all) <- 32611
+
+
+inset <- tm_shape(CA) +
+  tm_polygons(fill = NULL, col = "black") +
+    tm_shape(study_all) +
+  tm_polygons(fill = NULL, col = "red", fill_alpha = 0.001, border.col = "red", lwd = 2) +
+  tm_basemap("CartoDB.Positron") +
+  tm_layout(bg.color = "white")
+
+```
+
+
+
+```{r, results = "hide", message = FALSE, warning = FALSE, echo=FALSE}
+
+w <- 0.25
+
+h <- asp_inset * w 
+
+vp <- viewport(x=0.96, y=1.06, width = w, height=h, just=c("right", "top"))
+
+tmap_save(eaton_map, "../simple_figures/inset_map.png", insets_tm = inset, insets_vp = vp)
+
+
+```
+
+
+
+```{r}
+
+pal_in  <- st_intersection(pal_in, palisades_perim_minus50m) %>% 
+  mutate(burned = "yes") %>% 
+  select(Id = orderDesc, burned)
+
+pal_map <- tmap_mode("plot") +
+              tm_basemap("Esri.WorldImagery") +
+              tm_shape(pal_in) +
+              tm_polygons(fill = NULL, col = "red", lwd = 3) +
+  tm_scalebar(breaks = c(0, 0.5, 1), text.size = 0.5, position = c("left", "bottom"), frame = T, bg.color = "white") +
+  tm_title("Palisades Study Area", position = tm_pos_in(0.3, 0.99), frame = TRUE, bg.color = "white") +
+  tm_layout(text.fontfamily = "Times",
+            legend.outside = FALSE, legend.position = c("left", "bottom"), legend.bg.color = "white",
+            frame = T, legend.width = 4, legend.text.size = 1)
+
+pal_map
+
+tmap_save(pal_map, "../simple_figures/pal_map.png")
+
+
+```
+
+
+# Structure Results Eaton
+
+```{r}
+
+source("~/Desktop/Urban_tree_fire/landscape_analysis/Scripts/functions/human_labs.R")
+
+
+Eaton_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_struc_m1_unscaled.rda")
+
+Eaton_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_struc_m1_scale.rda")
+
+
+ coefs_E <- fixef(Eaton_struc_spamm_1_scaled)
+  se_E    <- sqrt(diag(vcov(Eaton_struc_spamm_1_scaled)))
+  
+  
+  # Build data frames for each model
+  effect_df_E<- data.frame(
+    term      = names(coefs_E),
+    estimate  = coefs_E,
+    std.error = se_E,
+    lower     = coefs_E - 1.96 * se_E,
+    upper     = coefs_E + 1.96 * se_E,
+    fire      = "Eaton",
+    stringsAsFactors = FALSE
+  )
+  
+  coefs_scale <- fixef(Eaton_struc_spamm_1_scaled)
+  ses   <- sqrt(diag(vcov(Eaton_struc_spamm_1_scaled)))
+  
+  # build summary data.frame
+  df <- data.frame(
+    term     = names(coefs_scale),
+    estimate = coefs_scale,
+    std.error= ses,
+    lower    = coefs_scale - 1.96 * ses,
+    upper    = coefs_scale + 1.96 * ses,
+    stringsAsFactors = FALSE
+  )
+  
+  ordered_terms <- df %>%
+    filter(term != "(Intercept)") %>%
+    arrange(abs(estimate)) %>%
+    pull(term)
+  
+  ordered_labels <- label_map[ordered_terms]
+    
+ effect_df_E <- effect_df_E %>%
+    mutate(
+      significant = (lower > 0) | (upper < 0),
+      label       = ifelse(significant, "*", "")
+    ) %>%
+   filter(!effect_df_E$term %in% "(Intercept)") %>% 
+    # Ensure consistent ordering of terms (alphabetical)
+    mutate(term = factor(term, levels = ordered_terms, 
+                         labels = ordered_labels))
+  
+  # Create the point + error‐bar plot
+  p <- ggplot(effect_df_E, aes(x = term, y = estimate, color = fire)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +
+    geom_text(aes(label = label),
+              nudge_y = -0.0001,
+              nudge_x = 0.1,
+              size = 5) +
+    geom_hline(yintercept = 0, linetype = "dashed") +
+    coord_flip() +
+    labs(
+      title = "Standardized effect sizes predicting stucture loss Eaton",
+      x     = "Predictor",
+      y     = "Estimate (± 95% CI)"
+    ) +
+    scale_color_manual(values = c("#440154FF" , "#21908CFF")) +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5), 
+          legend.position = "none")
+  
+
+  
+  p2 <- plot_effects_mag(
+    Eaton_struc_spamm_1_scaled ,
+    plot_title = "", 
+    bar_fill = "#440154FF"
+  ) +
+    theme(
+      axis.title.y    = element_blank(),
+      axis.text.y     = element_blank(),
+      axis.ticks.y    = element_blank(),
+      axis.title.x    = element_blank(),
+      axis.text.x     = element_blank(),
+      axis.ticks.x    = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+  
+  # 3) Combine with aligned y‐axes, 6:1 width ratio
+plot_grid(
+    p, p2,
+    ncol       = 2,
+    rel_widths = c(6, 1),
+    align      = "h",
+    axis       = "y"
+  )
+  
+  ggsave("../simple_figures/Stucture_loss_Eaton.png", width = 7, height = 5)
+
+```
+
+
+```{r}
+
+source("functions/make_model_table_struc.R")
+
+Eaton_struc_tab <- make_model_table_struc(burned_model = Eaton_struc_spamm_1, scaled_model = Eaton_struc_spamm_1_scaled, label_map = label_map)
+
+Eaton_struc_tab$fire = "Eaton"
+
+
+```
+
+# Strucutre results Palisades
+
+
+```{r}
+
+source("~/Desktop/Urban_tree_fire/landscape_analysis/Scripts/functions/human_labs.R")
+
+
+Palisades_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_struc_m1.rda")
+
+Palisades_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_struc_m1_scaled.rda")
+
+coefs_P <- fixef(Palisades_struc_spamm_1_scaled)
+  se_P   <- sqrt(diag(vcov(Palisades_struc_spamm_1_scaled)))
+  
+ effect_df_P <- data.frame(
+    term      = names(coefs_P),
+    estimate  = coefs_P,
+    std.error = se_P,
+    lower     = coefs_P - 1.96 * se_P,
+    upper     = coefs_P + 1.96 * se_P,
+    fire      = "Palisades",
+    stringsAsFactors = FALSE
+  )
+ 
+   ordered_terms <- effect_df_P %>%
+    filter(term != "(Intercept)") %>%
+    arrange(abs(estimate)) %>%
+    pull(term)
+   
+   ordered_labels <- label_map[ordered_terms]
+ 
+  effect_df_P <- effect_df_P %>%
+    mutate(
+      significant = (lower > 0) | (upper < 0),
+      label       = ifelse(significant, "*", "")
+    ) %>%
+   filter(!effect_df_P$term %in% "(Intercept)") %>% 
+    # Ensure consistent ordering of terms (alphabetical)
+    mutate(term = factor(term, levels = ordered_terms, 
+                         labels = ordered_labels))
+  
+  # Create the point + error‐bar plot
+  p <- ggplot(effect_df_P, aes(x = term, y = estimate, color = fire)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +
+    geom_text(aes(label = label),
+              nudge_y = -0.0001,
+              nudge_x = 0.1,
+              size = 5) +
+    geom_hline(yintercept = 0, linetype = "dashed") +
+    coord_flip() +
+    labs(
+      title = "Standardized effect sizes predicting stucture loss Palisades",
+      x     = "Predictor",
+      y     = "Estimate (± 95% CI)"
+    ) +
+    scale_color_manual(values = c("#21908CFF")) +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5), 
+          legend.position = "none")
+  
+p2 <- plot_effects_mag(
+    Palisades_struc_spamm_1_scaled,
+    plot_title = "", 
+    bar_fill = "#21908CFF"
+  ) +
+    theme(
+      axis.title.y    = element_blank(),
+      axis.text.y     = element_blank(),
+      axis.ticks.y    = element_blank(),
+      axis.title.x    = element_blank(),
+      axis.text.x     = element_blank(),
+      axis.ticks.x    = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+  
+  # 3) Combine with aligned y‐axes, 6:1 width ratio
+plot_grid(
+    p, p2,
+    ncol       = 2,
+    rel_widths = c(6, 1),
+    align      = "h",
+    axis       = "y"
+  )
+  
+  ggsave("../simple_figures/Stucture_loss_Palisades.png", width = 7, height = 5)
+
+  
+  
+
+``` 
+
+
+```{r}
+
+Pal_struc_tab <- make_model_table_struc(burned_model = Palisades_struc_spamm_1, scaled_model = Palisades_struc_spamm_1_scaled, label_map = label_map)
+
+Pal_struc_tab$fire = "Palisades"
+
+all_stru_tab <- rbind(Eaton_struc_tab, Pal_struc_tab)
+
+write.csv(all_stru_tab, "../Figures/all_struc_tab.csv")
+```
+
+
+# Density Eaton
+
+
+```{r}
+
+source("functions/simple_slopes.R")
+
+p1 <- simple_slopes_plot(Eaton_struc_spamm_1, x="tree_dens", modx="build_dens", modx_vals=c("Q10","Q90"), xlim = 22)
+p1 +
+    scale_color_manual(name = "Structure density", values = c("forestgreen", "black")) + 
+  scale_fill_manual(name = "Structure density", values = c("forestgreen", "black")) +
+  labs(y = "Predicted probability of structure loss",
+       x = "Tree density",
+         title = "Predicted slope of tree density at high and low structure density: Eaton",
+         subtitle = "Lines = fitted values, bands = 95% CI") +
+    theme_classic()
+
+ggsave("../simple_figures/Eaton_interaction.png", width = 7, height = 5)
+```
+
+
+
+# interaction Palisades
+
+
+```{r}
+
+source("functions/simple_slopes.R")
+
+p1 <- simple_slopes_plot(Palisades_struc_spamm_1, x="tree_dens", modx="build_dens", modx_vals=c("Q10","Q90"), xlim = 22)
+p1 + 
+  scale_color_manual(name = "Structure density", values = c("forestgreen", "black")) + 
+  scale_fill_manual(name = "Structure density", values = c("forestgreen", "black")) +
+  labs(y = "Predicted probability of structure loss",
+       x = "Tree density",
+         title = "Predicted slope of tree density at high and low structure density: Palisades",
+         subtitle = "Lines = fitted values, bands = 95% CI") +
+    theme_classic()
+
+ggsave("../simple_figures/Palisades_interaction.png", width = 7, height = 5)
+  
+```
+
+
+# lo density Palisades
+
+
+```{r}
+
+pal_build_dens <- st_read("../tmp_data/palisades_burned_build_density.shp")
+
+lo_dens <- pal_build_dens %>% filter(build_dens < 7)
+
+tm_shape(lo_dens) +
+  tm_polygons()
+
+```

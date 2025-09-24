@@ -1,0 +1,56 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Reeds-MacBook-Pro.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          2
+canopy_seg               1
+extract_kds              2
+footprints_final         1
+gen_model_inputs         4
+tree_crowns_final        2
+total                   13
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Sep 23 17:13:58 2025]
+localrule footprints_final:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_unburned_fprints.shp
+    jobid: 5
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_fprints.shp
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: Rscript pipeline_scripts/Create_buildings_final_datasets.R
+Waiting for more resources.
+Select jobs to execute...
+Waiting at most 5 seconds for missing files:
+/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_fprints.shp (missing locally)
+/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_unburned_fprints.shp (missing locally)
+/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp (missing locally)
+/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_unburned_fprints.shp (missing locally)
+MissingOutputException in rule footprints_final in file "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/Scripts/pipeline_Snakefile", line 47:
+Job 5  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_fprints.shp (missing locally, parent dir contents: )
+/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_unburned_fprints.shp (missing locally, parent dir contents: )
+/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp (missing locally, parent dir contents: )
+/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_unburned_fprints.shp (missing locally, parent dir contents: )
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Tue Sep 23 17:14:18 2025]
+Error in rule footprints_final:
+    message: None
+    jobid: 5
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_unburned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_unburned_fprints.shp
+    shell:
+        Rscript pipeline_scripts/Create_buildings_final_datasets.R
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/Scripts/.snakemake/log/2025-09-23T171358.630818.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

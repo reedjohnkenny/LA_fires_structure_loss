@@ -1,0 +1,10 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+MissingInputException in rule co_reg_pre_eaton in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 13:
+Missing input files for rule co_reg_pre_eaton:
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/all_pan_tile_1_phase.tif
+    wildcards: all_pan_tile_num=all_pan_tile_1
+    affected files:
+        /Users/reedkenny/OneDrive - Cal Poly/data/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_pan/all_pan_tile_1.tif

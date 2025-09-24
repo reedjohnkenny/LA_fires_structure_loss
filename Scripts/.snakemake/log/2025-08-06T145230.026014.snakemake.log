@@ -1,0 +1,10 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+MissingInputException in rule gen_model_inputs in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 131:
+Missing input files for rule gen_model_inputs:
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/model_inputs/eaton_burned_struc_model_inputs.csv
+    wildcards: fire=eaton, status=burned, comp=struc
+    affected files:
+        /Users/reedkenny/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/eaton/eaton_burned_ndvi_diff.tif

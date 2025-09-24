@@ -1,0 +1,16 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+AmbiguousRuleException:
+Rules co_reg_post_eaton_burned and co_reg_post_eaton_unburned are ambiguous for the file /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif.
+Consider starting rule output with a unique prefix, constrain your wildcards, or use the ruleorder directive.
+Wildcards:
+	co_reg_post_eaton_burned: 
+	co_reg_post_eaton_unburned: 
+Expected input files:
+	co_reg_post_eaton_burned: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM.tif
+	co_reg_post_eaton_unburned: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_ext.tif
+Expected output files:
+	co_reg_post_eaton_burned: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif
+	co_reg_post_eaton_unburned: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif

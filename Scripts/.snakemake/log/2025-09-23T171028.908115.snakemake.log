@@ -1,0 +1,10 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Reeds-MacBook-Pro.local
+Building DAG of jobs...
+MissingInputException in rule tree_crowns_final in file "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/Scripts/pipeline_Snakefile", line 29:
+Missing input files for rule tree_crowns_final:
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_unburned_tree_crowns_final.shp
+    wildcards: fire=eaton, status=unburned
+    affected files:
+        /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_crowns_unburned_polys_v2.shp

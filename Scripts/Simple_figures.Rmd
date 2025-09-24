@@ -1,0 +1,435 @@
+---
+title: "Simple_figures"
+output: html_document
+---
+
+```{r}
+
+library(dplyr)
+library(gridExtra)
+library(ggplot2)
+library(cowplot)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(terra)
+library(tigris)
+library(grid)
+
+
+source("functions/plot_fire_effects.R")
+source("functions/plot_model_effects.R")
+source("functions/coef_mag.R")
+source("functions/make_fire_effects_panel.R")
+source("functions/welch_t_test.R")
+source("functions/make_model_table.R")
+source("functions/make_model_table_struc.R")
+source("functions/human_labs.R")
+```
+
+## Tree height change eaton
+
+
+```{r}
+Eaton_tree_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_tree_height_unscaled.rda")
+
+Eaton_tree_spamm_1_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_tree_height_scaled.rda")
+
+Eaton_tree_ext_spamm_1_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Eaton_tree_ext_m1_scaled.rda")
+
+
+
+Eaton_tree_ext_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Eaton_tree_ext_m1_unscaled.rda")
+
+
+make_fire_effects_panel(burned_model = Eaton_tree_spamm_1_scale, unburned_model = Eaton_tree_ext_spamm_1_scale, scaled_model = Eaton_tree_spamm_1_scale, plot_title = "A. Effect sizes prediciting change in tree mean height Eaton")
+
+ggsave("../simple_figures/Tree_height_Eaton.png",
+       width  = 10,
+       height = 6,
+       units  = "in")
+
+```
+
+
+## Tree height change Palisades
+
+```{r}
+
+Palisades_tree_spam_1_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m1_scaled.rda")
+
+Palisades_tree_spam_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m1_unscaled.rda")
+
+
+Palisades_tree_ext_spam_1_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m1_ext_scaled.rda")
+
+Palisades_tree_ext_spam_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m1_ext_unscaled.rda")
+
+
+names(Palisades_tree_ext_spam_1_scale$fixef) <- names(fixef(Palisades_tree_spam_1_scale))
+
+
+make_fire_effects_panel(burned_model = Palisades_tree_spam_1_scale, unburned_model = Palisades_tree_ext_spam_1_scale, scaled_model = Palisades_tree_spam_1_scale, plot_title = "B. Effect sizes prediciting change in tree mean height Palisades")
+
+
+ggsave("../simple_figures/Tree_height_Palisades.png",
+       width  = 10,
+       height = 6,
+       units  = "in")
+```
+
+
+##  NDVI change eaton
+
+
+```{r}
+
+Eaton_tree_spamm_2_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_m2_scaled.rda")
+
+Eaton_tree_spamm_2 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_m2_unscaled.rda")
+
+Eaton_tree_ext_spamm_2_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Eaton_tree_ext_m2_scaled.rda")
+
+Eaton_tree_ext_spamm_2 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Eaton_tree_ext_m2_unscaled.rda")
+
+names(Eaton_tree_ext_spamm_2_scale$fixef) <- names(fixef(Eaton_tree_spamm_2_scale))
+
+make_fire_effects_panel(burned_model = Eaton_tree_spamm_2_scale, unburned_model = Eaton_tree_ext_spamm_2_scale, scaled_model = Eaton_tree_spamm_2_scale, plot_title = "A. Effect sizes predicting change in NDVI Eaton")
+
+ggsave("../simple_figures/NDVI_Eaton.png",
+       width  = 10,
+       height = 6,
+       units  = "in")
+
+
+```
+# NDVI Change Palisades
+
+```{r}
+
+Palisades_tree_spamm_2_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m2_scaled.rda")
+
+Palisades_tree_spamm_2_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m2.rda")
+
+Palisades_tree_spamm_2_ext_scale <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m2_ext_scaled.rda")
+
+Palisades_tree_spamm_2_ext <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m2_ext_unscaled.rda")
+
+
+Pal_tree_spamm_m2_scaled <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_tree_m2_scaled.rda")
+
+names(Palisades_tree_spamm_2_ext_scale$fixef) <- names(fixef(Palisades_tree_spamm_2_scale))
+
+
+make_fire_effects_panel(burned_model = Palisades_tree_spamm_2_scale, unburned_model = Palisades_tree_spamm_2_ext_scale, scaled_model = Pal_tree_spamm_m2_scaled, plot_title = "B. Effect sizes predicting NDVI change Palisades")
+
+ggsave("../simple_figures/NDVI_Palisades.png",
+       width  = 10,
+       height = 6,
+       units  = "in")
+
+
+```
+
+# Tabulated coefficient data tree models
+
+```{r}
+  
+Eaton_tree_1_tab <- make_model_table(burned_model = Eaton_tree_spamm_1, unburned_model = Eaton_tree_ext_spamm_1, scaled_model = Eaton_tree_spamm_1_scale, label_map = label_map)
+
+Eaton_tree_1_tab$fire_resp_var <- "Eaton:HeightChange"
+
+Palisades_tree_1_tab <- make_model_table(burned_model = Palisades_tree_spam_1, unburned_model = Palisades_tree_ext_spam_1, scaled_model = Palisades_tree_spam_1_scale, label_map = label_map)
+
+Palisades_tree_1_tab$fire_resp_var <- "Palisades:HeightChange"
+
+Eaton_tree_2_tab <- make_model_table(burned_model = Eaton_tree_spamm_2, unburned_model = Eaton_tree_ext_spamm_2, scaled_model = Eaton_tree_spamm_2_scale, label_map = label_map)
+
+Eaton_tree_2_tab$fire_resp_var <- "Eaton:NDVIchange"
+
+Palisades_tree_2_tab <- make_model_table(burned_model = Palisades_tree_spamm_2, unburned_model = Palisades_tree_spamm_2_ext, scaled_model = Pal_tree_spamm_m2_scaled, label_map = label_map)
+
+Palisades_tree_2_tab$fire_resp_var <- "Palisades:NDVIchange"
+
+tree_tab <- rbind(Eaton_tree_1_tab, Palisades_tree_1_tab, Eaton_tree_2_tab, Palisades_tree_2_tab)
+
+tree_tab  <- tree_tab %>% select(fire_resp_var, term, var_importance, estimate_burned, sig_brn_mod, estimate_unburned, Welch_p_val_brn_unbrn)
+
+write.csv(tree_tab, "../Figures/tree_model_coefs.csv")
+```
+
+
+# Structure Results Eaton
+
+```{r}
+
+source("~/Desktop/Urban_tree_fire/landscape_analysis/Scripts/functions/human_labs.R")
+
+
+Eaton_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_struc_m1_unscaled.rda")
+
+Eaton_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_struc_m1_scale.rda")
+
+
+ coefs_E <- fixef(Eaton_struc_spamm_1_scaled)
+  se_E    <- sqrt(diag(vcov(Eaton_struc_spamm_1_scaled)))
+  
+  
+  # Build data frames for each model
+  effect_df_E<- data.frame(
+    term      = names(coefs_E),
+    estimate  = coefs_E,
+    std.error = se_E,
+    lower     = coefs_E - 1.96 * se_E,
+    upper     = coefs_E + 1.96 * se_E,
+    fire      = "Eaton",
+    stringsAsFactors = FALSE
+  )
+  
+  coefs_scale <- fixef(Eaton_struc_spamm_1_scaled)
+  ses   <- sqrt(diag(vcov(Eaton_struc_spamm_1_scaled)))
+  
+  # build summary data.frame
+  df <- data.frame(
+    term     = names(coefs_scale),
+    estimate = coefs_scale,
+    std.error= ses,
+    lower    = coefs_scale - 1.96 * ses,
+    upper    = coefs_scale + 1.96 * ses,
+    stringsAsFactors = FALSE
+  )
+  
+  ordered_terms <- df %>%
+    filter(term != "(Intercept)") %>%
+    arrange(abs(estimate)) %>%
+    pull(term)
+  
+  ordered_labels <- label_map[ordered_terms]
+    
+ effect_df_E <- effect_df_E %>%
+    mutate(
+      significant = (lower > 0) | (upper < 0),
+      label       = ifelse(significant, "*", "")
+    ) %>%
+   filter(!effect_df_E$term %in% "(Intercept)") %>% 
+    # Ensure consistent ordering of terms (alphabetical)
+    mutate(term = factor(term, levels = ordered_terms, 
+                         labels = ordered_labels))
+  
+  # Create the point + error‐bar plot
+  p <- ggplot(effect_df_E, aes(x = term, y = estimate, color = fire)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +
+    geom_text(aes(label = label),
+              nudge_y = -0.0001,
+              nudge_x = 0.1,
+              size = 5) +
+    geom_hline(yintercept = 0, linetype = "dashed") +
+    coord_flip() +
+    labs(
+      title = "Standardized effect sizes predicting stucture loss Eaton",
+      x     = "Predictor",
+      y     = "Estimate (± 95% CI)"
+    ) +
+    scale_color_manual(values = c("#440154FF" , "#21908CFF")) +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5), 
+          legend.position = "none")
+  
+
+  
+  p2 <- plot_effects_mag(
+    Eaton_struc_spamm_1_scaled ,
+    plot_title = "", 
+    bar_fill = "#440154FF"
+  ) +
+    theme(
+      axis.title.y    = element_blank(),
+      axis.text.y     = element_blank(),
+      axis.ticks.y    = element_blank(),
+      axis.title.x    = element_blank(),
+      axis.text.x     = element_blank(),
+      axis.ticks.x    = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+  
+  # 3) Combine with aligned y‐axes, 6:1 width ratio
+plot_grid(
+    p, p2,
+    ncol       = 2,
+    rel_widths = c(6, 1),
+    align      = "h",
+    axis       = "y"
+  )
+  
+  ggsave("../simple_figures/Stucture_loss_Eaton.png", width = 7, height = 5)
+
+```
+
+
+```{r}
+
+Eaton_struc_tab <- make_model_table_struc(burned_model = Eaton_struc_spamm_1_scaled, scaled_model = Eaton_struc_spamm_1_scaled, label_map = label_map)
+
+Eaton_struc_tab$fire = "Eaton"
+
+
+```
+
+# Strucutre results Palisades
+
+
+```{r}
+
+source("~/Desktop/Urban_tree_fire/landscape_analysis/Scripts/functions/human_labs.R")
+
+
+Palisades_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_struc_m1.rda")
+
+Palisades_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_struc_m1_scaled.rda")
+
+coefs_P <- fixef(Palisades_struc_spamm_1_scaled)
+  se_P   <- sqrt(diag(vcov(Palisades_struc_spamm_1_scaled)))
+  
+ effect_df_P <- data.frame(
+    term      = names(coefs_P),
+    estimate  = coefs_P,
+    std.error = se_P,
+    lower     = coefs_P - 1.96 * se_P,
+    upper     = coefs_P + 1.96 * se_P,
+    fire      = "Palisades",
+    stringsAsFactors = FALSE
+  )
+ 
+   ordered_terms <- effect_df_P %>%
+    filter(term != "(Intercept)") %>%
+    arrange(abs(estimate)) %>%
+    pull(term)
+   
+   ordered_labels <- label_map[ordered_terms]
+ 
+  effect_df_P <- effect_df_P %>%
+    mutate(
+      significant = (lower > 0) | (upper < 0),
+      label       = ifelse(significant, "*", "")
+    ) %>%
+   filter(!effect_df_P$term %in% "(Intercept)") %>% 
+    # Ensure consistent ordering of terms (alphabetical)
+    mutate(term = factor(term, levels = ordered_terms, 
+                         labels = ordered_labels))
+  
+  # Create the point + error‐bar plot
+  p <- ggplot(effect_df_P, aes(x = term, y = estimate, color = fire)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +
+    geom_text(aes(label = label),
+              nudge_y = -0.0001,
+              nudge_x = 0.1,
+              size = 5) +
+    geom_hline(yintercept = 0, linetype = "dashed") +
+    coord_flip() +
+    labs(
+      title = "Standardized effect sizes predicting stucture loss Palisades",
+      x     = "Predictor",
+      y     = "Estimate (± 95% CI)"
+    ) +
+    scale_color_manual(values = c("#21908CFF")) +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5), 
+          legend.position = "none")
+  
+p2 <- plot_effects_mag(
+    Palisades_struc_spamm_1_scaled,
+    plot_title = "", 
+    bar_fill = "#21908CFF"
+  ) +
+    theme(
+      axis.title.y    = element_blank(),
+      axis.text.y     = element_blank(),
+      axis.ticks.y    = element_blank(),
+      axis.title.x    = element_blank(),
+      axis.text.x     = element_blank(),
+      axis.ticks.x    = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+  
+  # 3) Combine with aligned y‐axes, 6:1 width ratio
+plot_grid(
+    p, p2,
+    ncol       = 2,
+    rel_widths = c(6, 1),
+    align      = "h",
+    axis       = "y"
+  )
+  
+  ggsave("../simple_figures/Stucture_loss_Palisades.png", width = 7, height = 5)
+
+  
+  
+
+``` 
+
+
+```{r}
+
+Pal_struc_tab <- make_model_table_struc(burned_model = Palisades_struc_spamm_1_scaled, scaled_model = Palisades_struc_spamm_1_scaled, label_map = label_map)
+
+Pal_struc_tab$fire = "Palisades"
+
+all_stru_tab <- rbind(Eaton_struc_tab, Pal_struc_tab)
+
+write.csv(all_stru_tab, "../Figures/all_struc_tab.csv")
+```
+
+
+# interaction Eaton
+
+
+```{r}
+
+source("functions/simple_slopes.R")
+
+p1 <- simple_slopes_plot(Eaton_struc_spamm_1, x="angular_diff_tree", modx="distance_to_nearest_tree", modx_vals=c("Q10","Q90"), xlim = 200)
+p1
+
+```
+
+
+
+# interaction Palisades
+
+
+```{r}
+
+source("functions/simple_slopes.R")
+
+p1 <- simple_slopes_plot(Palisades_struc_spamm_1, x="tree_dens", modx="build_dens", modx_vals=c("Q10","Q90"), xlim = 22)
+p1 + 
+  scale_color_manual(name = "Structure density", values = c("forestgreen", "black")) + 
+  scale_fill_manual(name = "Structure density", values = c("forestgreen", "black")) +
+  labs(y = "Predicted probability of structure loss",
+       x = "Tree density",
+         title = "Predicted slope of tree density at high and low structure density",
+         subtitle = "Lines = fitted values, bands = 95% CI") +
+    theme_classic()
+
+ggsave("../simple_figures/Palisades_interaction.png", width = 7, height = 5)
+  
+```
+
+
+# lo density Palisades
+
+
+```{r}
+
+pal_build_dens <- st_read("../tmp_data/palisades_burned_build_density.shp")
+
+lo_dens <- pal_build_dens %>% filter(build_dens < 7)
+
+tm_shape(lo_dens) +
+  tm_polygons()
+
+```

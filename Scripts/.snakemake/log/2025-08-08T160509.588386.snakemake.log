@@ -1,0 +1,198 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                               count
+------------------------------  -------
+all                                   1
+co_reg_post_eaton_burned              1
+co_reg_post_eaton_unburned            1
+co_reg_post_palisades_burned          1
+co_reg_post_palisades_unburned        1
+co_reg_pre_eaton                      4
+co_reg_pre_palisades                  1
+stich_lidar                           1
+total                                11
+
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Aug  8 16:05:09 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561020_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561020_01_P001_phase.tif
+    jobid: 2
+    reason: Updated input files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    wildcards: pan=25JAN01182958-P3DS-016569561020_01_P001
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561020_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561020_01_P001_phase.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Fri Aug  8 16:05:22 2025]
+Finished jobid: 2 (Rule: co_reg_pre_eaton)
+1 of 11 steps (9%) done
+Execute 1 jobs...
+[Fri Aug  8 16:05:22 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/10400100A17E8600-pan_2.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_2_phase.tif
+    jobid: 4
+    reason: Updated input files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    wildcards: pan=10400100A17E8600-pan_2
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/10400100A17E8600-pan_2.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_2_phase.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Fri Aug  8 16:06:37 2025]
+Finished jobid: 4 (Rule: co_reg_pre_eaton)
+2 of 11 steps (18%) done
+Execute 1 jobs...
+[Fri Aug  8 16:06:37 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+    jobid: 3
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif; Set of input files has changed since last execution
+    wildcards: pan=25JAN01182958-P3DS-016569561030_01_P001
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Fri Aug  8 16:07:02 2025]
+Finished jobid: 3 (Rule: co_reg_pre_eaton)
+3 of 11 steps (27%) done
+Execute 1 jobs...
+[Fri Aug  8 16:07:02 2025]
+localrule co_reg_pre_palisades:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Palisades/Palisades_pre/016569561010_01_P001_PAN/24OCT20184323-P3DS-016569561010_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/pal_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif
+    jobid: 6
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif; Set of input files has changed since last execution
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Palisades/Palisades_pre/016569561010_01_P001_PAN/24OCT20184323-P3DS-016569561010_01_P001.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/pal_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Fri Aug  8 16:09:19 2025]
+Finished jobid: 6 (Rule: co_reg_pre_palisades)
+4 of 11 steps (36%) done
+Execute 1 jobs...
+[Fri Aug  8 16:09:19 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/10400100A17E8600-pan_3.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_3_phase.tif
+    jobid: 5
+    reason: Updated input files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif
+    wildcards: pan=10400100A17E8600-pan_3
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/10400100A17E8600-pan_3.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_2023_epsg32611.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_3_phase.tif"
+        
+Waiting for more resources.
+[Fri Aug  8 16:10:41 2025]
+Finished jobid: 5 (Rule: co_reg_pre_eaton)
+5 of 11 steps (45%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Aug  8 16:10:41 2025]
+localrule stich_lidar:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561020_01_P001_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_2_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_3_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif
+    jobid: 1
+    reason: Input files updated by another job: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_3_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561020_01_P001_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/10400100A17E8600-pan_2_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        Rscript Stich_lidar.R
+        
+Waiting for more resources.
+[Fri Aug  8 16:12:28 2025]
+Finished jobid: 1 (Rule: stich_lidar)
+6 of 11 steps (55%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Aug  8 16:12:29 2025]
+localrule co_reg_post_palisades_unburned:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif
+    jobid: 9
+    reason: Input files updated by another job: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_unburned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Fri Aug  8 16:12:45 2025]
+Finished jobid: 9 (Rule: co_reg_post_palisades_unburned)
+7 of 11 steps (64%) done
+Execute 1 jobs...
+[Fri Aug  8 16:12:45 2025]
+localrule co_reg_post_eaton_burned:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif
+    jobid: 10
+    reason: Input files updated by another job: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Fri Aug  8 16:13:37 2025]
+Finished jobid: 10 (Rule: co_reg_post_eaton_burned)
+8 of 11 steps (73%) done
+Execute 1 jobs...
+[Fri Aug  8 16:13:37 2025]
+localrule co_reg_post_palisades_burned:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_burned.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif
+    jobid: 7
+    reason: Input files updated by another job: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/palisades_postfire_CHM_burned.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif"
+        
+Waiting for more resources.
+Select jobs to execute...
+[Fri Aug  8 16:14:22 2025]
+Finished jobid: 7 (Rule: co_reg_post_palisades_burned)
+9 of 11 steps (82%) done
+Execute 1 jobs...
+[Fri Aug  8 16:14:22 2025]
+localrule co_reg_post_eaton_unburned:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_ext.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif
+    jobid: 11
+    reason: Input files updated by another job: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+        python batch_phase_coreg.py           --input_pan "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif"           --input_dem "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Eaton_Post_CHM_ext.tif"           --output "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif"
+        
+Waiting for more resources.
+[Fri Aug  8 16:15:06 2025]
+Finished jobid: 11 (Rule: co_reg_post_eaton_unburned)
+10 of 11 steps (91%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Aug  8 16:15:06 2025]
+localrule all:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif
+    jobid: 0
+    reason: Input files updated by another job: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_postfire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_postfire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_burned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_unburned_reg.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_unburned_reg.tif
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: None
+Waiting for more resources.
+[Fri Aug  8 16:15:06 2025]
+Finished jobid: 0 (Rule: all)
+11 of 11 steps (100%) done
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-08-08T160509.588386.snakemake.log

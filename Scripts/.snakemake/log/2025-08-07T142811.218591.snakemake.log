@@ -1,0 +1,24 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+calc_build_prox          2
+calc_tree_prox           2
+extract_diffs            4
+extract_kds              2
+gen_model_inputs         8
+tree_crowns_final        1
+total                   20
+
+Select jobs to execute...
+Execute 2 jobs...
+RuleException in rule gen_model_inputs in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/test", line 129:
+AttributeError: 'InputFiles' object has no attribute 'ndvi_diff', when formatting the following:
+./generate_model_inputs --fire {wildcards.fire} --status {wildcards.status} --comp {wildcards.comp} --build_density {input.build_density} --tree_density {input.tree_density} --build_vols {input.build_vols} --tree_prox {input.tree_prox} --build_prox {input.build_prox} --chm_diff {input.tree_chm_diff} --ndvi_diff {input.ndvi_diff} --output {output}

@@ -1,0 +1,52 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mac.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+co_reg_pre_eaton        4
+total                   5
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Jul 22 11:42:08 2025]
+localrule co_reg_pre_eaton:
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+    jobid: 2
+    reason: Missing output files: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+    wildcards: pan=25JAN01182958-P3DS-016569561030_01_P001
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: python batch_phase_coreg.py --input_pan /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif --input_dem /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_epsg32611.tif --output /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+Waiting for more resources.
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/coreg_Snakefile", line 21:
+Command 'set -euo pipefail;  python batch_phase_coreg.py --input_pan /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif --input_dem /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_epsg32611.tif --output /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif' returned non-zero exit status 2.
+[Tue Jul 22 11:42:08 2025]
+Error in rule co_reg_pre_eaton:
+    message: None
+    jobid: 2
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+    shell:
+        python batch_phase_coreg.py --input_pan /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif --input_dem /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_epsg32611.tif --output /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Tue Jul 22 11:42:08 2025]
+Error in rule co_reg_pre_eaton:
+    message: None
+    jobid: 2
+    input: /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif, /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_epsg32611.tif
+    output: /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+    shell:
+        python batch_phase_coreg.py --input_pan /Users/reedkenny/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/25JAN01182958-P3DS-016569561030_01_P001.tif --input_dem /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/eaton_chm_epsg32611.tif --output /Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/25JAN01182958-P3DS-016569561030_01_P001_phase.tif
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/landscape_analysis/Scripts/.snakemake/log/2025-07-22T114208.510016.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.
