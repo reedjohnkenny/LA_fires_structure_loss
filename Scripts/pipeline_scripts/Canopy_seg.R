@@ -35,9 +35,9 @@ segment_tree_canopies <- function(chm, boundary, footprints, ndvi_rast) {
   
   crowns_polys_ndvi <- terra::extract(ndvi_rast, crowns_polys, fun = mean, bind = T) %>%  
     st_as_sf() %>%  
-    select(focal_median, maxar_post_ndvi = ms8) 
+    select(focal_median, maxar_pre_ndvi = ms8) 
   
-  crowns_polys_filt <- crowns_polys_ndvi %>% filter(maxar_post_ndvi > 0.5)
+  crowns_polys_filt <- crowns_polys_ndvi %>% filter(maxar_pre_ndvi > 0.5)
   return(list(crowns_polys_filt, crowns_all, ttops_chm)) 
 }
 
