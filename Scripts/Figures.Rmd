@@ -420,16 +420,116 @@ ggsave("../simple_figures/Palisades_interaction.png", width = 7, height = 5)
 ```
 
 
-# lo density Palisades
 
+## Supplmentary Figures
+
+
+
+# NDVI dist Palisades
 
 ```{r}
 
-pal_build_dens <- st_read("../tmp_data/palisades_burned_build_density.shp")
+library(lidR)
 
-lo_dens <- pal_build_dens %>% filter(build_dens < 7)
+palisades_pre_chm <- terra::rast("~/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/24OCT20184323-P3DS-016569561010_01_P001_phase.tif")
 
-tm_shape(lo_dens) +
-  tm_polygons()
+pal_buildings <- st_read("~/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_Palisades.shp") %>%
+  st_transform(crs="epsg:32611") %>%
+  st_make_valid() %>%
+  st_union()
 
+pal_study_bound <- st_read("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Palisades/Palisades_pre/GIS_FILES/016569561010_01_ORDER_SHAPE.shp") %>% st_transform(crs = 32611)
+
+maxpre_rast1 <- terra::rast("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Palisades/Palisades_pre/Multi_spec/24OCT20184323-M3DS-016569561010_01_P001.TIF") 
+
+maxpre_rast1 <- terra::project(maxpre_rast1, "epsg:32611")
+
+names(maxpre_rast1) <-  c("ms1", "ms2", "ms3", "ms4", "ms5", "ms6", "ms7", "ms8")
+
+maxpre_ndvi_rast <- ((maxpre_rast1$ms8 - maxpre_rast1$ms5)/(maxpre_rast1$ms8 + maxpre_rast1$ms5)) 
+
+
+chm_agg <- terra::aggregate(palisades_pre_chm, fact = 4)
+  chm_crop <- terra::crop(chm_agg, terra::vect(pal_study_bound), mask = T)
+  chm_crop_mask <- terra::mask(chm_crop, terra::vect(pal_buildings), inverse = T)
+  # Post-processing median filter
+  kernel <- matrix(1,3,3)
+  chm_sm <- terra::focal(chm_crop_mask, w = kernel, fun = median, na.rm = TRUE)
+  
+  f <- function(x) {x * 0.15 + 5}
+  heights <- seq(0,30,5)
+  ws <- f(heights)
+  ttops_chm <- locate_trees(chm_sm, lmf(f))
+  message("running segmentation algorithm")
+  algo <- dalponte2016(chm_sm, ttops_chm, 
+                       th_tree = 1, th_seed = 0.45,
+                       th_cr = 0.55,
+                       max_cr = 30)
+  
+  crowns_all <- algo()
+  
+  crowns_polys <- terra::as.polygons(crowns_all, round = F)
+  
+  crowns_polys_ndvi <- terra::extract(maxpre_ndvi_rast, crowns_polys, fun = mean, bind = T) %>%  
+    st_as_sf() %>%  
+    select(focal_median, maxar_pre_ndvi = ms8) 
+
+ggplot(crowns_polys_ndvi, aes(x = maxar_pre_ndvi)) +
+  geom_histogram() +
+  theme_classic()
+
+ggsave("../Supp_Figures/pal_hist.png")
 ```
+
+
+# Eaton NDVI Hist
+
+```{r}
+
+eaton_pre_chm <- terra::rast("/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/eaton_prefire_CHM_burned_reg.tif")
+
+eaton_study_bound <- st_read("~/OneDrive - Cal Poly/data/town_polygons/Eaton_clip.shp") %>% st_transform(crs = 32611)
+
+eaton_burn_bound <- eaton_study_bound[1,]
+
+eaton_buildings <- st_read("~/OneDrive - Cal Poly/data/Buildings/LAIAC6_Buildings_2020_Eaton.shp") %>%
+  st_transform(crs=32611) %>%
+  st_make_valid() %>%
+  st_union()
+
+eaton_pre_ndvi_rast <- rast("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/eaton_maxar_pre_all_ndvi.tif")
+
+chm_agg <- terra::aggregate(eaton_pre_chm, fact = 4)
+  chm_crop <- terra::crop(chm_agg, terra::vect(eaton_burn_bound), mask = T)
+  chm_crop_mask <- terra::mask(chm_crop, terra::vect(eaton_buildings), inverse = T)
+  # Post-processing median filter
+  kernel <- matrix(1,3,3)
+  chm_sm <- terra::focal(chm_crop_mask, w = kernel, fun = median, na.rm = TRUE)
+  
+  f <- function(x) {x * 0.15 + 5}
+  heights <- seq(0,30,5)
+  ws <- f(heights)
+  ttops_chm <- locate_trees(chm_sm, lmf(f))
+  message("running segmentation algorithm")
+  algo <- dalponte2016(chm_sm, ttops_chm, 
+                       th_tree = 1, th_seed = 0.45,
+                       th_cr = 0.55,
+                       max_cr = 30)
+  
+  crowns_all <- algo()
+  
+  crowns_polys <- terra::as.polygons(crowns_all, round = F)
+  
+  crowns_polys_ndvi <- terra::extract(eaton_pre_ndvi_rast, crowns_polys, fun = mean, bind = T) %>%  
+    st_as_sf() %>%  
+    select(focal_median, maxar_pre_ndvi = ms8) 
+
+ggplot(crowns_polys_ndvi, aes(x = maxar_pre_ndvi)) +
+  geom_histogram() +
+  theme_classic()
+
+ggsave("../Supp_Figures/eaton_hist.png")
+
+  crowns_polys_filt <- crowns_polys_ndvi %>% filter(maxar_pre_ndvi > 0.5)
+
+ ```
