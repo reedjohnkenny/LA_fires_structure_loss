@@ -1,0 +1,129 @@
+---
+title: "Correlations"
+output: html_document
+---
+
+```{r}
+
+library(dplyr)
+library(gridExtra)
+library(ggplot2)
+library(cowplot)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(terra)
+library(tigris)
+library(grid)
+
+
+
+
+
+```
+
+
+
+
+```{r}
+
+Eaton_struc <- read.csv("~/Desktop/Urban_tree_fire/structure_analysis/model_inputs/eaton_burned_struc_model_inputs.csv") %>% 
+  select(-X) %>% 
+  filter(DAMAGE %in% c("Destroyed (>50%)", "No Damage", "Affected (1-9%)")) %>% 
+  na.omit()
+
+Eaton_struc <- Eaton_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - 45), 360 - abs(bearing_to_nearest_building - 45)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - 45), 360 - abs(bearing_to_nearest_tree - 45)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
+
+
+Palisades_struc <- read.csv("~/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv") %>% 
+  filter(DAMAGE %in% c("Destroyed (>50%)", "No Damage", "Affected (1-9%)"))
+# make new columns
+
+Palisades_struc <- Palisades_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - 45), 360 - abs(bearing_to_nearest_building - 45)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - 45), 360 - abs(bearing_to_nearest_tree - 45)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1)) %>% na.omit()
+
+
+```
+
+
+
+
+```{r}
+
+
+ggplot(Eaton_struc, aes(x = build_dens, y = tree_dens)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+
+
+
+```
+
+
+
+```{r}
+
+ggplot(Palisades_struc, aes(x = build_dens, y = tree_dens)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+
+
+
+```
+
+
+
+
+```{r}
+
+ggplot(Eaton_struc, aes(x= as.factor(destroyed), y = tree_dens)) + 
+  geom_boxplot()
+
+
+
+```
+
+
+
+```{r}
+
+ggplot(Eaton_struc, aes(x= as.factor(destroyed), y = build_dens)) + 
+  geom_boxplot()
+
+
+```
+
+
+```{r}
+
+ggplot(Palisades_struc, aes(x= as.factor(destroyed), y = tree_dens)) + 
+  geom_boxplot()
+
+
+```
+
+
+```{r}
+
+ggplot(Palisades_struc, aes(x= as.factor(destroyed), y = build_dens)) + 
+  geom_boxplot()
+
+
+```
+
+
+```{r}
+
+eaton_struc_destroyed  <- Eaton_struc %>% filter(destroyed == 1)
+
+eaton_struc_intact <- Eaton_struc %>% filter(destroyed == 0)
+
+mean(eaton_struc_destroyed$tree_dens)
+
+```
+
+
+```{r}
+
+mean(eaton_struc_intact$tree_dens)
+
+```

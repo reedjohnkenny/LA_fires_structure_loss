@@ -1,0 +1,90 @@
+---
+title: "study_area_stats"
+output: html_document
+---
+
+```{r}
+
+library(tidyverse)
+library(terra)
+library(sf)
+library(tmap)
+library(mapview)
+library(geosphere)
+library(spatialEco)
+library(sp)
+library(nngeo)
+
+
+
+```
+
+# Generate summary statistics for each study area
+
+
+# Eaton
+
+
+```{r}
+
+eaton_fprints <- st_read("../tmp_data/eaton_burned_fprints.shp")
+
+eaton_fprints_buff <- eaton_fprints %>% 
+  st_union() %>% 
+  st_buffer(50) %>% 
+  st_cast("POLYGON") %>% 
+  st_as_sf()
+
+# Area in square km
+eaton_area <- as.numeric(st_area(st_union(eaton_fprints_buff))/1e6)
+
+eaton_crowns <- st_read("../tmp_data/eaton_burned_tree_crowns_final.shp")
+
+eaton_wind <- read.csv("../wind_data/all_hrrr.csv") %>% 
+  filter(point_fire == "eaton") %>% group_by(point_UID) %>% 
+  summarize(mean_wind_sp = mean(wdsp), 
+            mean_wind_dir = mean(wdir))
+
+Eaton_struc <- read.csv("../model_inputs/eaton_burned_struc_model_inputs.csv") %>% 
+  select(-X) %>% 
+  na.omit() %>% 
+  left_join(eaton_wind, by = c("UID" = "point_UID"))
+
+Eaton_struc <- Eaton_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_dir), 360 - abs(bearing_to_nearest_building - mean_wind_dir)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_dir), 360 - abs(bearing_to_nearest_tree - mean_wind_dir)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
+
+```
+
+Area in square km: `r eaton_area`. 
+
+Number of structure footprint polygons: `r nrow(eaton_fprints)`. 
+
+
+Number of tree crown polygons: `r nrow(eaton_crowns)`
+
+Total canopy area square km: `r st_area(st_union(eaton_crowns))/1e6`
+
+Mean building density: `r mean(Eaton_struc$build_dens)`
+
+
+Mean tree density: `r mean(Eaton_struc$tree_dens)`
+
+
+Structures destroyed: `r nrow(Eaton_struc[Eaton_struc$destroyed == 1,])`
+
+
+Structures not destroyed: `r nrow(Eaton_struc[Eaton_struc$destroyed == 0,])`
+
+
+Mean area tree canopy within 2 m: `r mean(Eaton_struc$area_of_trees_2m)`
+
+
+Mean distance to nearest tree canopy: `r mean(Eaton_struc$distance_to_nearest_tree)`
+
+
+Mean distance to nearest structure: `r mean(Eaton_struc$distance_to_nearest_building)`
+
+
+
+
+
+

@@ -20,10 +20,6 @@ library(sf)
 library(terra)
 library(tigris)
 library(grid)
-library(corrplot)
-library(reshape2)
-library(spatialEco)
-library(performance)
 
 
 source("functions/plot_fire_effects.R")
@@ -41,14 +37,6 @@ source("functions/human_labs.R")
 ```{r}
 
 eaton_area <- st_read("~/OneDrive - Cal Poly/data/town_polygons/Eaton_clip.shp") %>% st_transform(32611)
-
-eaton_fprints <- st_read("../tmp_data/eaton_burned_fprints.shp")
-
-eaton_fprints_buff <- eaton_fprints %>% 
-  st_union() %>% 
-  st_buffer(50) %>% 
-  st_cast("POLYGON") %>% 
-  st_as_sf()
 
 pal_ext <- st_read("~/OneDrive - Cal Poly/data/town_polygons/pal_external.shp") %>% st_transform(32611)
 
@@ -71,7 +59,7 @@ eaton_in <- st_intersection(eaton_area[1,], eaton_perim_minus50m) %>%
 
 eaton_map <- tmap_mode("plot") +
               tm_basemap("Esri.WorldImagery") +
-              tm_shape(eaton_fprints_buff) +
+              tm_shape(eaton_in) +
               tm_polygons(fill = NULL, col = "red", lwd = 3) +
     tm_compass(type = "4star", position = c("bottom", "right"),bg.color = "white", frame = TRUE, size = 3) +
   tm_scalebar(breaks = c(0, 0.5, 1), text.size = 0.5, position = c("left", "bottom"), bg.color = "white", frame = TRUE) +
@@ -83,7 +71,7 @@ eaton_map
 #legend.outside = FALSE, legend.position = "none", legend.bg.color = "white",
            # frame = T, legend.width = 4, legend.text.size = 1
 
-tmap_save(eaton_map, "../Figures/eaton_map.png")
+tmap_save(eaton_map, "../simple_figures/eaton_map.png")
 
 
 ```
@@ -121,7 +109,7 @@ h <- asp_inset * w
 
 vp <- viewport(x=0.96, y=1.06, width = w, height=h, just=c("right", "top"))
 
-tmap_save(eaton_map, "../Figures/inset_map.png", insets_tm = inset, insets_vp = vp)
+tmap_save(eaton_map, "../simple_figures/inset_map.png", insets_tm = inset, insets_vp = vp)
 
 
 ```
@@ -134,17 +122,9 @@ pal_in  <- st_intersection(pal_in, palisades_perim_minus50m) %>%
   mutate(burned = "yes") %>% 
   select(Id = orderDesc, burned)
 
-pal_fprints <- st_read("../tmp_data/palisades_burned_fprints.shp")
-
-pal_fprints_buff <- pal_fprints %>% 
-  st_union() %>% 
-  st_buffer(50) %>% 
-  st_cast("POLYGON") %>% 
-  st_as_sf()
-
 pal_map <- tmap_mode("plot") +
               tm_basemap("Esri.WorldImagery") +
-              tm_shape(pal_fprints_buff) +
+              tm_shape(pal_in) +
               tm_polygons(fill = NULL, col = "red", lwd = 3) +
   tm_scalebar(breaks = c(0, 0.5, 1), text.size = 0.5, position = c("left", "bottom"), frame = T, bg.color = "white") +
   tm_title("Palisades Study Area", position = tm_pos_in(0.3, 0.99), frame = TRUE, bg.color = "white") +
@@ -154,7 +134,7 @@ pal_map <- tmap_mode("plot") +
 
 pal_map
 
-tmap_save(pal_map, "../Figures/pal_map.png")
+tmap_save(pal_map, "../simple_figures/pal_map.png")
 
 
 ```
@@ -164,12 +144,12 @@ tmap_save(pal_map, "../Figures/pal_map.png")
 
 ```{r}
 
-source("~/Desktop/Urban_tree_fire/structure_analysis/Scripts/functions/human_labs.R")
+source("~/Desktop/Urban_tree_fire/landscape_analysis/Scripts/functions/human_labs.R")
 
 
-Eaton_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/eaton_struc_m1_unscaled.rda")
+Eaton_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_struc_m1_unscaled.rda")
 
-Eaton_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/eaton_struc_m1_scale.rda")
+Eaton_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/eaton_struc_m1_scale.rda")
 
 
  coefs_E <- fixef(Eaton_struc_spamm_1_scaled)
@@ -264,7 +244,7 @@ plot_grid(
     axis       = "y"
   )
   
-  #ggsave("../simple_figures/Stucture_loss_Eaton.png", width = 7, height = 5)
+  ggsave("../simple_figures/Stucture_loss_Eaton.png", width = 7, height = 5)
 
 ```
 
@@ -285,12 +265,12 @@ Eaton_struc_tab$fire = "Eaton"
 
 ```{r}
 
-source("~/Desktop/Urban_tree_fire/structure_analysis/Scripts/functions/human_labs.R")
+source("~/Desktop/Urban_tree_fire/landscape_analysis/Scripts/functions/human_labs.R")
 
 
-Palisades_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/Palisades_struc_m1.rda")
+Palisades_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_struc_m1.rda")
 
-Palisades_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/Palisades_struc_m1_scaled.rda")
+Palisades_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_struc_m1_scaled.rda")
 
 coefs_P <- fixef(Palisades_struc_spamm_1_scaled)
   se_P   <- sqrt(diag(vcov(Palisades_struc_spamm_1_scaled)))
@@ -367,7 +347,7 @@ plot_grid(
     axis       = "y"
   )
   
-  ggsave("../Figures/Stucture_loss_Palisades.png", width = 7, height = 5)
+  ggsave("../simple_figures/Stucture_loss_Palisades.png", width = 7, height = 5)
 
   
   
@@ -426,7 +406,7 @@ p1 +
          subtitle = "Lines = fitted values, bands = 95% CI") +
     theme_classic()
 
-ggsave("../Figures/Palisades_interaction.png", width = 7, height = 5)
+ggsave("../simple_figures/Palisades_interaction.png", width = 7, height = 5)
   
 ```
 
@@ -442,340 +422,5 @@ lo_dens <- pal_build_dens %>% filter(build_dens < 7)
 
 tm_shape(lo_dens) +
   tm_polygons()
-
-```
-
-
-
-# Correlation matrix
-
-```{r}
-
-Eaton_cor <- Eaton_struc_spamm_1_scaled$data %>%
-  select(distance_to_nearest_building, distance_to_nearest_tree, number_of_trees_2m, area_of_trees_2m, area_ext_build_2, tree_dens, build_dens)
-
-M <- cor(Eaton_cor, use = "complete.obs")
-M_melt <- melt(M)
-
-cor_plot <- ggplot(M_melt, aes(Var1, Var2, fill = value)) +
-  geom_tile(color = "white") +
-  geom_text(aes(label = sprintf("%.2f", value)), size = 3) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  labs(x = "", y = "", fill = "Correlation") +
-  ggtitle("Correlation Matrix of predictors for Eaton fire")
-
-
-ggsave("../Figures/Eaton_corrplot_gg.png", cor_plot, width = 6, height = 4, dpi = 300)
-
-check_collinearity(Eaton_struc_spamm_1_scaled)
-
-```
-
-```{r}
-
-Eaton_alt <- readRDS("../models/eaton_struc_area_model_unscaled.rda")
-
-Eaton_alt_cor <- Eaton_alt$data %>%
-  select(distance_to_nearest_building, distance_to_nearest_tree, number_of_trees_2m, area_of_trees_2m, area_ext_build_2, tree_dens, build_dens, area_tree_200m, fprint_area, total_build_200_m)
-
-M <- cor(Eaton_alt_cor, use = "complete.obs")
-M_melt <- melt(M)
-
-cor_plot <- ggplot(M_melt, aes(Var1, Var2, fill = value)) +
-  geom_tile(color = "white") +
-  geom_text(aes(label = sprintf("%.2f", value)), size = 3) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  labs(x = "", y = "", fill = "Correlation") +
-  ggtitle("Correlation Matrix of predictors for Eaton fire")
-
-#ggsave("../Figures/Eaton_corrplot_gg.png", cor_plot, width = 6, height = 4, dpi = 300)
-
-check_collinearity(Eaton_alt)
-
-```
-
-
-
-```{r}
-
-Pal_cor <- Palisades_struc_spamm_1$data %>%
-  select(distance_to_nearest_building, distance_to_nearest_tree, number_of_trees_2m, area_of_trees_2m, area_ext_build_2, tree_dens, build_dens)
-
-
-M <- cor(Pal_cor, use = "complete.obs")
-M_melt <- melt(M)
-
-cor_plot <- ggplot(M_melt, aes(Var1, Var2, fill = value)) +
-  geom_tile(color = "white") +
-  geom_text(aes(label = sprintf("%.2f", value)), size = 3) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  labs(x = "", y = "", fill = "Correlation") +
-  ggtitle("Correlation Matrix of predictors for Palisades fire")
-
-ggsave("../Figures/Palisades_corrplot_gg.png", cor_plot, width = 6, height = 4, dpi = 300)
-
-check_collinearity(Palisades_struc_spamm_1)
-
-```
-
-
-# Tree and Structure density maps
-
-# Eaton tree density
-
-```{r}
-
-eaton_fprints <- st_read("../tmp_data/eaton_burned_fprints.shp") %>% 
-  left_join(Eaton_struc_spamm_1$data, by = "UID")
-
-eaton_burn_crowns <- st_read("../tmp_data/eaton_burned_tree_crowns_final.shp")
-
-Eaton_tree_crowns <- st_read("../tmp_data/eaton_crowns_burned_polys_v2.shp")
-
-eaton_fprints_buff <- eaton_fprints %>% 
-  st_union() %>% 
-  st_buffer(50) %>% 
-  st_cast("POLYGON") %>% 
-  st_as_sf()
-
-make_ref <- function(boundary, res = 30) {
-  rast(ext(vect(boundary)), resolution = res, crs = st_crs(boundary)$wkt)
-}
-
-ref_eaton <- make_ref(Eaton_tree_crowns, res = 30)
-
-k_eaton_pdf <- sf.kde(
-  x = st_centroid(Eaton_tree_crowns),
-  bw = bw_m, ref = ref_eaton, standardize = FALSE, scale.factor = 1, mask = FALSE, res = 30
-)
-
-n_eaton <- nrow(Eaton_tree_crowns)
-
-k_eaton_int_m2 <- k_eaton_pdf * n_eaton
-
-k_eaton_tpha <- k_eaton_int_m2 * 10000
-
-k_eaton_tpha_crop <- terra::crop(k_eaton_tpha, eaton_fprints_buff, mask = T)
-
-
-terra::global(k_eaton_tpha_crop, fun="mean", na.rm = T)[,1]
-
-nrow(eaton_burn_crowns)/st_area(st_union(eaton_fprints_buff)) *10000
-
-# Plot with continuous scale
-tmap_mode("view")
-tm_shape(k_eaton_tpha_crop) + 
-  tm_raster(
-    style = "cont",          # continuous scale
-    palette = "-viridis",    # optional, reversed viridis for visual contrast
-    title = "Tree Density", 
-    alpha = 1
-  )
-
-tm_shape(st_centroid(Eaton_tree_crowns)) +
-  tm_dots(fill = "forestgreen") +
-  tm_shape(st_centroid(eaton_crowns)) +
-  tm_dots(fill = "blue") +
-  tm_layout(
-    legend.outside = TRUE,
-    legend.text.size = 0.8,
-    legend.title.size = 1
-  )
-
-```
-
-
-
-# Eaton struc density
-
-```{r}
-
-eaton_fprints <- st_read("../tmp_data/eaton_burned_fprints.shp") %>% 
-  left_join(Eaton_struc_spamm_1$data, by = "UID")
-
-eaton_fprints_buff <- eaton_fprints %>% 
-  st_union() %>% 
-  st_buffer(50) %>% 
-  st_cast("POLYGON") %>% 
-  st_as_sf()
-
-
-Eaton_fprints_all <- st_read("~/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_eaton.shp") %>% 
-  st_transform(32611)
-
-eaton_struc_dens <- sf.kde(st_centroid(Eaton_fprints_all), res = 30, bw = 200) %>% 
-  terra::crop(eaton_fprints_buff, mask = T)
-
-eaton_struc_dens <- sf.kde(st_centroid(Eaton_fprints_all), res = 30, bw = 200)
-
-eaton_struc_dens2 <- sf.kde(st_centroid(eaton_burned_fprints), res = 30, bw = 200)
-
-
-# Plot with continuous scale
-tmap_mode("view")
-tm_shape(eaton_struc_dens) + 
-  tm_raster(
-    style = "cont",          # continuous scale
-    palette = "-viridis",    # optional, reversed viridis for visual contrast
-    title = "Struc Density", 
-    alpha = 1
-  ) 
-
-  tm_shape(eaton_fprints) +
-  tm_polygons(fill = NULL, style = "cont") +
-  tm_layout(
-    legend.outside = TRUE,
-    legend.text.size = 0.8,
-    legend.title.size = 1
-  )
-
-
-## read in fire perimeter, pull it back by 50 m to avoid edge effects
-eaton_perim_minus50m <- st_read("~/OneDrive - Cal Poly/Data/WFIGS_Interagency_Perimeters_YearToDate_-5395415287356828930/") %>% 
-  filter(poly_Incid == "Eaton") %>% 
-  st_transform(crs=32611) %>% 
-  select(poly_Incid, poly_Featu) %>% 
-  st_buffer(-50)
-
-## read in DINS points
-eaton_dins <- st_read("~/OneDrive - Cal Poly/data/DINS/DINS_2025_Eaton_Public_View.geojson") %>%
-  st_transform(crs=32611)
-
-eaton_bound <- st_read("~/OneDrive - Cal Poly/data/town_polygons/Eaton_clip.shp") %>% 
-  st_transform(crs = 32611)
-
-eaton_burned_bound <- eaton_bound[1,]
-
-eaton_burned_fprints <- st_read("~/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_Eaton.shp") %>% st_transform(crs = 32611) %>% 
-  st_join(eaton_perim_minus50m, left = FALSE) %>% 
-  st_join(eaton_burned_bound, left = FALSE) %>% 
-  st_join(eaton_dins, left = FALSE)
-
-
-tm_shape(eaton_struc_dens) + 
-  tm_raster(
-    col.scale = tm_scale_continuous(values = "-viridis"),    # optional, reversed viridis for visual contrast
-    col.legend = tm_legend(title = "Struc Density"), 
-    col_alpha = .5
-  ) + 
-  tm_shape(eaton_struc_dens2) + 
-  tm_raster(
-    col.scale = tm_scale_continuous(values = "-viridis"),           # continuous sca    # optional, reversed viridis for visual contrast
-    col.legend = tm_legend(title = "Struc Density"), 
-    col_alpha = .5
-  )
-
-```
-
-# Pal tree density
-
-
-```{r}
-
-pal_fprints <- st_read("../tmp_data/palisades_burned_fprints.shp") %>% 
-  left_join(Palisades_struc_spamm_1$data, by = "UID")
-
-pal_fprints_buff <- pal_fprints %>% 
-  st_union() %>% 
-  st_buffer(50) %>% 
-  st_cast("POLYGON") %>% 
-  st_as_sf()
-
-
-pal_tree_crowns <- st_read("../tmp_data/palisades_crowns_burned_polys_v2.shp")
-
-
-make_ref <- function(boundary, res = 30) {
-  rast(ext(vect(boundary)), resolution = res, crs = st_crs(boundary)$wkt)
-}
-
-ref_pal <- make_ref(pal_tree_crowns, res = 30)
-
-k_pal_pdf <- sf.kde(
-  x = st_centroid(pal_tree_crowns),
-  bw = bw_m, ref = ref_pal, standardize = FALSE, scale.factor = 1, mask = FALSE, res = 30
-)
-
-n_pal <- nrow(pal_tree_crowns)
-
-k_pal_int_m2 <- k_pal_pdf * n_pal
-
-k_pal_tpha <- k_pal_int_m2 * 10000
-
-k_pal_tpha_crop <- terra::crop(k_pal_tpha, pal_fprints_buff, mask = T)
-
-terra::global(k_pal_tpha_crop, fun="mean", na.rm = T)[,1]
-
-# alt mean
-
-pal_burned_tree_crowns <- st_read("../tmp_data/palisades_burned_tree_crowns_final.shp")
-
-nrow(pal_burned_tree_crowns)/st_area(st_union(pal_fprints_buff))*10000
-
-
-# Plot with continuous scale
-tmap_mode("view")
-tm_shape(k_pal_tpha_crop) + 
-  tm_raster(
-    style = "cont",          # continuous scale
-    palette = "-viridis",    # optional, reversed viridis for visual contrast
-    title = "Tree Density", 
-    alpha = 1
-  ) 
-  
-  tm_shape(pal_tree_crowns) +
-  tm_polygons(fill = NULL) +
-  tm_layout(
-    legend.outside = TRUE,
-    legend.text.size = 0.8,
-    legend.title.size = 1
-  )
-
-```
-
-# Pal struc density
-
-```{r}
-
-pal_fprints <- st_read("../tmp_data/palisades_burned_fprints.shp") %>% 
-  left_join(Palisades_struc_spamm_1$data, by = "UID")
-
-pal_fprints_buff <- pal_fprints %>% 
-  st_union() %>% 
-  st_buffer(50) %>% 
-  st_cast("POLYGON") %>% 
-  st_as_sf()
-
-
-pal_fprints_all <- st_read("~/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp") %>% 
-  st_transform(32611)
-
-pal_struc_dens <- sf.kde(st_centroid(pal_fprints_all), res = 30, bw = 200) %>% 
-  terra::crop(pal_fprints_buff, mask = T)
-
-
-
-# Plot with continuous scale
-tmap_mode("view")
-tm_shape(pal_struc_dens) + 
-  tm_raster(
-    style = "cont",          # continuous scale
-    palette = "-viridis",    # optional, reversed viridis for visual contrast
-    title = "Struc Density", 
-    alpha = 1
-  ) +
-  # tm_shape(pal_fprints) +
-  # tm_polygons(fill = NULL, style = "cont") +
-  tm_layout(
-    legend.outside = TRUE,
-    legend.text.size = 0.8,
-    legend.title.size = 1
-  )
 
 ```

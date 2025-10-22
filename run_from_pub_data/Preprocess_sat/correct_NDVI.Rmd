@@ -1,0 +1,196 @@
+---
+title: "correct_NDVI"
+output: html_document
+---
+
+```{r}
+library(terra)
+library(sf)
+library(dplyr)
+
+```
+
+## Palisades burned pre
+
+```{r}
+
+pal_study_bound <- st_read("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Palisades/Palisades_pre/GIS_FILES/016569561010_01_ORDER_SHAPE.shp") %>% st_transform(crs = 32611)
+
+pal_burn_pre_rast1 <- terra::rast("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Palisades/Palisades_pre/Multi_spec/24OCT20184323-M3DS-016569561010_01_P001.TIF") %>% 
+  project("epsg:32611") %>% crop(pal_study_bound, mask = T)
+
+names(pal_burn_pre_rast1) <-  c("ms1", "ms2", "ms3", "ms4", "ms5", "ms6", "ms7", "ms8")
+
+plot(pal_burn_pre_rast1)
+
+```
+
+
+
+
+```{r}
+
+pal_burn_pre_ndvi_rast <- ((pal_burn_pre_rast1$ms8 - pal_burn_pre_rast1$ms5)/(pal_burn_pre_rast1$ms8 + pal_burn_pre_rast1$ms5)) 
+
+hist(pal_burn_pre_ndvi_rast)
+
+```
+
+
+## Pal PRE Unburned Needs correction
+
+```{r}
+
+pal_unburn_pre <- rast("~/Downloads/Maxar_5_99km2___California__USA_25318O6E-1_DAY_California-USA (1)/200008990764_01/200008990764_01_P001_MUL/24OCT20184322-M2AS-200008990764_01_P001.TIF") %>% 
+  crop(Palisades_ext_bound, mask = T)
+
+names(pal_unburn_pre) <- c("ms1", "ms2", "ms3", "ms4", "ms5", "ms6", "ms7", "ms8")
+
+plot(pal_unburn_pre)
+
+
+```
+
+```{r, warning=F}
+
+hist(pal_unburn_pre)
+
+
+```
+
+
+
+### TOA corrected
+
+```{r}
+Palisades_ext_bound <- st_read("~/OneDrive - Cal Poly/data/town_polygons/pal_external.shp") %>%
+  st_transform(32611)
+
+pal_unburn_pre_toa <- rast("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Palisades/Palisades_pre/Multi_spec/24OCT20184322-M2AS-200008990764_01_P001_TOA.TIF")
+
+pal_unburn_pre_toa <- ifel(pal_unburn_pre_toa == 0, NA, pal_unburn_pre_toa)
+
+names(pal_unburn_pre_toa) <- c("ms1", "ms2", "ms3", "ms4", "ms5", "ms6", "ms7", "ms8")
+
+hist(pal_unburn_pre_toa)
+
+```
+
+
+```{r}
+
+
+plot(pal_unburn_pre_toa)
+
+ndvi <- ((pal_unburn_pre_toa$ms8 - pal_unburn_pre_toa$ms5)/(pal_unburn_pre_toa$ms8 + pal_unburn_pre_toa$ms5)) 
+
+hist(ndvi)
+
+```
+
+
+```{r}
+
+dos_correct <- function(x, water_mask = NULL, p = 0.01, min_rho = 0.0) {
+  x_corr <- rast(x)
+  for (i in 1:nlyr(x)) {
+    xi <- x[[i]]
+    # normalize 0-1
+    min_val <- global(xi, fun = "min", na.rm = TRUE)[1,1]
+    max_val <- global(xi, fun = "max", na.rm = TRUE)[1,1]
+    xi_norm <- (xi - min_val) / (max_val - min_val)
+    # choose dark pixels:
+    if (!is.null(water_mask)) {
+      xi_samp <- mask(xi_norm, water_mask)
+    } else {
+      xi_samp <- xi_norm
+    }
+    # robust "dark object" estimate (1st percentile)
+    haze <- quantile(values(xi_samp), probs = p, na.rm = TRUE, type = 7)
+    haze <- max(min_rho, haze)  # enforce non-negative floor
+    # subtract haze and floor at 0
+    x_corr[[i]] <- clamp(xi_norm - haze, lower = 0, upper = 1, values = TRUE)
+  }
+  names(x_corr) <- names(x)
+  x_corr
+}
+
+```
+
+
+
+```{r}
+
+pal_unburn_pre_toa_dos_cor <- dos_correct(pal_unburn_pre_toa)
+
+
+hist(pal_unburn_pre_toa_dos_cor)
+
+
+
+```
+
+
+```{r}
+
+pal_unburn_pre_toa_dos_cor_ndvi <- ((pal_unburn_pre_toa_dos_cor$ms8 - pal_unburn_pre_toa_dos_cor$ms5)/(pal_unburn_pre_toa_dos_cor$ms8 + pal_unburn_pre_toa_dos_cor$ms5)) 
+
+hist(pal_unburn_pre_toa_dos_cor_ndvi)
+```
+
+```{r}
+
+writeRaster(pal_unburn_pre_toa_dos_cor, "~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Palisades/Palisades_pre/Multi_spec/24OCT20184322-M2AS-200008990764_01_P001_TOA_cor.TIF", overwrite = T)
+
+
+
+```
+
+
+
+# Eaton POST needs correction
+
+```{r}
+
+rast1_crop <- st_read("~/OneDrive - Cal Poly/data/Maxar/Eaton/PRE/ms1_crop.shp") %>% 
+  st_transform(crs = 32611)
+
+eaton_post_rast_toa <- rast("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/POST/Multi-spec/200007937065_01_200007937065_01_P001_MUL_25JAN14183036-M2AS-200007937065_01_P001_TOA.TIF") %>% crop(rast1_crop[3,], mask = T)
+
+
+
+names(eaton_post_rast_toa) <- c("ms1", "ms2", "ms3", "ms4", "ms5", "ms6", "ms7", "ms8")
+
+
+hist(eaton_post_rast_toa)
+
+```
+
+
+```{r}
+
+eaton_post_rast_toa_cor <- dos_correct(eaton_post_rast_toa)
+
+hist(eaton_post_rast_toa_cor)
+
+```
+
+
+
+```{r}
+
+ndvi_eaton <- ((eaton_post_rast_toa_cor$ms8 - eaton_post_rast_toa_cor$ms5)/(eaton_post_rast_toa_cor$ms8 + eaton_post_rast_toa_cor$ms5)) 
+
+hist(ndvi_eaton)
+
+
+```
+
+
+```{r}
+
+
+writeRaster(eaton_post_rast_toa_cor, "~/OneDrive - Cal Poly/data/Maxar/Eaton/POST/200007937065_01_200007937065_01_P001_MUL_25JAN14183036-M2AS-200007937065_01_P001_TOA_cor.TIF", overwrite = T)
+
+```
+

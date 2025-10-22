@@ -1,0 +1,105 @@
+---
+title: "Stats_report"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(lme4)
+library(corrplot)
+library(car)
+library(gstat)
+library(sp)
+library(spaMM)
+library(DHARMa)
+library(gridExtra)
+library(ggplot2)
+
+source("functions/plot_fixed_effect_relationship.R")
+source("functions/plot_model_effects.R")
+source("functions/plot_spatial_correlation.R")
+```
+
+# Eaton
+
+```{r, echo = F, warning=FALSE} 
+eaton_wind <- read.csv("../wind_data/all_hrrr.csv") %>% 
+  filter(point_fire == "eaton") %>% group_by(point_UID) %>% 
+  summarize(mean_wind_sp = mean(wdsp), 
+            mean_wind_dir = mean(wdir))
+
+
+Eaton_struc <- read.csv("~/Desktop/Urban_tree_fire/structure_analysis/model_inputs/eaton_burned_struc_model_inputs.csv") %>% 
+  select(-X) %>% 
+  filter(DAMAGE %in% c("Destroyed (>50%)", "No Damage", "Affected (1-9%)")) %>% 
+  na.omit() %>% 
+  left_join(eaton_wind, by = c("UID" = "point_UID"))
+
+Eaton_struc <- Eaton_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_dir), 360 - abs(bearing_to_nearest_building - mean_wind_dir)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_dir), 360 - abs(bearing_to_nearest_tree - mean_wind_dir)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
+
+cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens")
+
+names(cols) <- cols
+```
+
+
+## View histograms of variables of interest
+```{r, echo = FALSE, warning=FALSE, message=FALSE} 
+
+Eaton_struc_long <- Eaton_struc %>% pivot_longer(cols = cols)
+
+ggplot(Eaton_struc_long, aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(~ name, scales = "free") +
+  theme(strip.text.x = element_text(size = 5), 
+        axis.text = element_text(size = 5))
+
+```
+
+
+## Correlation matrix
+
+```{r, echo=FALSE}
+Eaton_comp <- Eaton_struc %>% filter(complete.cases(Eaton_struc)) %>% 
+  select(cols)
+
+pdf(file = "../Supp_Figures/corrplot.pdf", # Specify the desired filename and path
+    width = 7,               # Optional: Set the width of the plot in inches
+    height = 7)              # Optional: Set the height of the plot in inches
+
+cor_plot <- corrplot(cor(Eaton_comp), tl.cex = .5, method = "number", number.cex = 0.5)
+
+
+# Step 3: Close the graphics device to save the file
+dev.off()
+
+
+corrplot(cor(Eaton_comp), tl.cex = .5, method = "number", number.cex = 0.5)
+
+```
+
+
+```{r}
+
+  Eaton_struc_spamm_unscaled <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/eaton_struc_m1_unscaled.rda")
+
+summary(Eaton_struc_spamm_unscaled)
+
+```
+
+
+```{r}
+
+plot_spatial_correlation(Eaton_struc_spamm_unscaled)
+
+```
+
+```{r}
+
+sims <- simulateResiduals(Eaton_struc_spamm_unscaled)
+
+plot(sims)
+
+```

@@ -263,7 +263,7 @@ plot_grid(
     axis       = "y"
   )
   
-  ggsave("../simple_figures/Stucture_loss_Eaton.png", width = 7, height = 5)
+  ggsave("../Figures/Stucture_loss_Eaton.png", width = 7, height = 5)
 
 ```
 
@@ -285,9 +285,9 @@ Eaton_struc_tab$fire = "Eaton"
 source("~/Desktop/Urban_tree_fire/landscape_analysis/Scripts/functions/human_labs.R")
 
 
-Palisades_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_struc_m1.rda")
+Palisades_struc_spamm_1 <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/Palisades_struc_m1.rda")
 
-Palisades_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/landscape_analysis/simple_models/Palisades_struc_m1_scaled.rda")
+Palisades_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/Palisades_struc_m1_scaled.rda")
 
 coefs_P <- fixef(Palisades_struc_spamm_1_scaled)
   se_P   <- sqrt(diag(vcov(Palisades_struc_spamm_1_scaled)))
@@ -364,7 +364,7 @@ plot_grid(
     axis       = "y"
   )
   
-  ggsave("../simple_figures/Stucture_loss_Palisades.png", width = 7, height = 5)
+  ggsave("../Figures/Stucture_loss_Palisades.png", width = 7, height = 5)
 
   
   

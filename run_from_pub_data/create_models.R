@@ -3,7 +3,7 @@ library(dplyr)
 library(INLA)
 library(tidyr)
 
-source("~/Desktop/Urban_tree_fire/structure_analysis/Scripts/functions/compare_AIC.R")
+source("functions/compare_AIC.R")
 
 ## Eaton struc
 
@@ -17,6 +17,7 @@ eaton_wind <- read.csv("wind_data/all_hrrr.csv") %>%
 
 Eaton_struc <- read.csv("model_inputs/eaton_burned_struc_model_inputs.csv") %>% 
   select(-X) %>% 
+  filter(DAMAGE %in% c("Destroyed (>50%)", "No Damage", "Affected (1-9%)")) %>% 
   na.omit() %>% 
   left_join(eaton_wind, by = c("UID" = "point_UID"))
 
@@ -73,6 +74,7 @@ pal_wind <- read.csv("wind_data/all_hrrr.csv") %>%
 
 
 Palisades_struc <- read.csv("model_inputs/palisades_burned_struc_model_inputs.csv") %>% 
+  filter(DAMAGE %in% c("Destroyed (>50%)", "No Damage", "Affected (1-9%)")) %>% 
   left_join(pal_wind, by = c("UID" = "point_UID"))
 # make new columns
 

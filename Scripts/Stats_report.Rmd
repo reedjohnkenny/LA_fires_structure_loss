@@ -19,7 +19,7 @@ library(ggplot2)
 
 source("functions/plot_fixed_effect_relationship.R")
 source("functions/plot_model_effects.R")
-source("functions/plot_spatial_correlation.R")
+#source("functions/plot_spatial_correlation.R")
 ```
 
 # Eaton
@@ -48,7 +48,7 @@ names(cols) <- cols
 ## View histograms of variables of interest
 ```{r, echo = FALSE, warning=FALSE, message=FALSE} 
 
-Eaton_struc_long <- Eaton_struc %>% pivot_longer(cols = cols)
+Eaton_struc_long <- Eaton_struc %>% tidyr::pivot_longer(cols = c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens"))
 
 ggplot(Eaton_struc_long, aes(x = value)) +
   geom_histogram() +
@@ -83,23 +83,144 @@ corrplot(cor(Eaton_comp), tl.cex = .5, method = "number", number.cex = 0.5)
 
 ```{r}
 
-  Eaton_struc_spamm_unscaled <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/eaton_struc_m1_unscaled.rda")
+    Eaton_struc_spamm_scaled <- readRDS("~/Desktop/Urban_tree_fire/structure_analysis/models/eaton_struc_m1_scale.rda")
 
-summary(Eaton_struc_spamm_unscaled)
+summary(Eaton_struc_spamm_scaled)
 
 ```
 
 
 ```{r}
 
-plot_spatial_correlation(Eaton_struc_spamm_unscaled)
-
-```
-
-```{r}
-
-sims <- simulateResiduals(Eaton_struc_spamm_unscaled)
+sims <- simulateResiduals(Eaton_struc_spamm_scaled)
 
 plot(sims)
+
+```
+
+
+## Check for spatial structure in residuals
+
+```{r}
+
+pred_null <- predict(Eaton_struc_spamm_1_scaled, re.form = NULL)
+
+pred_na <- predict(Eaton_struc_spamm_1_scaled, re.form = NA)
+
+
+resids <- Eaton_struc_spamm_1_scaled$data %>% select(UID, utm_x, utm_y, destroyed) %>% 
+  mutate(resids_null = destroyed - pred_null[1],
+         resids_na = destroyed - pred_na[1])
+
+ggplot(resids, aes(x = utm_x, y = utm_y, color = resids_null)) + 
+  geom_point(size = .7) +
+  scale_color_viridis_c()
+
+```
+
+
+
+```{r}
+
+ggplot(resids, aes(x = utm_x, y = utm_y, color = resids_na)) + 
+  geom_point(size = 0.7) +
+  scale_color_viridis_c()
+
+
+```
+
+```{r}
+
+ggplot(Eaton_struc_spamm_1_scaled$data, aes(x = utm_x, y = utm_y, color = destroyed)) + 
+  geom_point(size = 0.7) +
+  scale_color_viridis_c()
+
+
+```
+
+
+testSpatialAutocorrelation(Eaton_struc_spamm_1_scaled, x = Eaton_struc_spamm_1_scaled$data$utm_x, Eaton_struc_spamm_1_scaled$data$utm_y)
+
+```
+
+
+
+# Palisades
+
+```{r, echo = F, warning=FALSE} 
+pal_wind <- read.csv("../wind_data/all_hrrr.csv") %>% 
+  filter(point_fire == "palisades") %>% group_by(point_UID) %>% 
+  summarize(mean_wind_sp = mean(wdsp), 
+            mean_wind_dir = mean(wdir))
+
+
+pal_struc <- read.csv("~/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv") %>% 
+  select(-X) %>% 
+  filter(DAMAGE %in% c("Destroyed (>50%)", "No Damage", "Affected (1-9%)")) %>% 
+  na.omit() %>% 
+  left_join(eaton_wind, by = c("UID" = "point_UID"))
+
+pal_struc <- pal_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_dir), 360 - abs(bearing_to_nearest_building - mean_wind_dir)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_dir), 360 - abs(bearing_to_nearest_tree - mean_wind_dir)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
+
+cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens")
+
+names(cols) <- cols
+```
+
+
+## View histograms of variables of interest
+```{r, echo = FALSE, warning=FALSE, message=FALSE} 
+
+Pal_struc_long <- pal_struc %>% tidyr::pivot_longer(cols = c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens"))
+
+ggplot(Pal_struc_long, aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(~ name, scales = "free") +
+  theme(strip.text.x = element_text(size = 5), 
+        axis.text = element_text(size = 5))
+
+```
+
+# Residuals
+
+
+```{r}
+
+Palisades_struc_spamm_scaled <- readRDS("../models/Palisades_struc_m1_scaled.rda")
+
+sims <- simulateResiduals(Palisades_struc_spamm_scaled, 1000)
+
+plot(sims)
+
+pred <- predict(Palisades_struc_spamm_1_scaled, re.form = NULL)
+
+resids <- Palisades_struc_spamm_1_scaled$data %>% select(UID, utm_x, utm_y, destroyed) %>% 
+  mutate(resids = destroyed - pred[1])
+
+ggplot(resids, aes(x = utm_x, y = utm_y, color = resids)) + 
+  geom_point()
+
+```
+
+
+# Spatial structure
+
+
+```{r}
+
+resids <- Palisades_struc_spamm_scaled$data %>% 
+  cbind(sims$fittedResiduals, sims$scaledResiduals)
+
+
+ggplot(resids, aes(x = utm_x, y = utm_y, colour = sims$scaledResiduals)) +
+  geom_point() +
+  scale_color_viridis_c()
+
+
+ggplot(resids, aes(x = tree_dens, y = `sims$scaledResiduals`)) + 
+  geom_point() +
+  geom_smooth(se = FALSE)
+
+testSpatialAutocorrelation(Palisades_struc_spamm_1_scaled, x = Palisades_struc_spamm_1_scaled$data$utm_x, y = Palisades_struc_spamm_1_scaled$data$utm_y)
 
 ```

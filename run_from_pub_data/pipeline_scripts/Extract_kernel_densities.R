@@ -9,36 +9,18 @@ suppressPackageStartupMessages({
   # …etc…
 })
 
-make_ref <- function(points, res = 30) {
-  rast(ext(vect(points)), resolution = res, crs = st_crs(points)$wkt)
-}
 
-
-extract_kernel_density <- function(tree_crowns, fprints, tree_crowns_all, fprints_all) {
+extract_kernel_density <- function(tree_crowns, fprints) {
   # 1. Compute centroids as standalone sf objects
-  tree_cents  <- st_centroid(tree_crowns_all)
-  build_cents <- st_centroid(fprints_all)
+  tree_cents  <- st_centroid(tree_crowns)
+  build_cents <- st_centroid(fprints)
   
-  # 2. Create ref rasters
-  
-  tree_ref <- make_ref(tree_cents, res = 30)
-  
-  fprint_ref <- make_ref(build_cents, res = 30)
-  
-  # Calc probability density field
-  
-  tree_dens_pdf <- sf.kde(
-    x = tree_cents,
-    bw = 200, ref = tree_ref, standardize = FALSE, scale.factor = 1, mask = FALSE, res = 30
-  )
-  
-  # Convert to point intensity per hectare
-  
-  tree_dens_tpha <- tree_dens_pdf * nrow(tree_cents) * 10000
+  # 2. Kernel‐density of tree centroids
+  tree_dens_rast <- sf.kde(tree_cents, res = 30, bw = 200)
   
   # 3. Extract tree density at crown polygons
   crown_tree_density <- terra::extract(
-    tree_dens_tpha, tree_crowns,
+    tree_dens_rast, tree_crowns,
     fun  = mean,
     bind = TRUE
   ) %>%
@@ -47,7 +29,7 @@ extract_kernel_density <- function(tree_crowns, fprints, tree_crowns_all, fprint
   
   # 5. Extract tree density at footprints
   footprint_tree_density <- terra::extract(
-    tree_dens_tpha, fprints,
+    tree_dens_rast, fprints,
     fun  = mean,
     bind = TRUE
   ) %>%
@@ -55,21 +37,11 @@ extract_kernel_density <- function(tree_crowns, fprints, tree_crowns_all, fprint
     select(UID, tree_dens = z)
   
   # 6. Kernel‐density of building centroids
-  
-  # Calc probability density field
-  
-  fprint_dens_pdf <- sf.kde(
-    x = build_cents,
-    bw = 200, ref = fprint_ref, standardize = FALSE, scale.factor = 1, mask = FALSE, res = 30
-  )
-  
-  # Convert to point intensity per hectare
-  
-  fprint_dens_tpha <- fprint_dens_pdf * nrow(build_cents) * 10000
+  build_dens_rast <- sf.kde(build_cents, res = 30, bw = 200)
   
   # 7. Extract building density at crowns
   crown_build_density <- terra::extract(
-    fprint_dens_tpha, tree_crowns,
+    build_dens_rast, tree_crowns,
     fun  = mean,
     bind = TRUE
   ) %>%
@@ -78,7 +50,7 @@ extract_kernel_density <- function(tree_crowns, fprints, tree_crowns_all, fprint
   
   # 8. Extract building density at footprints
   footprint_build_density <- terra::extract(
-    fprint_dens_tpha, fprints,
+    build_dens_rast, fprints,
     fun  = mean,
     bind = TRUE
   ) %>%
@@ -90,18 +62,14 @@ extract_kernel_density <- function(tree_crowns, fprints, tree_crowns_all, fprint
     crown_tree_density     = crown_tree_density,
     footprint_tree_density = footprint_tree_density,
     crown_build_density    = crown_build_density,
-    footprint_build_density= footprint_build_density,
-    tree_dens_tpha = tree_dens_tpha, 
-    fprint_dens_tpha = fprint_dens_tpha
+    footprint_build_density= footprint_build_density
   ))
 }
 
 # define CLI options
 option_list <- list(
   make_option(c("-t","--trees"),   type="character", help="Path to tree crowns (sf‐readable)"),
-  make_option(c("-a","--trees_all"),   type="character", help="Path to all tree crowns (sf‐readable)"),
-  make_option(c("-b","--buildings"),   type="character", help="Path to building footprints"),
-  make_option(c("-A","--buildings_all"),      type="character", help="Path to all building footprints"),
+  make_option(c("-b","--buildings"),type="character", help="Path to building footprints"),
   make_option(c("-B","--buildings_output"),   type="character", default="proximities.geojson"),
   make_option(c("-T","--tree_output"),   type="character", default="proximities.geojson",
               help="Output path [default: %default]")
@@ -117,17 +85,10 @@ if (is.null(opt$trees) || is.null(opt$buildings)) {
 
 tree_crowns <- st_read(opt$trees, quiet = TRUE)
 
-tree_crowns_all <- st_read(opt$trees_all, quiet = TRUE) %>% 
-  st_transform(32611)
-
 fprints <- st_read(opt$buildings, quiet = TRUE)
 
-fprints_all <- st_read(opt$buildings_all, quiet = TRUE) %>% 
-  st_transform(32611)
-
-
 message("extracting kernel densities")
-kds <- extract_kernel_density(tree_crowns = tree_crowns, tree_crowns_all = tree_crowns_all, fprints = fprints, fprints_all = fprints_all)
+kds <- extract_kernel_density(tree_crowns = tree_crowns, fprints = fprints)
 
 
 tree_crowns_dens <- as.data.frame(kds$crown_tree_density) %>% left_join(as.data.frame(kds$crown_build_density), by = "fcl_mdn") %>% 
@@ -148,4 +109,5 @@ fprints_dens <- merge(fprints, fprints_dens, by = "UID")
 st_write(tree_crowns_dens, opt$tree_output, append=FALSE)
 
 st_write(fprints_dens, opt$buildings_output, append=FALSE)
+
 

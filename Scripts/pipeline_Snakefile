@@ -58,12 +58,16 @@ rule footprints_final:
 rule extract_kds:
   input:
     trees=os.path.join(LA_TMP, "{fire}_{status}_tree_crowns_final.shp"),
-    fprints=os.path.join(LA_TMP, "{fire}_{status}_fprints.shp")
+    all_trees=os.path.join(LA_TMP, "{fire}_crowns_burned_polys_v2.shp"),
+    fprints=os.path.join(LA_TMP, "{fire}_{status}_fprints.shp"),
+    all_fprints="/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_{fire}.shp"
   output:
     tree_density=os.path.join(LA_TMP, "{fire}_{status}_tree_density.shp"),
     build_density=os.path.join(LA_TMP, "{fire}_{status}_build_density.shp")
   shell:
-    "./{PIPE}/Extract_kernel_densities.R -t {input.trees} -b {input.fprints} -T {output.tree_density} -B {output.build_density}"
+    """
+    ./{PIPE}/Extract_kernel_densities.R -t "{input.trees}" -a "{input.all_trees}" -b "{input.fprints}" -A "{input.all_fprints}" -T "{output.tree_density}" -B "{output.build_density}"
+    """
     
 
 rule calc_tree_prox:

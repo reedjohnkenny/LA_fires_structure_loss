@@ -1,5 +1,5 @@
 cols <- c("dist_to_nearest_tree", "distance_to_nearest_tree", "dist_to_nearest_building", "distance_to_nearest_building", "angular_diff_tree", "num_trees_2m", "num_trees_5m", "num_trees_10m",  "area_tree_2m", "area_of_trees_2m", "area_tree_5m",  "area_tree_10m",  "area_of_trees_10m", "area_ext_tree10", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "bl___10", "bl___25", "bl___50", "b___100", "dist_to_nearest_tree", "dist_to_building", "angular_diff_tree", "num_trees_2m", "num_trees_5m", "num_trees_10m", "area_ext_tree2",  "area_ext_tree_5", "area_ext_tree_10", "total_build_2m", "total_build_5m", "total_build_10m", "angular_diff_build", "BuildingKernelDensity_MEAN", "TreeKernelDensity_MEAN", "dist_to_nearest_tree", "dist_to_nearest_struc", "angular_diff_tree", "num_trees_2m", "num_trees_5m", "num_trees_10m",  "area_tree_2m",  "area_tree_5m",  "area_tree_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "BuildingKernelDensity_MEAN", "TreeKernelDensity_MEAN", "bl___10", "bl___25", "bl___50", "b___100", "dist_to_nearest_tree", "angular_diff_tree", "num_trees_2m", "num_trees_5m",   "num_trees_10m", "total_build_2m", "total_build_5m", "total_build_10m", "area_ext_tree_2",  "area_ext_tree_5",  "area_ext_tree10", "dist_to_building", "angular_diff_build", "BuildingKernelDensity_MEAN", "TreeKernelDensity_MEAN", "dist_to_nearest_tree:angular_diff_tree", "distance_to_nearest_tree:angular_diff_tree", "dist_to_nearest_building:angular_diff_build", "distance_to_nearest_building:angular_diff_build",  'dist_to_nearest_struc:angular_diff_build', "build_dens:tree_dens", "mean_wind_sp",
-          "distance_to_nearest_tree:angular_diff_tree:mean_wind_sp", "angular_diff_tree:mean_wind_sp", "distance_to_nearest_tree:mean_wind_sp", "mean_wind_sp:distance_to_nearest_building:angular_diff_build", "mean_wind_sp:distance_to_nearest_building", "mean_wind_sp:angular_diff_build", "total_build_200_m", "area_tree_200m", "fprint_area", "total_build_200_m:area_tree_200m", "mean_perc_struc", "mean_perc_tree", "num_builds_200m", "num_trees_200m")
+          "distance_to_nearest_tree:angular_diff_tree:mean_wind_sp", "angular_diff_tree:mean_wind_sp", "distance_to_nearest_tree:mean_wind_sp", "mean_wind_sp:distance_to_nearest_building:angular_diff_build", "mean_wind_sp:distance_to_nearest_building", "mean_wind_sp:angular_diff_build")
 
 cols_unique <- unique(cols)
 
@@ -53,15 +53,7 @@ human_labels <- c(
   "Distance to nearest tree:Wind Speed",
   "Distance to nearest build:\nAngular difference from NE (build):Wind Speed",
   "Distance to nearest build:Wind Speed",
-  "Angular difference from NE (build):Wind Speed",
-  "Area build footprint 200 m",
-  "Area tree canoy 200 m",
-  "Area of structure footprint",
-  "Area build footprint 200 m : Area tree canoy 200 m",
-  "Percent struc 200 m",
-  "Percent tree 200 m",
-  "Num builds 200 m",
-  "Num trees 200 m"
+  "Angular difference from NE (build):Wind Speed"
 ) 
 
 label_map <- setNames(human_labels, cols_unique)

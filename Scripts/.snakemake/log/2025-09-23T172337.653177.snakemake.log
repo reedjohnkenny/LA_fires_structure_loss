@@ -45,3 +45,91 @@ Shell command:
     
 Waiting for more resources.
 Select jobs to execute...
+[Wed Sep 24 00:05:54 2025]
+Finished jobid: 3 (Rule: tree_crowns_final)
+2 of 12 steps (17%) done
+Execute 1 jobs...
+[Wed Sep 24 00:05:54 2025]
+localrule tree_crowns_final:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_crowns_burned_polys_v2.shp, /Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp, /Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/palisades_burned_bound.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp
+    jobid: 10
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_crowns_burned_polys_v2.shp
+    wildcards: fire=palisades, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: 
+    ./pipeline_scripts/CLI_create_tree_crowns_final_datasets.R       -t "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_crowns_burned_polys_v2.shp"       -b "/Users/reedkenny/OneDrive - Cal Poly/data/Buildings/LARIAC6_Buildings_2020_palisades.shp"       -f "palisades"       -s "/Users/reedkenny/OneDrive - Cal Poly/data/town_polygons/palisades_burned_bound.shp"       -l "burned"       -o "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp"
+    
+Waiting for more resources.
+Select jobs to execute...
+[Wed Sep 24 02:10:01 2025]
+Finished jobid: 10 (Rule: tree_crowns_final)
+3 of 12 steps (25%) done
+Execute 1 jobs...
+[Wed Sep 24 02:10:01 2025]
+localrule calc_build_prox:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp
+    jobid: 11
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp
+    wildcards: fire=palisades, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/calc_building_proximity_metrics.R -t /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp -o /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp
+Waiting for more resources.
+Select jobs to execute...
+[Wed Sep 24 02:44:15 2025]
+Finished jobid: 11 (Rule: calc_build_prox)
+4 of 12 steps (33%) done
+Execute 1 jobs...
+[Wed Sep 24 02:44:15 2025]
+localrule extract_kds:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp
+    jobid: 9
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp
+    wildcards: fire=palisades, status=burned
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/Extract_kernel_densities.R -t /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp -b /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_fprints.shp -T /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_density.shp -B /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp
+Waiting for more resources.
+Select jobs to execute...
+[Wed Sep 24 02:44:25 2025]
+Finished jobid: 9 (Rule: extract_kds)
+5 of 12 steps (42%) done
+Execute 1 jobs...
+[Wed Sep 24 02:44:25 2025]
+localrule gen_model_inputs:
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+    jobid: 12
+    reason: Missing output files: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv; Input files updated by another job: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp
+    wildcards: fire=palisades, status=burned, comp=struc
+    resources: tmpdir=/var/folders/d9/q3jcgtz51hvckdj8hrvdb38h0000gn/T
+Shell command: ./pipeline_scripts/generate_model_inputs.R --build_density /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+Waiting for more resources.
+Select jobs to execute...
+RuleException:
+CalledProcessError in file "/Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/Scripts/pipeline_Snakefile", line 94:
+Command 'set -euo pipefail;  ./pipeline_scripts/generate_model_inputs.R --build_density /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv' returned non-zero exit status 1.
+[Wed Sep 24 02:44:25 2025]
+Error in rule gen_model_inputs:
+    message: None
+    jobid: 12
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+    shell:
+        ./pipeline_scripts/generate_model_inputs.R --build_density /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Wed Sep 24 02:44:25 2025]
+Error in rule gen_model_inputs:
+    message: None
+    jobid: 12
+    input: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp, /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp
+    output: /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+    shell:
+        ./pipeline_scripts/generate_model_inputs.R --build_density /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_density.shp --buildings_prox /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_build_prox.shp --output /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/model_inputs/palisades_burned_struc_model_inputs.csv
+        (command exited with non-zero exit code)
+Complete log(s): /Users/reedkenny/Desktop/Urban_tree_fire/structure_analysis/Scripts/.snakemake/log/2025-09-23T172337.653177.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

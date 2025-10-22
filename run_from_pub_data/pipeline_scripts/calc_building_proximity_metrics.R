@@ -142,17 +142,16 @@ calc_building_proximities <- function(building_fprints, tree_crowns) {
   
   area_build_df_100m <- calc_building_area(building_fprints, 100)
   
-  
     area_build_df <- left_join(as.data.frame(building_fprints), area_build_df_2m, by = "UID") %>%
     dplyr::left_join(area_build_df_10m, by = "UID") %>% 
     dplyr::left_join(area_build_df_25m, by = "UID") %>% 
     dplyr::left_join(area_build_df_50m, by = "UID") %>%
     dplyr::left_join(area_build_df_100m, by = "UID") %>% 
-      mutate(area_ext_build_2 = round(total_build_2m - as.numeric(footprint_area), digits = 2), 
-             area_ext_build_10 = round(total_build_10m - as.numeric(footprint_area), digits = 2),
-             area_ext_build_25 = round(total_build_25m - as.numeric(footprint_area), digits = 2), 
-             area_ext_build_50 = round(total_build_50m - as.numeric(footprint_area), digits = 2), 
-             area_ext_build_100 = round(total_build_100m - as.numeric(footprint_area), digits = 2)) %>%
+      mutate(area_ext_build_2 = round(total_build_2m - as.numeric(footprint_area), digits = 0), 
+             area_ext_build_10 = round(total_build_10m - as.numeric(footprint_area), digits = 0),
+             area_ext_build_25 = round(total_build_25m - as.numeric(footprint_area), digits = 0), 
+             area_ext_build_50 = round(total_build_50m - as.numeric(footprint_area), digits = 0), 
+             area_ext_build_100 = round(total_build_100m - as.numeric(footprint_area), digits = 0)) %>% 
       select(UID, area_ext_build_2, area_ext_build_10, area_ext_build_25, area_ext_build_50, area_ext_build_100)
     
   building_fprints <- merge(building_fprints, area_tree_df,  by = "UID")
