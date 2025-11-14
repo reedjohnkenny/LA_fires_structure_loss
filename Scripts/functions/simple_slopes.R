@@ -28,7 +28,7 @@ simple_slopes_plot <- function(fit, x, modx,
   newdat[[modx]] <- new_terms[,2]
   
   # Predict fixed effects only (remove spatial/random effects)
-  newdat$predicted <- as.numeric(predict(fit, newdata = newdat, re.form = NA))
+  newdat$predicted <- as.numeric(predict(fit, newdata = newdat, re.form = NA, type = "response"))
   
   # Get 95% confidence intervals for fixed effect predictions
   intervals <- get_intervals(fit, newdata = newdat, intervals = "predVar", re.form = NA)
@@ -39,7 +39,6 @@ simple_slopes_plot <- function(fit, x, modx,
     geom_line(linewidth = 1) +
     xlim(0,xlim) +
     labs(y = "Predicted Y",
-         title = sprintf("Simple slopes of %s at fixed values of %s", x, modx),
-         subtitle = "Lines = fitted values, bands = 95% CI") +
+         title = sprintf("Simple slopes of %s at fixed values of %s", x, modx)) +
     theme_classic()
 }

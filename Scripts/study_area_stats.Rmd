@@ -3,7 +3,7 @@ title: "study_area_stats"
 output: html_document
 ---
 
-```{r}
+```{r, message=FALSE, echo=FALSE}
 
 library(tidyverse)
 library(terra)
@@ -25,9 +25,10 @@ library(nngeo)
 # Eaton
 
 
-```{r}
+```{r, include=FALSE}
 
-eaton_fprints <- st_read("../tmp_data/eaton_burned_fprints.shp")
+eaton_fprints <- st_read("../tmp_data/eaton_burned_fprints.shp") %>% 
+  mutate(destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
 
 eaton_fprints_buff <- eaton_fprints %>% 
   st_union() %>% 
@@ -69,10 +70,16 @@ Mean building density: `r mean(Eaton_struc$build_dens)`
 Mean tree density: `r mean(Eaton_struc$tree_dens)`
 
 
-Structures destroyed: `r nrow(Eaton_struc[Eaton_struc$destroyed == 1,])`
+Structures destroyed: `r nrow(eaton_fprints[eaton_fprints$destroyed == 1,])`
 
 
-Structures not destroyed: `r nrow(Eaton_struc[Eaton_struc$destroyed == 0,])`
+Percent destroyed: `r nrow(eaton_fprints[eaton_fprints$destroyed == 1,])/nrow(eaton_fprints)`
+
+
+Structures not destroyed: `r nrow(eaton_fprints[eaton_fprints$destroyed == 0,])`
+
+
+Percent survived: `r nrow(eaton_fprints[eaton_fprints$destroyed == 0,])/nrow(eaton_fprints)`
 
 
 Mean area tree canopy within 2 m: `r mean(Eaton_struc$area_of_trees_2m)`
@@ -84,7 +91,142 @@ Mean distance to nearest tree canopy: `r mean(Eaton_struc$distance_to_nearest_tr
 Mean distance to nearest structure: `r mean(Eaton_struc$distance_to_nearest_building)`
 
 
+# Palisades
 
+```{r, include = FALSE}
+
+pal_fprints <- st_read("../tmp_data/palisades_burned_fprints.shp") %>% 
+  mutate(destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
+
+pal_fprints_buff <- pal_fprints %>% 
+  st_union() %>% 
+  st_buffer(50) %>% 
+  st_cast("POLYGON") %>% 
+  st_as_sf()
+
+# Area in square km
+pal_area <- as.numeric(st_area(st_union(pal_fprints_buff))/1e6)
+
+pal_crowns <- st_read("../tmp_data/palisades_burned_tree_crowns_final.shp")
+
+pal_wind <- read.csv("../wind_data/all_hrrr.csv") %>% 
+  filter(point_fire == "palisades") %>% group_by(point_UID) %>% 
+  summarize(mean_wind_sp = mean(wdsp), 
+            mean_wind_dir = mean(wdir))
+
+Pal_struc <- read.csv("../model_inputs/palisades_burned_struc_model_inputs.csv") %>% 
+  select(-X) %>% 
+  na.omit() %>% 
+  left_join(pal_wind, by = c("UID" = "point_UID"))
+
+Pal_struc <- Pal_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_dir), 360 - abs(bearing_to_nearest_building - mean_wind_dir)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_dir), 360 - abs(bearing_to_nearest_tree - mean_wind_dir)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
+
+
+
+```
+Area in square km: `r pal_area`. 
+
+Number of structure footprint polygons: `r nrow(pal_fprints)`. 
+
+
+Number of tree crown polygons: `r nrow(pal_crowns)`
+
+Total canopy area square km: `r st_area(st_union(pal_crowns))/1e6`
+
+Mean building density: `r mean(Pal_struc$build_dens)`
+
+
+Mean tree density: `r mean(Pal_struc$tree_dens)`
+
+
+Structures destroyed: `r nrow(pal_fprints[pal_fprints$destroyed == 1,])`
+
+
+Percent destroyed: `r nrow(pal_fprints[pal_fprints$destroyed == 1,])/nrow(pal_fprints)`
+
+
+Structures not destroyed: `r nrow(pal_fprints[pal_fprints$destroyed == 0,])`
+
+
+Percent survived: `r nrow(pal_fprints[pal_fprints$destroyed == 0,])/nrow(pal_fprints)`
+
+
+Mean area tree canopy within 2 m: `r mean(Pal_struc$area_of_trees_2m)`
+
+
+Mean distance to nearest tree canopy: `r mean(Pal_struc$distance_to_nearest_tree)`
+
+
+Mean distance to nearest structure: `r mean(Pal_struc$distance_to_nearest_building)`
+
+
+# Summmary Table
+
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+
+vars <- c("Study area square km", "Number of structures in study area", "Number of structures destroyed", "Number of structures survived", "Number of trees in study area", "Total canopy area in study area (km^2)", "Mean building density in study area", "Mean tree density in study area",  "Average tree canopy area within 2 m of a structure (m^2)", "Average distance to nearest tree canopy (m)", "Average distance between structures (m)")
+
+Eaton_vars <- c(signif(eaton_area, 3), nrow(eaton_fprints), nrow(eaton_fprints[eaton_fprints$destroyed == 1,]), nrow(eaton_fprints[eaton_fprints$destroyed == 0,]), nrow(eaton_crowns), signif(st_area(st_union(eaton_crowns))/1e6, 3), signif(mean(Eaton_struc$build_dens), 3), signif(mean(Eaton_struc$tree_dens), 3),  signif(mean(Eaton_struc$area_of_trees_2m), 3), signif(mean(Eaton_struc$distance_to_nearest_tree), 3), signif(mean(Eaton_struc$distance_to_nearest_building), 3))
+
+Pal_vars <- c(signif(pal_area, 3), nrow(pal_fprints), nrow(pal_fprints[pal_fprints$destroyed == 1,]), nrow(pal_fprints[pal_fprints$destroyed == 0,]), nrow(pal_crowns), signif(st_area(st_union(pal_crowns))/1e6, 3), signif(mean(Pal_struc$build_dens), 3), signif(mean(Pal_struc$tree_dens), 3),  signif(mean(Pal_struc$area_of_trees_2m),3), signif(mean(Pal_struc$distance_to_nearest_tree),3), signif(mean(Pal_struc$distance_to_nearest_building),3))
+
+
+sum_data <- as.data.frame(cbind(vars, Eaton_vars, Pal_vars))
+
+
+write.csv(sum_data, "../tmp_data/sum_stats.csv")
+
+sum_data
+
+```
+
+
+# Burned vs unburned
+
+```{r}
+
+Eaton_dest_sum <- Eaton_struc %>% select(destroyed, build_dens, tree_dens, distance_to_nearest_tree, distance_to_nearest_building, area_of_trees_2m, area_ext_build_2) %>% 
+  group_by(destroyed) %>% 
+  summarize(mean_build_dens = mean(build_dens), 
+            sd_build_dens = sd(build_dens),
+            mean_tree_dens = mean(tree_dens), 
+            sd_tree_dens = sd(tree_dens),
+            mean_distance_to_nearest_building = mean(distance_to_nearest_building), 
+            sd_distance_to_nearest_building = sd(distance_to_nearest_building),
+            mean_distance_to_nearest_tree = mean(distance_to_nearest_tree), 
+            sd_distance_to_nearest_tree = sd(distance_to_nearest_tree),
+            mean_area_of_trees_2m = mean(area_of_trees_2m), 
+            sd_area_of_trees_2m = sd(area_of_trees_2m),
+            mean_area_ext_build_2m = mean(area_ext_build_2),
+            sd_area_ext_build_2m = sd(area_ext_build_2))
+
+Eaton_dest_sum_long <- pivot_longer(Eaton_dest_sum, cols = 2:13)
+
+Eaton_dest_sum_long <- Eaton_dest_sum %>%
+  mutate(destroyed = factor(destroyed, levels = c(0, 1),
+                            labels = c("0 (not destroyed)", "1 (destroyed)"))) %>%
+  pivot_longer(
+    cols = -destroyed,
+    names_to = c(".value", "var"),          # creates 'mean' and 'sd' cols
+    names_pattern = "^(mean|sd)_(.*)$"
+  )
+
+p_facets <- ggplot(Eaton_dest_sum_long,
+                   aes(x = destroyed, y = mean, fill = destroyed)) +
+  geom_col(width = 0.8) +
+  geom_errorbar(aes(ymin = pmax(mean - sd, 0), ymax = mean + sd),
+                width = 0.2) +
+  facet_wrap(~ var, scales = "free_y") +      # different units → allow free y
+  labs(x = NULL, y = "Mean (± 1 SD)",
+       title = "Means by destroyed status with SD error bars") +
+  guides(fill = "none") +
+  theme_minimal(base_size = 12)
+
+p_facets
+
+
+```
 
 
 

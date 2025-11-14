@@ -1,3 +1,4 @@
+source("functions/coef_mag.R")
 
 plot_alt_models <- function(model){
 
@@ -58,7 +59,7 @@ p <- ggplot(effect_df_E, aes(x = term, y = estimate, color = fire)) +
   geom_hline(yintercept = 0, linetype = "dashed") +
   coord_flip() +
   labs(
-    title = "Standardized effect sizes predicting stucture loss Eaton",
+    title = "Standardized effect sizes predicting stucture loss",
     x     = "Predictor",
     y     = "Estimate (± 95% CI)"
   ) +
@@ -72,7 +73,7 @@ p <- ggplot(effect_df_E, aes(x = term, y = estimate, color = fire)) +
 p2 <- plot_effects_mag(
   model,
   plot_title = "", 
-  bar_fill = "#440154FF"
+  bar_fill = "#440154FF", label_map = label_map
 ) +
   theme(
     axis.title.y    = element_blank(),

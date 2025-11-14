@@ -87,6 +87,18 @@ fpv <- vect(fprints_cents)
   col_name <- paste0("total_build_100_m")
   df_100 <- data.frame(UID = iv$UID)
   df_100[[col_name]] <- areas 
+  
+  
+fpv <- vect(fprints_cents)
+  fpv_all <- terra::vect(all_fprints)
+  fu  <- terra::aggregate(fpv_all, cores = 4)
+  fb  <- terra::buffer(fpv, width = 50)
+  iv  <- terra::intersect(fb, fu)
+  areas <- terra::expanse(iv)
+  col_name <- paste0("total_build_50_m")
+  df_50 <- data.frame(UID = iv$UID)
+  df_50[[col_name]] <- areas 
+  
 
   
   fprints_struc_area <- burned_fprints %>% select(UID) %>% 
@@ -112,31 +124,68 @@ nums_200 <- burned_fprints %>% as.data.frame() %>%
 
 # Calc Kernel density at diff bandwidths
 
-eaton_tree_dens_500 <- sf.kde(st_centroid(all_tree_crowns), bw = 500, res = 30) %>% 
-  terra::extract(burned_fprints, fun  = mean,
+eaton_tree_ref <- rast(ext(vect(st_centroid(all_tree_crowns))), resolution = 30, crs = st_crs(all_tree_crowns)$wkt)
+
+
+eaton_tree_dens_500_pdf <- sf.kde(st_centroid(all_tree_crowns), bw = 500, res = 30, ref = eaton_tree_ref, standardize = FALSE, scale.factor = 1, mask = FALSE) 
+
+eaton_tree_dens_500_tph <- eaton_tree_dens_500_pdf * nrow(all_tree_crowns) * 10000
+
+eaton_tree_dens_500 <- terra::extract(eaton_tree_dens_500_tph, burned_fprints, fun  = "mean",
   bind = TRUE
   ) %>%
   st_as_sf() %>%
   select(UID, tree_dens_500 = z)
 
-eaton_tree_dens_1000 <- sf.kde(st_centroid(all_tree_crowns), bw = 1000, res = 30) %>% 
-  terra::extract(burned_fprints, fun  = mean,
+eaton_tree_dens_300_pdf <- sf.kde(st_centroid(all_tree_crowns), bw = 300, res = 30, ref = eaton_tree_ref, standardize = FALSE, scale.factor = 1, mask = FALSE) 
+
+eaton_tree_dens_300_tph <- eaton_tree_dens_300_pdf * nrow(all_tree_crowns) * 10000
+
+eaton_tree_dens_300 <- terra::extract(eaton_tree_dens_300_tph, burned_fprints, fun  = "mean",
+                                      bind = TRUE
+) %>%
+  st_as_sf() %>%
+  select(UID, tree_dens_300 = z)
+
+
+eaton_build_ref <- rast(ext(vect(st_centroid(all_fprints))), resolution = 30, crs = st_crs(all_fprints)$wkt)
+
+
+eaton_build_dens_500_pdf <- sf.kde(st_centroid(all_fprints), bw = 500, res = 30, ref = eaton_tree_ref, standardize = FALSE, scale.factor = 1, mask = FALSE) 
+
+eaton_build_dens_500_tph <- eaton_build_dens_500_pdf * nrow(all_fprints) * 10000
+
+
+eaton_build_dens_500 <- terra::extract(eaton_build_dens_500_tph, burned_fprints, fun  = "mean",
                  bind = TRUE
   ) %>%
   st_as_sf() %>%
-  select(UID, tree_dens_1000 = z)
+  select(UID, build_dens_500 = z)
 
 
+eaton_build_dens_300_pdf <- sf.kde(st_centroid(all_fprints), bw = 300, res = 30, ref = eaton_tree_ref, standardize = FALSE, scale.factor = 1, mask = FALSE) 
+
+eaton_build_dens_300_tph <- eaton_build_dens_300_pdf * nrow(all_fprints) * 10000
+
+
+eaton_build_dens_300 <- terra::extract(eaton_build_dens_300_tph, burned_fprints, fun  = "mean",
+                                       bind = TRUE
+) %>%
+  st_as_sf() %>%
+  select(UID, build_dens_300 = z)
 
 areas_df <- left_join(area_tree_df_200m, df_200, by = "UID") %>% 
   left_join(df_100, by = "UID") %>% 
+  left_join(df_50, by = "UID") %>% 
   left_join(area_tree_df_100m, by = "UID") %>% 
   left_join(area_tree_df_50m, by = "UID") %>% 
   left_join(fprints_struc_area, by = "UID") %>% 
   left_join(nums_200, by = "UID") %>% 
   left_join(as.data.frame(eaton_tree_dens_500), by = "UID") %>% 
-  left_join(as.data.frame(eaton_tree_dens_1000), by = "UID") %>% 
-  select(-geometry.y, -geometry.x)
+  left_join(as.data.frame(eaton_tree_dens_300), by = "UID") %>% 
+  left_join(as.data.frame(eaton_build_dens_500), by = "UID") %>% 
+  left_join(as.data.frame(eaton_build_dens_300), by = "UID") %>% 
+  select(-geometry.y, -geometry.x, -geometry.y.y, -geometry.x.x)
 
 areas_df <- areas_df %>% mutate(mean_perc_struc = total_build_200_m/(pi*200^2),
                                 mean_tree_density = num_trees_200m/(pi*200^2)*10000,
@@ -206,16 +255,44 @@ fb  <- terra::buffer(fpv, width = 200)
 iv  <- terra::intersect(fb, fu)
 areas <- terra::expanse(iv)
 col_name <- paste0("total_build_200_m")
-df <- data.frame(UID = iv$UID)
-df[[col_name]] <- areas
+df_200 <- data.frame(UID = iv$UID)
+df_200[[col_name]] <- areas
+
+
+# Calc building area within 100 m radius of fprint centroid
+
+fpv <- vect(pal_fprints_cents)
+fpv_all <- terra::vect(pal_all_fprints)
+fu  <- terra::aggregate(fpv_all, cores = 4)
+fb  <- terra::buffer(fpv, width = 100)
+iv  <- terra::intersect(fb, fu)
+areas <- terra::expanse(iv)
+col_name <- paste0("total_build_100_m")
+df_100 <- data.frame(UID = iv$UID)
+df_100[[col_name]] <- areas
+
+
+# Calc building area within 50 m radius of fprint centroid
+
+fpv <- vect(pal_fprints_cents)
+fpv_all <- terra::vect(pal_all_fprints)
+fu  <- terra::aggregate(fpv_all, cores = 4)
+fb  <- terra::buffer(fpv, width = 50)
+iv  <- terra::intersect(fb, fu)
+areas <- terra::expanse(iv)
+col_name <- paste0("total_build_50_m")
+df_50 <- data.frame(UID = iv$UID)
+df_50[[col_name]] <- areas
+
+
 
 
 pal_burned_fprints$num_trees_200m  <- pal_fprints_cents %>% st_buffer(200) %>% 
-  st_intersects(all_tree_crowns) %>% 
+  st_intersects(pal_all_tree_crowns) %>% 
   lengths()
 
 pal_burned_fprints$num_builds_200m  <- pal_fprints_cents %>% st_buffer(200) %>% 
-  st_intersects(all_fprints) %>% 
+  st_intersects(pal_all_fprints) %>% 
   lengths() -1
 
 nums_200 <- pal_burned_fprints %>% as.data.frame() %>% 
@@ -223,35 +300,63 @@ nums_200 <- pal_burned_fprints %>% as.data.frame() %>%
 
 # Kernel dens with diff bandwidths
 
+pal_tree_ref <- rast(ext(vect(st_centroid(pal_all_tree_crowns))), resolution = 30, crs = st_crs(pal_all_tree_crowns)$wkt)
 
-pal_tree_dens_500 <- sf.kde(st_centroid(pal_all_tree_crowns), bw = 500, res = 30) %>% 
-  terra::extract(burned_fprints, fun  = mean,
+
+pal_tree_dens_500_pdf <- sf.kde(x = st_centroid(pal_all_tree_crowns), bw = 500, ref = pal_tree_ref, standardize = FALSE, scale.factor = 1, mask = FALSE, res = 30)
+
+pal_tree_dens_500_tpha <- pal_tree_dens_500_pdf * nrow(pal_all_tree_crowns) * 10000
+
+pal_tree_dens_500 <- terra::extract(pal_tree_dens_500_tpha, pal_burned_fprints,  fun  = "mean",
                  bind = TRUE
   ) %>%
   st_as_sf() %>%
   select(UID, tree_dens_500 = z)
 
-pal_tree_dens_1000 <- sf.kde(st_centroid(pal_all_tree_crowns), bw = 1000, res = 30) %>% 
-  terra::extract(burned_fprints, fun  = mean,
+pal_tree_dens_300_pdf <- sf.kde(st_centroid(pal_all_tree_crowns), ref = pal_tree_ref, bw = 300, res = 30, standardize = FALSE, scale.factor = 1, mask = FALSE) 
+
+pal_tree_dens_300_tpha <- pal_tree_dens_300_pdf * nrow(pal_all_tree_crowns) * 10000
+
+pal_tree_dens_300 <- terra::extract(pal_tree_dens_300_tpha, pal_burned_fprints, fun  = "mean",
                  bind = TRUE
   ) %>%
   st_as_sf() %>%
-  select(UID, tree_dens_1000 = z)
+  select(UID, tree_dens_300 = z)
 
 
-pal_fprints_struc_area <- pal_burned_fprints %>% select(UID) %>% 
-  mutate(fprint_area = st_area(geometry)) %>% 
-  as.data.frame() %>% 
-  select(UID, fprint_area)
 
-pal_areas_df <- left_join(area_tree_df_200m, df, by = "UID") %>% 
+pal_build_ref <- rast(ext(vect(st_centroid(pal_all_fprints))), resolution = 30, crs = st_crs(pal_all_fprints)$wkt)
+
+
+pal_build_dens_500_pdf <- sf.kde(st_centroid(pal_all_fprints), ref= pal_build_ref, bw = 500, res = 30, standardize = FALSE, scale.factor = 1, mask = FALSE)
+                 
+pal_build_dens_500_bph <- pal_build_dens_500_pdf * nrow(pal_all_fprints) * 10000
+
+pal_build_dens_500 <- terra::extract(pal_build_dens_500_bph, pal_burned_fprints, fun = "mean", bind = TRUE) %>%
+  st_as_sf() %>%
+  select(UID, build_dens_500 = z)
+
+
+pal_build_dens_300_pdf <- sf.kde(st_centroid(pal_all_fprints), ref = pal_build_ref, bw = 300, res = 30, standardize = FALSE, scale.factor = 1, mask = FALSE)
+
+pal_build_dens_300_bph <- pal_build_dens_300_pdf * nrow(pal_all_fprints) * 10000
+
+pal_build_dens_300 <- terra::extract(pal_build_dens_300_bph, pal_burned_fprints, fun = "mean", bind = TRUE) %>%
+  st_as_sf() %>%
+  select(UID, build_dens_300 = z)
+
+
+pal_areas_df <- left_join(area_tree_df_200m, df_200, by = "UID") %>% 
+  left_join(df_100, by = "UID") %>% 
+  left_join(df_50, by = "UID") %>% 
   left_join(area_tree_df_100m, by = "UID") %>% 
   left_join(area_tree_df_50m, by = "UID") %>% 
-  left_join(pal_fprints_struc_area, by = "UID") %>% 
   left_join(nums_200, by = "UID") %>% 
   left_join(as.data.frame(pal_tree_dens_500), by = "UID") %>% 
-  left_join(as.data.frame(pal_tree_dens_1000), by = "UID") %>% 
-  select(-geometry.y, -geometry.x)
+  left_join(as.data.frame(pal_tree_dens_300), by = "UID") %>% 
+  left_join(as.data.frame(pal_build_dens_500), by = "UID") %>% 
+  left_join(as.data.frame(pal_build_dens_300), by = "UID") %>% 
+  select(-geometry.y, -geometry.x, -geometry.y.y, -geometry.x.x)
 
 pal_areas_df <- pal_areas_df %>% mutate(mean_perc_struc = total_build_200_m/(pi*200^2),
                                 mean_tree_density = num_trees_200m/(pi*200^2)*10000,

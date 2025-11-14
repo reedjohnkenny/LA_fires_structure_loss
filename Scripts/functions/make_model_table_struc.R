@@ -1,4 +1,4 @@
-make_model_table_struc <- function(burned_model, scaled_model, label_map = label_map) {
+make_model_table_struc <- function(scaled_model, unscaled_model, label_map = label_map) {
   # make sure dplyr verbs are available
   if (!requireNamespace("dplyr", quietly = TRUE)) {
     stop("Please install the dplyr package")
@@ -10,7 +10,7 @@ make_model_table_struc <- function(burned_model, scaled_model, label_map = label
   
   effect_df <- data.frame(
     term            = names(coefs_burned),
-    estimate = round(coefs_burned, 5),
+    standardized_estimate = round(coefs_burned, 5),
     std.error       = se_burned,
     lower           = coefs_burned - 1.96 * se_burned,
     upper           = coefs_burned + 1.96 * se_burned,
@@ -35,32 +35,43 @@ make_model_table_struc <- function(burned_model, scaled_model, label_map = label
   # 6) add significance flag, then drop unneeded columns
   effect_df <- effect_df %>%
     dplyr::mutate(
-      sig_brn_mod = ifelse(lower > 0 | upper < 0, "yes", "no")
+      significant = ifelse(lower > 0 | upper < 0, "yes", "no")
     ) %>%
     dplyr::select(
       term,
-      estimate,
+      standardized_estimate,
       var_importance,
-      sig_brn_mod
+      significant
     )
   
-  # 5) variables from the unscaled model
-  coefs_raw <- fixef(burned_model)
-  # drop intercept
-  coefs_raw <- coefs_raw[names(coefs_raw) != "(Intercept)"]
+ 
+  ame_plus_delta <- function(model, var, delta) {
+    df <- model$data
+    if (!is.numeric(df[[var]]))
+      stop("AME defined here for numeric predictors only.")
+    # conditional predictions incl. REs to match user’s original
+    eta0 <- predict(model, type = "link", re.form = NULL)
+    p0   <- plogis(eta0)
+    nd1  <- df
+    nd1[[var]] <- nd1[[var]] + delta
+    eta1 <- predict(model, newdata = nd1, type = "link", re.form = NULL)
+    p1   <- plogis(eta1)
+    mean(p1 - p0, na.rm = TRUE)
+  }
   
-  # align order to effect_df$term, then rank
-  raw_for_terms <- coefs_raw[effect_df$term]
+  ames <- c()
   
-  raw_df <- data.frame(
-    raw_term            = names(coefs_raw),
-    raw_estimate = round(coefs_raw, 5),
-    odds_ratio = round(exp(coefs_raw),5))
+  ame_terms <- as.data.frame(effect_df$term[effect_df$term != "tree_dens:build_dens"])
   
-  
-  effect_df <- effect_df %>% left_join(raw_df, by = c("term" = "raw_term"))
-  
-  
+  names(ame_terms) <- "term"
+   
+  for(i in 1:nrow(ame_terms)){
+    ame <- ame_plus_delta(unscaled_model, ame_terms$term[i], 1)
+    ame_terms$AME[i] <- signif(ame, 3)
+  }
+
+  effect_df <- effect_df %>% left_join(ame_terms, by = "term") %>% 
+    select(term, var_importance, standardized_estimate, AME, significant)
   
   # 4. Determine ordering by the burned‐model estimates (descending)
   ordered_terms <- effect_df %>%
