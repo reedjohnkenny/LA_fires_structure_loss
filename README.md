@@ -18,7 +18,7 @@ Because some source data are not publicly available, the workflow begins at the 
 - Study boundary polygons: `{fire}_burned_bound.shp`
 - CA fire perimeters, 2025 (public): `Perimeters.shp`
 - DINS structure points (public): `DINS_2025_{fire}_Public_View.geojson`
-- 
+- Hand Digitized tree canopies and random plots: `{fire}_training_final.shp`, `{fire}_rand_plots.shp`
 
 You will need to place these in the expected directory structure or update file paths accordingly.
 
