@@ -18,6 +18,7 @@ Because some source data are not publicly available, the workflow begins at the 
 - Study boundary polygons: `{fire}_burned_bound.shp`
 - CA fire perimeters, 2025 (public): `Perimeters.shp`
 - DINS structure points (public): `DINS_2025_{fire}_Public_View.geojson`
+- 
 
 You will need to place these in the expected directory structure or update file paths accordingly.
 
@@ -55,7 +56,7 @@ Run `Figures.Rmd` to reproduce the figures and summary tables used in the analys
 ### 5. Additional scripts
 
 - `prediction_vis.R`: Produces tables summarizing predicted changes in structure-loss probability across mean versus minimum values of predictors.
-- `Model_accuracy.R`: Performs accuracy assessment of the tree canopy polygons.
+- `validation/Confusion_matrix`: Performs accuracy assessment of the tree canopy polygons.
 
 ## Data Dictionary for Model Inputs
 

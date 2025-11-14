@@ -13,7 +13,7 @@ library(caret)
 study_area_eaton <- st_read("~/OneDrive - Cal Poly/Advanced_GIS_data/Random_plots/eaton_rand_plots_1.shp")
 
 
-# 1. read your tree‐canopy layers, rename for clarity
+# 1. read your tree‐canopy layers
 truth_e <- st_read("~/OneDrive - Cal Poly/Analysis_Results/ArcExports/Eaton_training_final.shp") %>%
   st_union() %>%                           # merge all into one multipolygon
   st_sf(truth = TRUE, geometry = .)
@@ -26,7 +26,7 @@ truth_e_rast[is.na(truth_e_rast[])] <- 0
 
 truth_e_rast <- terra::crop(truth_e_rast, study_area_eaton, mask = T)
 
-pred_e <- st_read("~/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/eaton_burned_tree_crowns_final.shp")
+pred_e <- st_read("~/Desktop/Urban_tree_fire/structure_analysis/tmp_data/eaton_burned_tree_crowns_final.shp")
 
 pred_e_plots <- st_join(pred_e, study_area_eaton, left = F) %>%
   st_union() %>%                           # merge all into one multipolygon
