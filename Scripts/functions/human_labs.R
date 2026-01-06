@@ -62,7 +62,7 @@ human_labels <- c(
   "Percent tree 200 m",
   "Num builds 200 m",
   "Num trees 200 m",
-  "Tree density: Structure density"
+  "Tree density: Structure density<sup>-1</sup>"
 ) 
 
 label_map <- setNames(human_labels, cols_unique)

@@ -8,12 +8,15 @@ make_model_table_struc <- function(scaled_model, unscaled_model, label_map = lab
   coefs_burned <- fixef(scaled_model)
   se_burned    <- sqrt(diag(vcov(scaled_model)))
   
+  tvals <- summary(scaled_model)$beta_table[, "t-value"]
+  
   effect_df <- data.frame(
     term            = names(coefs_burned),
     standardized_estimate = round(coefs_burned, 5),
     std.error       = se_burned,
     lower           = coefs_burned - 1.96 * se_burned,
     upper           = coefs_burned + 1.96 * se_burned,
+    tval           = tvals,
     stringsAsFactors = FALSE
   )
   
@@ -35,7 +38,12 @@ make_model_table_struc <- function(scaled_model, unscaled_model, label_map = lab
   # 6) add significance flag, then drop unneeded columns
   effect_df <- effect_df %>%
     dplyr::mutate(
-      significant = ifelse(lower > 0 | upper < 0, "yes", "no")
+      significant = dplyr::case_when(
+        abs(tval) > 3.3  ~ "***",
+        abs(tval) > 2.6  ~ "**",
+        abs(tval) > 1.96 ~ "*",
+        TRUE             ~ ""
+      )
     ) %>%
     dplyr::select(
       term,
@@ -71,7 +79,8 @@ make_model_table_struc <- function(scaled_model, unscaled_model, label_map = lab
   }
 
   effect_df <- effect_df %>% left_join(ame_terms, by = "term") %>% 
-    select(term, var_importance, standardized_estimate, AME, significant)
+    mutate(standardized_estimate_sig = paste0(standardized_estimate,significant)) %>% 
+    select(term, var_importance, standardized_estimate_sig, AME)
   
   # 4. Determine ordering by the burned‐model estimates (descending)
   ordered_terms <- effect_df %>%

@@ -1,5 +1,4 @@
 library(dplyr)
-library(forcats)
 library(ggplot2)
 
 
@@ -9,6 +8,8 @@ plot_effects_mag <- function(model, plot_title, bar_fill, label_map = label_map)
   coefs <- fixef(model)
   ses   <- sqrt(diag(vcov(model)))
   
+  tvals <- summary(model)$beta_table[, "t-value"]
+  
   # build summary data.frame
   df <- data.frame(
     term     = names(coefs),
@@ -16,6 +17,7 @@ plot_effects_mag <- function(model, plot_title, bar_fill, label_map = label_map)
     std.error= ses,
     lower    = coefs - 1.96 * ses,
     upper    = coefs + 1.96 * ses,
+    tval    = tvals,
     stringsAsFactors = FALSE
   )
   
@@ -36,8 +38,13 @@ plot_effects_mag <- function(model, plot_title, bar_fill, label_map = label_map)
     df <- df %>% filter(term != "(Intercept)") %>%
     mutate(
       mag_est     = round(abs(estimate),2),
-      significant = (lower > 0) | (upper < 0),
-      label       = ifelse(significant, paste0(mag_est,"*"), paste0(mag_est,""))
+      significant = dplyr::case_when(
+        abs(tval) > 3.3  ~ "***",
+        abs(tval) > 2.6  ~ "**",
+        abs(tval) > 1.96 ~ "*",
+        TRUE             ~ ""
+      ),
+      label       = paste0(mag_est,significant)
     )
   
   # plot
@@ -45,12 +52,13 @@ plot_effects_mag <- function(model, plot_title, bar_fill, label_map = label_map)
     geom_col(fill = bar_fill) +
     geom_text(aes(label = label),  # round values if desired
               hjust = -0.1,                    # adjust horizontal position
-              size = 2) +      
+              size = 2, 
+              fontface = "bold") +      
     labs(
       title = plot_title,
       x     = "Absolute Magnitude of Standardized Estimate",
       y     = NULL
     ) +
     theme_minimal(base_size = 6) +
-    xlim(0, max(df$mag_est) * 1.1) 
+    xlim(0, max(df$mag_est) * 1.15) 
 }

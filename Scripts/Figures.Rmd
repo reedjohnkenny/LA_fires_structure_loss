@@ -26,6 +26,7 @@ library(spatialEco)
 library(performance)
 library(INLA)
 library(spaMM)
+library(ggtext)
 
 source("functions/plot_fire_effects.R")
 source("functions/plot_model_effects.R")
@@ -288,7 +289,7 @@ Eaton_struc_spamm_1_scaled <- readRDS("~/Desktop/Urban_tree_fire/structure_analy
     scale_color_manual(values = c("#440154FF" , "#21908CFF")) +
     theme_minimal() +
     theme(plot.title = element_text(hjust = 0.5), 
-          axis.text = element_markdown(),
+          axis.text.y.left = element_markdown(),
           title = element_markdown(),
           legend.position = "none")
   
@@ -349,7 +350,7 @@ Eaton_struc <- read.csv("../model_inputs/eaton_burned_struc_model_inputs.csv") %
 
 Eaton_struc <- Eaton_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_dir), 360 - abs(bearing_to_nearest_building - mean_wind_dir)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_dir), 360 - abs(bearing_to_nearest_tree - mean_wind_dir)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
 
-cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "mean_perc_struc", "area_tree_200m", "total_build_200_m", "fprint_area", "num_trees_200m", "mean_tree_density", "mean_struc_density", "num_builds_200m", "tree_dens_500", "tree_dens_1000", "area_tree_100m", "area_tree_50m", "total_build_100_m", "build_dens_500", "build_dens_1000", "total_build_50_m")
+cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "mean_perc_struc", "area_tree_200m", "total_build_200_m", "fprint_area", "num_trees_200m", "mean_tree_density", "mean_struc_density", "num_builds_200m", "tree_dens_500", "area_tree_100m", "area_tree_50m", "total_build_100_m", "build_dens_500", "total_build_50_m")
 
 names(cols) <- cols
 
@@ -375,7 +376,7 @@ eaton_scaled_m <- fitme(destroyed ~ distance_to_nearest_tree + angular_diff_tree
                        data = Eaton_struc_scale, family = binomial(link = "logit"))
 
 
-eaton_imp <- plot_effects_mag(eaton_scaled_m, label_map = label_map, bar_fill = "black", plot_title = "A. Predictor Importance: Eaton") + theme(axis.text = element_markdown())
+eaton_imp <- plot_effects_mag(eaton_scaled_m, label_map = label_map, bar_fill = "black", plot_title = "A. Predictor Importance: Eaton") + theme(axis.text.y.left = element_markdown())
 
 #ggsave("../Figures/eaton_var_importance.png")
 
@@ -455,7 +456,7 @@ coefs_P <- fixef(Palisades_struc_spamm_1_scaled)
     scale_color_manual(values = c("#21908CFF")) +
     theme_minimal() +
     theme(plot.title = element_text(hjust = 0.5), 
-          axis.text = element_markdown(),
+          axis.text.y.left = element_markdown(),
           legend.position = "none")
   
 p2 <- plot_effects_mag(
@@ -515,7 +516,7 @@ Palisades_struc <- read.csv("../model_inputs/palisades_burned_struc_model_inputs
 Palisades_struc <- Palisades_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_dir), 360 - abs(bearing_to_nearest_building - mean_wind_dir)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_dir), 360 - abs(bearing_to_nearest_tree - mean_wind_dir)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
 
 
-cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "mean_perc_struc", "area_tree_200m", "total_build_200_m", "num_trees_200m", "mean_tree_density", "mean_struc_density", "num_builds_200m", "tree_dens_500", "tree_dens_1000", "area_tree_100m", "area_tree_50m", "total_build_50_m")
+cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "mean_perc_struc", "area_tree_200m", "total_build_200_m", "num_trees_200m", "mean_tree_density", "mean_struc_density", "num_builds_200m", "tree_dens_500", "area_tree_100m", "area_tree_50m", "total_build_50_m")
 
 names(cols) <- cols
 
@@ -546,18 +547,22 @@ pal_scaled_m <- fitme(destroyed ~ distance_to_nearest_tree + angular_diff_tree +
 
 
 pal_imp <- plot_effects_mag(model = pal_scaled_m, label_map = label_map, bar_fill = "black", plot_title = "B. Predictor Importance: Palisades") + 
-  theme(axis.text = element_markdown())
+  theme(axis.text.y.left = element_markdown())
 
 #ggsave("../Figures/pal_var_importance.png")
 
 imp_plots <- arrangeGrob(eaton_imp, pal_imp, layout_matrix = rbind(c(1,2)))
 
 ggsave("../Figures/var_importance.png", imp_plots, width = 6, height = 2, units = "in", dpi = 300)
+
+
 ```
 
 
 
 ```{r}
+
+source("functions/make_model_table_struc.R")
 
 Pal_struc_tab <- make_model_table_struc(scaled_model = pal_scaled_m, unscaled_model = Palisades_struc_spamm_1, label_map = label_map)
 
@@ -581,14 +586,18 @@ write.csv(all_struc_tab_wide, "../Figures/all_struc_tab_wide.csv")
 source("functions/simple_slopes.R")
 
 p1 <- simple_slopes_plot(Eaton_struc_spamm_1, x="tree_dens", modx="build_dens", modx_vals=c("Q10","Q90"), xlim = max(Eaton_struc_spamm_1$data$tree_dens))
-p1 +
+eaton_tree_int <- p1 +
     scale_color_manual(name = "Structure density", values = c("forestgreen", "black")) + 
   scale_fill_manual(name = "Structure density", values = c("forestgreen", "black")) +
   labs(y = "Predicted probability of structure loss",
        x = "Tree density (ha <sup>-1</sup>)",
-         title = "Predicted slope of tree density at high and low structure density: Eaton") +
+         title = "A. Eaton Fire") +
     theme_classic() +
-    theme(axis.title.x = element_markdown())
+    theme(axis.title.x = element_markdown(size = 6), 
+        title = element_text(size = 6),
+        axis.title.y = element_text(size = 6),
+        axis.text = element_text(size = 6), 
+        legend.position = "none")
 
 ggsave("../Figures/Eaton_interaction.png", width = 7, height = 5)
 ```
@@ -608,7 +617,12 @@ p1 +
        x = "Structure density (ha <sup>-1</sup>)",
          title = "Predicted slope of structure density at high and low tree density: Eaton")
     theme_classic() +
-  theme(axis.title.x = element_markdown())
+    theme(axis.title.x = element_markdown(size = 6), 
+        title = element_text(size = 6),
+        axis.title.y = element_text(size = 6),
+        axis.text = element_text(size = 6), 
+        legend.text = element_text(size = 6), 
+        legend.key.size = unit(0.5, 'cm'))
 
 #ggsave("../Figures/Eaton_interaction.png", width = 7, height = 5)
 ```
@@ -621,17 +635,31 @@ p1 +
 source("functions/simple_slopes.R")
 
 p1 <- simple_slopes_plot(Palisades_struc_spamm_1, x="tree_dens", modx="build_dens", modx_vals=c("Q10","Q90"), xlim = max(Palisades_struc_spamm_1$data$tree_dens))
-p1 + 
+pal_tree_int <- p1 + 
   scale_color_manual(name = "Structure density", values = c("forestgreen",  "black")) + 
   scale_fill_manual(name = "Structure density", values = c("forestgreen", "black")) +
   labs(y = "Predicted probability of structure loss",
        x = "Tree density (ha <sup>-1</sup>)",
-         title = "Predicted slope of tree density at high and low structure density: Palisades") +
+         title = "B. Palisades Fire") +
     theme_classic() +
-  theme(axis.title.x = element_markdown())
+  theme(axis.title.x = element_markdown(size = 6), 
+        title = element_text(size = 6),
+        axis.title.y = element_text(size = 6),
+        axis.text = element_text(size = 6), 
+        legend.text = element_text(size = 6), 
+        legend.key.size = unit(0.5, 'cm'))
 
 ggsave("../Figures/Palisades_interaction.png", width = 7, height = 5)
   
+```
+
+
+```{r}
+int_plots <- arrangeGrob(eaton_tree_int, pal_tree_int, layout_matrix = rbind(c(1,1,1,2,2,2,2)))
+
+ggsave("../Figures/int.png", int_plots, width = 6, height = 2, units = "in", dpi = 300)
+
+
 ```
 
 # Struc density Palisades
@@ -717,50 +745,55 @@ source("functions/plot_pred_change_2.R")
 
 struc_dens <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "build_dens",
                  labels = c("Eaton", "Palisades"), delta = 1) + 
+  ggtitle("A.") +
   labs(x = "Structure density (ha<sup>-1</sup>)")  +
   scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
   theme(legend.position = "none", 
-        axis.title = element_markdown()) 
+        axis.title.x = element_markdown()) 
 
 
 tree_dens <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "tree_dens",
                  labels = c("Eaton", "Palisades"), delta = 1) +
+  ggtitle("B.") +
   labs(x = "Tree density (ha<sup>-1</sup>)") +
     scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
   theme(legend.position = "none", 
-        axis.title = element_markdown())
+        axis.title.x = element_markdown())
 
 trees_2 <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "area_of_trees_2m",
                  labels = c("Eaton", "Palisades"), delta = 1) + 
+  ggtitle("C.") +
   labs(x = "Area of tree canopy within 2 m (m<sup>2</sup>)")  +
     scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
   theme(legend.position = "none", 
-        axis.title = element_markdown())
+        axis.title.x = element_markdown())
 
 dist <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "distance_to_nearest_building",
                  labels = c("Eaton", "Palisades"), delta = 1) + 
+  ggtitle("D.") +
   labs(x = "Distance to nearest structure (m)")  +
     scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
   theme(legend.position = "none", 
-        axis.title = element_markdown())
+        axis.title.x = element_markdown())
 
 build_2 <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "area_ext_build_2",
                  labels = c("Eaton", "Palisades"), delta = 1) + 
+  ggtitle("E.") +
   labs(x = "Area of structure footprint within 2 m (m<sup>2</sup>)")   +
     scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
   theme(legend.position = "none", 
-        axis.title = element_markdown())
+        axis.title.x = element_markdown())
 
 
 
 legend <- get_legend(plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "area_ext_build_2",
                  labels = c("Eaton", "Palisades"), delta = 1) + 
-  labs("Area of structure footprint within 2 m") +
+  labs(x = "Area of structure footprint within 2 m") +
       scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
     theme(legend.title = element_text(size = 16), 

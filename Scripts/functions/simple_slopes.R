@@ -36,7 +36,7 @@ simple_slopes_plot <- function(fit, x, modx,
   
   ggplot(newdat, aes(x = .data[[x]], y = predicted, color = as.factor(.data[[modx]]), fill = as.factor(.data[[modx]]))) +
     geom_ribbon(aes(ymin = predVar_0.025, ymax = predVar_0.975), alpha = 0.15) +
-    geom_line(linewidth = 1) +
+    geom_line(linewidth = 0.5) +
     xlim(0,xlim) +
     labs(y = "Predicted Y",
          title = sprintf("Simple slopes of %s at fixed values of %s", x, modx)) +
