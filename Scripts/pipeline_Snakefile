@@ -52,8 +52,21 @@ rule footprints_final:
     expand("{tmp}/{fire}_{status}_fprints.shp", tmp=LA_TMP, fire=fires, status=statuses)
   shell:
     "Rscript {PIPE}/Create_buildings_final_datasets.R"
+    
 
-
+rule extract_terrain:
+  input:
+    dtm=os.path.join(WORKDIR, "raw_data", "{fire}_{status}_dtm_2023_epsg32611.tif"),
+    fprints=os.path.join(LA_TMP, "{fire}_{status}_fprints.shp")
+  output:
+    os.path.join(LA_TMP, "{fire}_{status}_fprints_terrain.shp")
+  shell:
+    """
+    Rscript {PIPE}/Extract_terrain.R \
+      -d "{input.dtm}" \
+      -b "{input.fprints}" \
+      -o "{output}"
+    """
 
 rule extract_kds:
   input:
@@ -91,9 +104,10 @@ rule calc_build_prox:
 rule gen_model_inputs:
   input:
     build_density=os.path.join(LA_TMP, "{fire}_{status}_build_density.shp"),
-    build_prox=os.path.join(LA_TMP, "{fire}_{status}_build_prox.shp")
+    build_prox=os.path.join(LA_TMP, "{fire}_{status}_build_prox.shp"),
+    build_terrain=os.path.join(LA_TMP, "{fire}_{status}_fprints_terrain.shp")
   output:
     os.path.join(MODEL_IN, "{fire}_{status}_{comp}_model_inputs.csv")
   shell:
-    "./{PIPE}/generate_model_inputs.R --build_density {input.build_density} --buildings_prox {input.build_prox} --output {output}"
+    "./{PIPE}/generate_model_inputs.R --build_density {input.build_density} --buildings_prox {input.build_prox} --build_terrain {input.build_terrain} --output {output}"
 

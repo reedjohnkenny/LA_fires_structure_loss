@@ -67,7 +67,8 @@ print(cm_e)
 
 study_area_pal <- st_read("~/OneDrive - Cal Poly/Advanced_GIS_data/Random_plots/palisades_rand_plots.shp")
 
-ptruth <- st_read("~/OneDrive - Cal Poly/Analysis_Results/ArcExports/Palisades_training_final.shp") %>%
+ptruth <- st_read("palisades_digitized_canopies.shp") %>% 
+  st_make_valid(ptruth) %>%
   st_union() %>%                           # merge all into one multipolygon
   st_sf(truth = TRUE, geometry = .) %>% 
   st_transform(32611)
@@ -80,7 +81,7 @@ ptruth_rast[is.na(ptruth_rast[])] <- 0
 
 ptruth_rast <- terra::crop(ptruth_rast, study_area_pal, mask = T)
 
-ppred  <- st_read("~/Desktop/Urban_tree_fire/landscape_analysis/tmp_data/palisades_burned_tree_crowns_final.shp")
+ppred  <- st_read("~/Desktop/Urban_tree_fire/structure_analysis/tmp_data/palisades_burned_tree_crowns_final.shp")
 
 ppred_plots <- st_join(ppred, study_area_pal, left = F) %>% 
   st_union() %>%                           # merge all into one multipolygon

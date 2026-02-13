@@ -12,7 +12,7 @@ rule co_reg_pre_eaton:
         "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Eaton/Registered_DEMS/{all_pan_tile_num}_phase.tif"
     shell:
         """
-        python batch_phase_coreg.py \
+        python batch_phase_coreg_with_error.py \
           --input_pan "{input.pan}" \
           --input_dem "{input.dem}" \
           --output "{output}"
@@ -26,7 +26,7 @@ rule co_reg_pre_palisades:
         "/Users/reedkenny/OneDrive - Cal Poly/data/LiDAR/Palisades/Registered_DEMS/palisades_prefire_CHM_reg.tif"
     shell:
         """
-        python batch_phase_coreg.py \
+        python batch_phase_coreg_with_error.py \
           --input_pan "{input.pan}" \
           --input_dem "{input.dem}" \
           --output "{output}"

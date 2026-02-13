@@ -169,11 +169,11 @@ tmap_save(pal_map, "../Figures/pal_map.png")
 
 tree_crowns_final <- st_read("../tmp_data/eaton_burned_tree_crowns_final.shp")
 
-fprints <- st_read("~/OneDrive - Cal Poly/data/Buildings/LAIAC6_Buildings_2020_Eaton.shp") %>% st_transform(crs = 32611) %>% 
+fprints <- st_read("../tmp_data/eaton_burned_fprints.shp") %>% st_transform(crs = 32611) %>% 
   st_crop(xmin= 392933, ymin= 3781276, xmax= 399091, ymax= 3786441)
 
 max_vis <- terra::rast("~/OneDrive - Cal Poly/Advanced_GIS_data/Maxar/Eaton/PRE/Eaton_prefire_visual/10400100A17E8600-visual (3).tif") %>% 
-  terra::project("EPSG:32611")
+  terra::project(crs("EPSG:32611"))
 
 bbox <- c(xmin = 396300, xmax = 396450,ymin = 3783800, ymax = 3783990)
 
@@ -190,9 +190,11 @@ print_crop <- st_crop(fprints, plot_rect) %>%
   mutate(class = "building") %>% 
   select(class)
 
+print_buff <- st_buffer(print_crop, 2)
+
 all_crop <- rbind(tree_crop, print_crop)
 
-vis_crop <- terra::crop(max_vis, plot_rect, mask = T)
+vis_crop <- terra::crop(max_vis, rast_rect, mask = T)
 
 
   tmap_mode("plot")
@@ -200,12 +202,16 @@ ex_polys <-  tm_shape(vis_crop) +
  tm_rgb() +
   tm_shape(all_crop) +
   tm_polygons(fill = 'class', fill_alpha = 0.2, fill.scale = tm_scale(values = c("tree" = "lightgreen", "building" = "yellow")), col = 'class', col.scale = tm_scale(values = c("tree" = "lightgreen", "building" = "yellow")), fill.legend = tm_legend_combine("col")) +
-   tm_compass(type = "4star", position = c("left", "bottom"), frame = T, bg.color = "white") +
-  tm_scalebar(breaks = c(0, 0.01, 0.02), text.size = 0.5, position = c("right", "bottom"), bg.color = "white", frame = T) +
-  tm_title("Example Polygons", position = c("top", "center"), frame = TRUE, bg.color = "white") +
+  tm_shape(print_buff) +
+  tm_polygons(fill = NULL, col = "orange") +
+   tm_compass(type = "4star", position = c("left", "bottom"), frame = T, bg = T, bg.color = "white") +
+  tm_scalebar(breaks = c(0, 0.01, 0.02), text.size = 0.5, position = c("center", "bottom"), bg = T, bg.color = "white", frame = T) +
+  tm_title("Example Polygons", position = c("top", "center"), frame = TRUE, bg.color = "white", bg = T) +
   tm_layout(text.fontfamily = "Times", legend.show = T,
            legend.outside = FALSE, legend.position = c("right", "bottom"), legend.bg.color = "white",
             frame = T)
+
+ex_polys
   
 tmap_save(ex_polys, "../Figures/Ex_polys.png")
 
@@ -771,9 +777,18 @@ trees_2 <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = 
   theme(legend.position = "none", 
         axis.title.x = element_markdown())
 
-dist <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "distance_to_nearest_building",
+trees_dist <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "distance_to_nearest_tree",
                  labels = c("Eaton", "Palisades"), delta = 1) + 
   ggtitle("D.") +
+  labs(x = "Distance to nearest tree (m)")  +
+    scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
+  scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
+  theme(legend.position = "none", 
+        axis.title.x = element_markdown())
+
+dist <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "distance_to_nearest_building",
+                 labels = c("Eaton", "Palisades"), delta = 1) + 
+  ggtitle("E.") +
   labs(x = "Distance to nearest structure (m)")  +
     scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
@@ -782,7 +797,7 @@ dist <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "di
 
 build_2 <- plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm_1, var = "area_ext_build_2",
                  labels = c("Eaton", "Palisades"), delta = 1) + 
-  ggtitle("E.") +
+  ggtitle("F.") +
   labs(x = "Area of structure footprint within 2 m (m<sup>2</sup>)")   +
     scale_color_manual(values = c("#0D0887FF", "#ED7953FF")) +
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
@@ -798,12 +813,17 @@ legend <- get_legend(plot_pred_change(Eaton_struc_spamm_1, Palisades_struc_spamm
   scale_fill_manual(values = c("#0D0887FF","#ED7953FF")) +
     theme(legend.title = element_text(size = 16), 
           legend.text = element_text(size = 16), 
-  legend.key.size = unit(1.5, "cm")))
+  legend.key.size = unit(1, "cm"), 
+  legend.position = "bottom", 
+  legend.key.justification = "top"))
 
 
-marg_plots <- arrangeGrob(struc_dens, tree_dens, trees_2, dist, build_2, legend, layout_matrix = rbind(c(1,2), 
-                                                                                        c(3,4), 
-                                                                                        c(5, 6)))
+marg_plots <- arrangeGrob(struc_dens, tree_dens, trees_2, trees_dist, dist, build_2, legend, 
+                         layout_matrix = rbind(c(1,2), 
+                                              c(3,4), 
+                                              c(5,6),
+                                              c(7,7)),
+                         heights = c(1, 1, 1, 0.3))
 
 ggsave("../Figures/marg_prob.png", marg_plots, width = 6, height = 8, units = "in")
 
@@ -1137,55 +1157,39 @@ tmap_save(pal_struc_dens_map, "../Supp_Figures/Palisades_struc_dens.png")
 
 ```{r}
 
-Eaton_dest_sum <- Eaton_struc_spamm_1$data %>% select(destroyed, build_dens, tree_dens, distance_to_nearest_tree, distance_to_nearest_building, area_of_trees_2m, area_ext_build_2) %>% 
-  group_by(destroyed) %>% 
-  summarize(mean_build_dens = mean(build_dens), 
-            sd_build_dens = sd(build_dens),
-            mean_tree_dens = mean(tree_dens), 
-            sd_tree_dens = sd(tree_dens),
-            mean_distance_to_nearest_building = mean(distance_to_nearest_building), 
-            sd_distance_to_nearest_building = sd(distance_to_nearest_building),
-            mean_distance_to_nearest_tree = mean(distance_to_nearest_tree), 
-            sd_distance_to_nearest_tree = sd(distance_to_nearest_tree),
-            mean_area_of_trees_2m = mean(area_of_trees_2m), 
-            sd_area_of_trees_2m = sd(area_of_trees_2m),
-            mean_area_ext_build_2m = mean(area_ext_build_2),
-            sd_area_ext_build_2m = sd(area_ext_build_2))
-
-Eaton_dest_sum_long <- pivot_longer(Eaton_dest_sum, cols = 2:13)
-
-Eaton_dest_sum_long <- Eaton_dest_sum %>%
-  mutate(destroyed = factor(destroyed, levels = c(0, 1),
-                            labels = c("Not destroyed", "Destroyed"))) %>%
-  pivot_longer(
-    cols = -destroyed,
-    names_to = c(".value", "var"),          # creates 'mean' and 'sd' cols
-    names_pattern = "^(mean|sd)_(.*)$"
-  )
-
-eaton_p_facets <- ggplot(Eaton_data,
-                   aes(x = destroyed, y = mean, fill = destroyed)) +
-  geom_violin(width = 0.8) +
-  geom_errorbar(aes(ymin = pmax(mean - sd, 0), ymax = mean + sd),
-                width = 0.2) +
-  facet_wrap(~ var, scales = "free_y") +      # different units → allow free y
-  labs(x = NULL, y = "Mean (± 1 SD)",
-       title = "Eaton") +
-  guides(fill = "none") +
-  theme_minimal(base_size = 12) +
-  scale_fill_manual(values = c("forestgreen", "red"))
-
-ggsave("../Supp_Figures/eaton_sum_stats.png", eaton_p_facets)
-
-eaton_p_facets
 
 Eaton_data <- Eaton_struc_spamm_1$data %>% select(destroyed, build_dens, tree_dens, distance_to_nearest_tree, distance_to_nearest_building, area_of_trees_2m, area_ext_build_2)
 
-Eaton_data_long <- Eaton_data %>% pivot_longer(cols = 2:7)
+cols <- names(Eaton_data[,2:7])
 
-ggplot(Eaton_data_long, aes(x = as.factor(destroyed), y = value)) + 
-  geom_violin() + 
-  facet_wrap(~ name, scales = "free_y")
+col_labels <- label_map[cols]
+
+names(Eaton_data)[match(cols, names(Eaton_data))] <- unname(col_labels)
+
+Eaton_data_long <- Eaton_data %>% pivot_longer(cols = 2:7) %>%
+  mutate(
+    destroyed = factor(
+      destroyed,
+      levels = c(1, 0),                # adjust if your coding is reversed
+      labels = c("destroyed", "not-destroyed")
+    )
+  )
+
+
+
+ggplot(Eaton_data_long, aes(x = destroyed, y = value, fill = destroyed)) +
+  geom_violin(trim = TRUE, alpha = 0.5) +
+  facet_wrap(~ name, scales = "free_y") +
+  scale_fill_manual(values = c("red", "forestgreen")) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none") +
+  theme(
+    strip.text = ggtext::element_markdown(size = 6), 
+    axis.text.x = element_text(size = 6)
+  ) + 
+  labs(x = NULL, y = NULL)
+
+ggsave("../Supp_Figures/eaton_sum_stats.png", width = 6, height = 4, units = "in")
 
 
 ```
@@ -1193,57 +1197,48 @@ ggplot(Eaton_data_long, aes(x = as.factor(destroyed), y = value)) +
 
 ```{r}
 
-Pal_dest_sum <- Palisades_struc %>% select(destroyed, build_dens, tree_dens, distance_to_nearest_tree, distance_to_nearest_building, area_of_trees_2m, area_ext_build_2) %>% 
-  group_by(destroyed) %>% 
-  summarize(mean_build_dens = mean(build_dens), 
-            sd_build_dens = sd(build_dens),
-            mean_tree_dens = mean(tree_dens), 
-            sd_tree_dens = sd(tree_dens),
-            mean_distance_to_nearest_building = mean(distance_to_nearest_building), 
-            sd_distance_to_nearest_building = sd(distance_to_nearest_building),
-            mean_distance_to_nearest_tree = mean(distance_to_nearest_tree), 
-            sd_distance_to_nearest_tree = sd(distance_to_nearest_tree),
-            mean_area_of_trees_2m = mean(area_of_trees_2m), 
-            sd_area_of_trees_2m = sd(area_of_trees_2m),
-            mean_area_ext_build_2m = mean(area_ext_build_2),
-            sd_area_ext_build_2m = sd(area_ext_build_2))
+ggplot(Eaton_data, aes(x = `Structure density (ha<sup>-1</sup>)`, y = `Tree density (ha<sup>-1</sup>)`, color = destroyed)) + geom_point()
 
-Pal_dest_sum_long <- pivot_longer(Pal_dest_sum, cols = 2:13)
 
-Pal_dest_sum_long <- Pal_dest_sum %>%
-  mutate(destroyed = factor(destroyed, levels = c(0, 1),
-                            labels = c("Not destroyed", "Destroyed"))) %>%
-  pivot_longer(
-    cols = -destroyed,
-    names_to = c(".value", "var"),          # creates 'mean' and 'sd' cols
-    names_pattern = "^(mean|sd)_(.*)$"
-  )
 
-pal_p_facets <- ggplot(Pal_dest_sum_long,
-                   aes(x = destroyed, y = mean, fill = destroyed)) +
-  geom_col(width = 0.8) +
-  geom_errorbar(aes(ymin = pmax(mean - sd, 0), ymax = mean + sd),
-                width = 0.2) +
-  facet_wrap(~ var, scales = "free_y") +      # different units → allow free y
-  labs(x = NULL, y = "Mean (± 1 SD)",
-       title = "Palisades") +
-  guides(fill = "none") +
-  theme_minimal(base_size = 12) +
-  scale_fill_manual(values = c("forestgreen", "red"))
 
-ggsave("../Supp_Figures/pal_sum_stats.png", pal_p_facets)
+```
 
-pal_p_facets
+
+
+```{r}
 
 pal_data <- Palisades_struc_spamm_1$data %>% select(destroyed, build_dens, tree_dens, distance_to_nearest_tree, distance_to_nearest_building, area_of_trees_2m, area_ext_build_2)
 
-pal_data_long <- pal_data %>% pivot_longer(cols = 2:7)
+cols <- names(pal_data[,2:7])
 
-ggplot(pal_data_long, aes(x = as.factor(destroyed), y = value)) + 
-  geom_violin() + 
-  facet_wrap(~ name, scales = "free_y")
+col_labels <- label_map[cols]
+
+names(pal_data)[match(cols, names(pal_data))] <- unname(col_labels)
+
+pal_data_long <- pal_data %>% pivot_longer(cols = 2:7) %>%
+  mutate(
+    destroyed = factor(
+      destroyed,
+      levels = c(1, 0),                # adjust if your coding is reversed
+      labels = c("destroyed", "not-destroyed")
+    )
+  )
+
+ggplot(pal_data_long, aes(x = destroyed, y = value, fill = destroyed)) +
+  geom_violin(trim = TRUE, alpha = 0.5) +
+  facet_wrap(~ name, scales = "free_y") +
+  scale_fill_manual(values = c("red", "forestgreen")) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none") +
+  theme(
+    strip.text = ggtext::element_markdown(size = 6), 
+    axis.text.x = element_text(size = 6)
+  ) + 
+  labs(x = NULL, y = NULL)
 
 
+ggsave("../Supp_Figures/pal_sum_stats.png", width = 6, height = 4, units = "in")
 
 
 ```

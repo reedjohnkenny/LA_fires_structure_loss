@@ -4,6 +4,7 @@ library(terra)
 library(geosphere)
 library(nngeo)
 library(dplyr)
+library(spatialEco)
 
 setwd("~/Desktop/Urban_tree_fire/structure_analysis/")
 

@@ -14,10 +14,9 @@ source("functions/plot_alt_models.R")
 
 setwd("~/Desktop/Urban_tree_fire/structure_analysis/Scripts/")
 
-eaton_wind <- read.csv("../wind_data/all_hrrr.csv") %>% 
-  filter(point_fire == "eaton") %>% group_by(point_UID) %>% 
-  summarize(mean_wind_sp = mean(wdsp), 
-            mean_wind_dir = mean(wdir))
+eaton_wind_vel <- read.csv("../wind_data/eaton_windninja_vel.csv")
+
+eaton_wind_dir <- read.csv("../wind_data/eaton_windninja_ang.csv")
 
 eaton_areas <- read.csv("../model_inputs/eaton_burned_alt_inputs.csv")
 
@@ -26,12 +25,13 @@ Eaton_struc <- read.csv("../model_inputs/eaton_burned_struc_model_inputs.csv") %
   select(-X) %>% 
   filter(DAMAGE %in% c("Destroyed (>50%)", "No Damage", "Affected (1-9%)")) %>% 
   na.omit() %>% 
-  left_join(eaton_wind, by = c("UID" = "point_UID")) %>% 
+  left_join(eaton_wind_vel, by = "UID") %>% 
+  left_join(eaton_wind_dir, by = "UID") %>% 
   left_join(eaton_areas, by = "UID")
 
-Eaton_struc <- Eaton_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_dir), 360 - abs(bearing_to_nearest_building - mean_wind_dir)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_dir), 360 - abs(bearing_to_nearest_tree - mean_wind_dir)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
+Eaton_struc <- Eaton_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_ang), 360 - abs(bearing_to_nearest_building - mean_wind_ang)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_ang), 360 - abs(bearing_to_nearest_tree - mean_wind_ang)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
 
-cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "mean_perc_struc", "area_tree_200m", "total_build_200_m", "fprint_area", "num_trees_200m", "mean_tree_density", "mean_struc_density", "num_builds_200m", "tree_dens_500", "tree_dens_300", "area_tree_100m", "area_tree_50m", "total_build_100_m", "build_dens_500", "build_dens_300", "total_build_50_m")
+cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "mean_perc_struc", "area_tree_200m", "total_build_200_m", "fprint_area", "num_trees_200m", "mean_tree_density", "mean_struc_density", "num_builds_200m", "tree_dens_500", "tree_dens_300", "area_tree_100m", "area_tree_50m", "total_build_100_m", "build_dens_500", "build_dens_300", "total_build_50_m", "mean_wind_vel", "elevation", "slope", "aspect")
 
 names(cols) <- cols
 
@@ -78,6 +78,10 @@ for(i in seq_len(nrow(combos))) {
       "distance_to_nearest_building + angular_diff_build + ",
       "area_ext_build_2 + ",
       "area_of_trees_2m + ",
+      "mean_wind_vel + ",
+      "aspect + ",
+      "elevation + ",
+      "slope + ",
       "IMRF(1 | utm_x + utm_y, model = spde)"
     )
   )
@@ -99,6 +103,10 @@ for(i in seq_len(nrow(combos))) {
       "distance_to_nearest_building * angular_diff_build + ",
       "area_ext_build_2 + ",
       "area_of_trees_2m + ",
+      "mean_wind_vel + ",
+      "aspect + ",
+      "elevation + ",
+      "slope + ",
       "IMRF(1 | utm_x + utm_y, model = spde)"
     )
   )
@@ -107,7 +115,7 @@ for(i in seq_len(nrow(combos))) {
 
 eaton_int_1.5 <- fitme(destroyed ~ distance_to_nearest_tree + angular_diff_tree + tree_dens * 
                          build_dens + distance_to_nearest_building + angular_diff_build + 
-                         area_ext_build_2 + area_of_trees_2m +IMRF(1 | utm_x + utm_y, 
+                         area_ext_build_2 + area_of_trees_2m + mean_wind_vel + aspect + elevation + slope + IMRF(1 | utm_x + utm_y, 
                                                                     model = spde), 
                        data = Eaton_struc_scale, family = binomial(link = "logit"))
 
@@ -137,7 +145,7 @@ saveRDS(eaton_struc_m_unscale, "../models/eaton_struc_m1_unscaled.rda")
 
 pal_wind <- read.csv("../wind_data/all_hrrr.csv") %>% 
   filter(point_fire == "palisades") %>% group_by(point_UID) %>% 
-  summarize(mean_wind_sp = mean(wdsp), 
+  summarize(mean_wind_vel = mean(wdsp),
             mean_wind_dir = mean(wdir))
 
 pal_areas <- read.csv("../model_inputs/palisades_burned_alt_inputs.csv")
@@ -152,7 +160,7 @@ Palisades_struc <- read.csv("../model_inputs/palisades_burned_struc_model_inputs
 Palisades_struc <- Palisades_struc %>% mutate(angular_diff_build = pmin(abs(bearing_to_nearest_building - mean_wind_dir), 360 - abs(bearing_to_nearest_building - mean_wind_dir)), angular_diff_tree = pmin(abs(bearing_to_nearest_tree - mean_wind_dir), 360 - abs(bearing_to_nearest_tree - mean_wind_dir)), destroyed = if_else(DAMAGE %in% c("No Damage", "Affected (1-9%)"),0,1))
 
 
-cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "mean_perc_struc", "area_tree_200m", "total_build_200_m", "num_trees_200m", "mean_tree_density", "mean_struc_density", "num_builds_200m", "tree_dens_500", "tree_dens_300", "area_tree_100m", "area_tree_50m", "total_build_50_m")
+cols <- c("distance_to_nearest_tree", "distance_to_nearest_building", "angular_diff_tree", "number_of_trees_2m", "number_of_trees_5m", "number_of_trees_10m",  "area_of_trees_2m",  "area_of_trees_5m",  "area_of_trees_10m", "area_ext_build_2", "area_ext_build_10", "area_ext_build_25", "area_ext_build_50", "area_ext_build_100", "angular_diff_build", "build_dens", "tree_dens", "mean_perc_struc", "area_tree_200m", "total_build_200_m", "num_trees_200m", "mean_tree_density", "mean_struc_density", "num_builds_200m", "tree_dens_500", "tree_dens_300", "area_tree_100m", "area_tree_50m", "total_build_100_m", "build_dens_500", "build_dens_300", "total_build_50_m", "mean_wind_vel", "elevation", "slope", "aspect")
 
 names(cols) <- cols
 
@@ -175,7 +183,7 @@ spde <- INLA::inla.spde2.matern(mesh)
 spaMM.options(separation_max = 100)
 
 # 1. Define the sets of predictors
-tree_dens_vars <- c("area_tree_50m")
+tree_dens_vars <- c("area_tree_50m", "area_tree_100m", "area_tree_200m")
 build_dens_vars  <- c("area_ext_build_25","area_ext_build_50", "area_ext_build_100", "total_build_50_m", "total_build_100_m", "total_build_200_m")
 
 
@@ -201,6 +209,10 @@ for(i in seq_len(nrow(combos))) {
       "distance_to_nearest_building + angular_diff_build + ",
       "area_ext_build_2 + ",
       "area_of_trees_2m + ",
+      "mean_wind_vel + ",
+      "aspect + ",
+      "elevation + ",
+      "slope + ",
       "IMRF(1 | utm_x + utm_y, model = spde)"
     )
   )
@@ -222,16 +234,20 @@ for(i in seq_len(nrow(combos))) {
       "distance_to_nearest_building * angular_diff_build + ",
       "area_ext_build_2 + ",
       "area_of_trees_2m + ",
+      "mean_wind_vel + ",
+      "aspect + ",
+      "elevation + ",
+      "slope + ",
       "IMRF(1 | utm_x + utm_y, model = spde)"
     )
   )
   pal_struc_model_int_list[[i]] <- fitme(fmla, data = Palisades_struc_scale, family = binomial(link = "logit"))
 }
 
-pal_struc_model_int_4.5 <- fitme(destroyed ~ distance_to_nearest_tree + angular_diff_tree + tree_dens * 
-                                   build_dens + distance_to_nearest_building + angular_diff_build + 
-                                   area_ext_build_2 + area_of_trees_2m +IMRF(1 | utm_x + utm_y, 
-                                                                              model = spde), 
+pal_struc_model_int_4.5 <- fitme(destroyed ~ distance_to_nearest_tree + angular_diff_tree + tree_dens *
+                                   build_dens + distance_to_nearest_building + angular_diff_build +
+                                   area_ext_build_2 + area_of_trees_2m + mean_wind_vel + aspect + elevation + slope + IMRF(1 | utm_x + utm_y,
+                                                                              model = spde),
                                  data = Palisades_struc_scale, family = binomial(link = "logit"))
 
 
@@ -245,10 +261,10 @@ Palisades_struc_AICs <- compare_AIC(models = pal_struc_full_model_list)
 
 saveRDS(pal_struc_full_model_list$int_4.5, "../models/Palisades_struc_m1_scaled.rda")
 
-Palisades_struc_m_unscaled <- fitme(destroyed ~ distance_to_nearest_tree + angular_diff_tree + tree_dens * 
-                                      build_dens + distance_to_nearest_building + angular_diff_build + 
-                                      area_ext_build_2 + area_of_trees_2m + IMRF(1 | utm_x + utm_y, 
-                                                                                 model = spde), 
+Palisades_struc_m_unscaled <- fitme(destroyed ~ distance_to_nearest_tree + angular_diff_tree + tree_dens *
+                                      build_dens + distance_to_nearest_building + angular_diff_build +
+                                      area_ext_build_2 + area_of_trees_2m + mean_wind_vel + aspect + elevation + slope + IMRF(1 | utm_x + utm_y,
+                                                                                 model = spde),
                                     data = Palisades_struc, family = binomial(link = "logit"))
 
 saveRDS(Palisades_struc_m_unscaled, "../models/Palisades_struc_m1_unscaled.rda")
